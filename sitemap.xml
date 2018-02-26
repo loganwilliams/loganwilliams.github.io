@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>localhost:1313/projects/fake-park-game/</loc>
+    <lastmod>2018-02-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/isometric-spacelapse/</loc>
+    <lastmod>2018-02-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/concept-net-poet/</loc>
+    <lastmod>2018-02-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/selected-photography/</loc>
+    <lastmod>2018-01-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/vignette/</loc>
+    <lastmod>2017-10-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/interactive-mojave/</loc>
+    <lastmod>2017-10-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/google-street-view/</loc>
+    <lastmod>2017-10-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/fog-today/</loc>
+    <lastmod>2017-07-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/no-tifier/</loc>
+    <lastmod>2017-05-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/caption-obscura/</loc>
+    <lastmod>2017-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/a-poem-made-by-walking/</loc>
+    <lastmod>2017-03-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/thermografree/</loc>
+    <lastmod>2017-02-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/computational-photography/</loc>
+    <lastmod>2017-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/phase-frame-interpolation/</loc>
+    <lastmod>2016-07-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/hokusai-backpack/</loc>
+    <lastmod>2015-12-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/wears-the-territory/</loc>
+    <lastmod>2015-03-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/san-francisco-language-maps/</loc>
+    <lastmod>2015-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/boundary-conditions/</loc>
+    <lastmod>2014-10-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/oct-thesis/</loc>
+    <lastmod>2014-05-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/general-abstract-nonsense/</loc>
+    <lastmod>2014-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/transdomain-feedback/</loc>
+    <lastmod>2013-10-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/linear-lens-array/</loc>
+    <lastmod>2013-08-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/academic-projects/</loc>
+    <lastmod>2013-04-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/protei/</loc>
+    <lastmod>2011-08-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/squarecave/</loc>
+    <lastmod>2009-05-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/</loc>
+    <lastmod>2018-02-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/pair-garments/</loc>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/</loc>
+    <lastmod>2018-02-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/projects/what-i-ate/</loc>
+  </url>
+  
+</urlset>

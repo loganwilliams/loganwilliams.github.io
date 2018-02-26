@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    
+    body {
+        background-color: white;
+        font-family: Helvetica, sans-serif;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    a {
+        color: #0860db;
+    }
+
+    a:visited {
+        color: #0860db;
+    }
+
+    a:hover {
+        background-color: #0860db;
+        color: white;
+    }
+
+
+
+    #info {
+        display: flex;
+        margin-left: 1em;
+    }
+    
+    #navigation {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        /*margin-bottom: 0.5em;*/
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        margin-right: 1em;
+    }
+    
+    #search-bar {
+        margin-right: 1em;
+        padding-left: 1em;
+    }
+    
+    #search-bar input {
+        width: 250px;
+        height: 24px;
+        font-size: 24px;
+        font-family: Helvetica;
+        border-radius: 12px;
+    }
+
+    #photo-search {
+        display: flex;
+        background-color: #eee;
+        border-radius: 0.5em;
+    }
+
+    #photo-search h2 {
+        text-align: center;
+    }
+    
+    #photo {
+        border: 1px solid black;
+        padding: 1em;
+        width: 400px;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-right: 1em;
+        background: white;
+    }
+    
+    #navigation button {
+        padding: 5px;
+        border-radius: 5px;
+        background-color: white;
+        border: 1px solid black;
+        margin-right: 1em;
+        width: 100px;
+        height: 40px;
+        margin-left: 5px;
+        font-size: 0.8em;
+    }
+
+    .overview-row button {
+        width: 200px;
+    }
+    
+    #navigation button:hover {
+        background-color: dodgerblue;
+    }
+    
+    svg {
+        background-color: lightblue;
+    }
+    
+    .border-fill {
+        fill: white;
+        stroke: none;
+    }
+
+    .borders {
+        fill: none;
+        stroke: #666;
+        stroke-dasharray: 2,3;
+    }
+    
+    .urban {
+        fill: #e2ceae;
+        stroke: none;
+    }
+    
+    .park {
+        fill: lightgreen;
+        stroke: none;
+    }
+    
+    .place {
+        point-radius: 2px;
+    }
+    
+    .place-label {
+        font-family: Helvetica;
+        color: #666;
+        font-size: 10px;
+    }
+    
+    .roadtrip {
+        stroke: black;
+        fill: none;
+    }
+    
+    .river {
+        stroke: lightblue;
+        fill: none;
+    }
+    
+    .photo-marker {
+        fill: black;
+    }
+    
+    .photo-marker:hover {
+        fill: black;
+        r: 10;
+        stroke: black;
+    }
+    
+    .selected {
+        fill: white;
+        stroke: red;
+        r: 10;
+    }
+    
+    #footer {
+        font-style: italic;
+    }
+
+    #description {
+        width: 600px;
+        padding-right: 1em;
+        min-width: 300px;
+    }
+
+    #search-terms {
+        width: 150px;
+    }
+
+    #caption-list {
+        margin-top: 1em;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        max-width: 250px;
+        max-height: 300px;
+        overflow: hidden;
+        font-size: 12px;
+    }
+
+    #caption-list li {
+        overflow: hidden;
+        display: block;
+        width: 500px;
+    }
+</style>
+<head>
+    <title>Caption Obscura</title>
+</head>
+<body>
+    <div id="navigation">
+        <button id="all-zoom">Zoom to Overview</button>
+        <button id="la-zoom">Los Angeles</button>
+        <button id="ps-zoom">Palm Springs</button>
+        <button id="jt-zoom">Joshua Tree</button>
+        <button id="wc-zoom">Walnut Canyon</button>    
+        <button id="gateway-zoom">Gateway Ranch</button>  
+        <button id="pf-zoom">Petrified Forest</button>
+        <button id="mw-zoom">Meow Wolf</button>
+    </div>  
+    <div id="canvas"></div>
+    <div id="info">
+
+
+<!--         <div id="search-terms">
+            <h2>Suggested keywords</h2>
+        </div>  -->
+
+        <div id="description">
+        <h2>Caption Obscura</h2>
+        <p>In April 2017, I wore a low-quality body camera and a GPS logger while taking a short roadtrip through the American Southwest. Despite the brevity of the experience, the number of images captured was overwhelming. Geographical statistics from the GPS (distance between photos, etc) were insufficient for making sense of the data, so I attempted to use a poorly trained neural network captioning algorithm.</p>
+        <p>While an isolated image caption is frequently boring and incorrect, they can also be <a href="#search=ocean&image=329&zoom=all&">evocative</a>, <a href="#image=2894&search=sheep&zoom=jt">relateable</a>, and <a href="#search=car&image=4546&zoom=pf&">technically correct</a>. In aggregate, these captions also provide a fascinating index into patterns in the photoset. For example, a search for <a href="#search=clock&image=3415&zoom=all&">clock</a> reveals periods of time spent driving at night, and a search for <a href="#search=pizza&image=3242&zoom=all&">pizza</a> finds meals. This bulk approach to using image captioning models also raises questions about patterns in the model training dataset. Does its affinity for <a href="#search=skateboard&image=5657&zoom=mw&">skateboards</a> stem from the skewed camera angle of the body cam images?
+        <p><a href="filmstrip.html" target="_blank">I also tried another, simpler, method of visualizing these photographs.</a> Warning: it is slow to load.</p>
+        <p>Return to <a href="http://subject.space">subject.space</a>.</p>
+        </div>
+        
+        <div id="photo-search">
+            <div id="search-bar">
+                <h2>Caption search</h2>
+                <input id="search" />
+                <ul id="caption-list">
+                </ul>
+            </div>
+            <div id="photo">
+                <img id="photo-img" width=400 height=300 />
+                <p id="caption"></p>
+            </div>
+        </div>
+
+        
+
+
+    </div>
+
+<script src="js/d3.js"></script>
+<script src="js/topojson.js"></script>
+<script src="js/d3-geo-projection.js"></script>
+<script src="js/d3-queue.js"></script>
+<script>
+
+    var QueryString = function () {
+      // This function is anonymous, is executed immediately and 
+      // the return value is assigned to QueryString!
+      var query_string = {};
+      var query = window.location.hash.substring(1);
+      var vars = query.split("&");
+      for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+            // If first entry with this name
+        if (typeof query_string[pair[0]] === "undefined") {
+          query_string[pair[0]] = decodeURIComponent(pair[1]);
+            // If second entry with this name
+        } else if (typeof query_string[pair[0]] === "string") {
+          var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+          query_string[pair[0]] = arr;
+            // If third or later entry with this name
+        } else {
+          query_string[pair[0]].push(decodeURIComponent(pair[1]));
+        }
+      } 
+      return query_string;
+    };
+
+    function encodeURL(params) {
+        encoded = '';
+        for (var key in params) {
+            if (key.length > 0) {
+                encoded += key + '=' + params[key] + '&'
+            }
+        }
+
+        return encoded;
+    }
+
+    var width = Math.max(1400, document.documentElement.clientWidth),
+        height = 400;
+    
+   var totalProjection = d3.geoConicEqualArea()
+    .center([0, 34.5])
+    .rotate([112, 0])
+    .parallels([34, 40.5])
+    .scale(7000)
+    .translate([width/2, 250])
+    .precision(0.01);
+
+    var laProjection = d3.geoConicEqualArea()
+    .center([0, 34.004])
+    .rotate([118.359, 0])
+    .parallels([34, 40.5])
+    .scale(100000)
+    .translate([width/2, 250])
+    .precision(0.001);
+    
+     var laProjectionLo = d3.geoConicEqualArea()
+    .center([0, 34.004])
+    .rotate([118.359, 0])
+    .parallels([34, 40.5])
+    .scale(100000)
+    .translate([width/2, 250])
+    .precision(0.01);
+    
+    var psProjection = d3.geoConicEqualArea()
+    .center([0, 33.7853])
+    .rotate([116.4053, 0])
+    .parallels([34, 40.5])
+    .scale(100000)
+    .translate([width/2, 250])
+    .precision(0.001);
+    
+    var psProjectionLo = d3.geoConicEqualArea()
+    .center([0, 33.7853])
+    .rotate([116.4053, 0])
+    .parallels([34, 40.5])
+    .scale(100000)
+    .translate([width/2, 250])
+    .precision(0.01);
+    
+    var jtProjectionLo = d3.geoConicEqualArea()
+    .center([0, 33.997])
+    .rotate([116.06122, 0])
+    .parallels([34, 40.5])
+    .scale(3000000)
+    .translate([width/2, 200])
+    .precision(0.01);
+    
+    var jtProjection = d3.geoConicEqualArea()
+    .center([0, 33.997])
+    .rotate([116.06122, 0])
+    .parallels([34, 40.5])
+    .scale(3000000)
+    .translate([width/2, 200])
+    .precision(0.0001);
+    
+    var gatewayProjectionLo = d3.geoConicEqualArea()
+    .center([0, 35.3883644])
+    .rotate([111.2794581, 0])
+    .parallels([34, 40.5])
+    .scale(3000000)
+    .translate([width/2, 180])
+    .precision(0.01);
+    
+    var gatewayProjection = d3.geoConicEqualArea()
+    .center([0, 35.3883644])
+    .rotate([111.2794581, 0])
+    .parallels([34, 40.5])
+    .scale(3000000)
+    .translate([width/2, 180])
+    .precision(0.0001);
+    
+    var mwProjectionLo = d3.geoConicEqualArea()
+    .center([0, 35.655824])
+    .rotate([105.9954, 0])
+    .parallels([34, 40.5])
+    .scale(3000000)
+    .translate([width/2, 150])
+    .precision(0.01);
+    
+    var mwProjection = d3.geoConicEqualArea()
+    .center([0, 35.655824])
+    .rotate([105.9954, 0])
+    .parallels([34, 40.5])
+    .scale(3000000)
+    .translate([width/2, 150])
+    .precision(0.0001);
+
+    var pfProjectionLo = d3.geoConicEqualArea()
+    .center([0, 34.95285])
+    .rotate([109.86265, 0])
+    .parallels([34, 40.5])
+    .scale(70000)
+    .translate([width/2, 180])
+    .precision(0.01);
+    
+    var pfProjection = d3.geoConicEqualArea()
+    .center([0, 34.95285])
+    .rotate([109.86265, 0])
+    .parallels([34, 40.5])
+    .scale(70000)
+    .translate([width/2, 180])
+    .precision(0.0001);
+
+    var wcProjectionLo = d3.geoConicEqualArea()
+    .center([0, 35.17039])
+    .rotate([111.5125, 0])
+    .parallels([34, 40.5])
+    .scale(2500000)
+    .translate([width/2, 250])
+    .precision(0.01);
+    
+    var wcProjection = d3.geoConicEqualArea()
+    .center([0, 35.17039])
+    .rotate([111.5125, 0])
+    .parallels([34, 40.5])
+    .scale(2500000)
+    .translate([width/2, 250])
+    .precision(0.0001);
+        
+    var current_im = -1;
+
+    var svg = d3.select("#canvas").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+    
+    var caption = d3.select("#caption");
+    
+     d3.queue()
+        .defer(d3.json, "data/urban.json")
+        .defer(d3.csv, "data/captions.csv")
+            .await(displayMap);
+
+
+    function search(photos) {
+        var v = d3.select("#search").property("value");
+        d3.select("#caption-list").html("");
+
+        if (v.length > 0) {
+            var selected = [];
+            var n = 0;
+
+            for (var i = 0; i < photos.length; i++) {
+                if (photos[i].caption.includes(v)) {
+
+                    selected.push(i);
+                    d3.select("#marker-" + i).attr("class", "photo-marker selected");
+
+                    n++;
+
+                    if (n < 25) {
+                        d3.select("#caption-list").append(function() { var li = document.createElement("li"); 
+                            var newContent = document.createTextNode(photos[i].caption); 
+                            li.appendChild(newContent);
+                            return li;
+                        });
+                    }
+
+                } else {
+                    d3.select("#marker-" + i).attr("class", "photo-marker");
+                }
+            }
+        } else {
+            for (var i = 0; i < photos.length; i++) {
+                d3.select("#marker-" + i).attr("class", "photo-marker");
+            }
+        }
+    }
+
+    function updateSearchURL(photos) {
+        var v = d3.select("#search").property("value");
+        var urlParameters = QueryString();
+        urlParameters.search = v;
+        window.location.hash = encodeURL(urlParameters);
+    }
+
+    function getProjection(qs) {
+        if (qs.zoom == 'la') {
+            var currentProjectionLo = laProjectionLo;
+            var currentProjection = laProjection;
+        } else if (qs.zoom == 'ps') {
+            var currentProjectionLo = psProjectionLo;
+            var currentProjection = psProjection;
+        } else if (qs.zoom == 'jt') {
+            var currentProjectionLo = jtProjectionLo;
+            var currentProjection = jtProjection;
+        } else if (qs.zoom == 'wc') {
+            var currentProjectionLo = wcProjectionLo;
+            var currentProjection = wcProjection;
+        } else if (qs.zoom == 'gateway') {
+            var currentProjectionLo = gatewayProjectionLo;
+            var currentProjection = gatewayProjection;
+        } else if (qs.zoom == 'pf') {
+            var currentProjectionLo = pfProjectionLo;
+            var currentProjection = pfProjection;
+        } else if (qs.zoom == 'mw') {
+            var currentProjectionLo = mwProjectionLo;
+            var currentProjection = mwProjection;
+        } else {
+            var currentProjectionLo = totalProjection;
+            var currentProjection = totalProjection;
+        }
+
+        return [currentProjection, currentProjectionLo];
+    }
+
+
+    function displayMap(error, us, photos) {
+        if (error) return console.error(error);
+
+        var projections = getProjection(QueryString());
+        var currentProjection = projections[0];
+        var currentProjectionLo = projections[1];                
+                 
+        svg.append("path")
+            .datum(topojson.feature(us, us.objects.subunits_all))
+            .attr("d", d3.geoPath().projection(currentProjectionLo))
+            .attr("class", "border-fill");
+         
+        svg.append("path")
+            .datum(topojson.feature(us, us.objects.urban_areas))
+            .attr("d", d3.geoPath().projection(currentProjectionLo))
+            .attr("class", "urban");
+         
+        svg.append("path")
+            .datum(topojson.feature(us, us.objects.parks))
+            .attr("d", d3.geoPath().projection(currentProjectionLo))
+            .attr("class", "park");
+        
+        svg.append("path")
+            .datum(topojson.feature(us, us.objects.rivers))
+            .attr("d", d3.geoPath().projection(currentProjectionLo))
+            .attr("class", "river");
+  
+        svg.append("path")
+            .datum(topojson.feature(us, us.objects.roadtrip))
+            .attr("d", d3.geoPath().projection(currentProjection))
+            .attr("class", "roadtrip");
+         
+        svg.selectAll("circle")
+            .data(photos)
+            .enter()
+            .append("circle")
+            .attr("cx", function(d) { return currentProjection([d.longitude, d.latitude])[0] })
+            .attr("cy", function(d) { return currentProjection([d.longitude, d.latitude])[1] })
+            .attr("r", 2)
+            .attr("class", "photo-marker")
+            .attr("id", function(d, i) { return "marker-" + i; })
+            .on("mouseover", function(d, i) {
+                d3.select("#caption").text(photos[i].caption);
+                var newimg = "thumbs/SNAP" + ("0000" + (2 + i)).substr(-4, 4) + ".JPG";
+                d3.select("#photo-img").attr("src", newimg);
+                current_im = i;
+
+                // var urlParameters = QueryString();
+                // urlParameters.image = i;
+                // window.location.hash = encodeURL(urlParameters);
+            })
+            .on("mouseleave", function(d) {
+            });
+
+        if (QueryString().search) {
+            d3.select("#search").property("value", QueryString.search);
+            search(photos);
+        }
+
+        if (QueryString().image) {
+            var i = parseInt(QueryString().image);
+            d3.select("#caption").text(photos[i].caption);
+            var newimg = "thumbs/SNAP" + ("0000" + (2 + i)).substr(-4, 4) + ".JPG";
+            d3.select("#photo-img").attr("src", newimg);
+        }
+        
+        d3.select("#search").on("input", updateSearchURL);
+
+        d3.select("#la-zoom").on("click", function() {
+            var urlParameters = QueryString();
+            urlParameters.zoom = 'la';
+            projTransition(laProjectionLo, laProjection);
+            window.location.hash = encodeURL(urlParameters);            
+        });
+        
+        d3.select("#all-zoom").on("click", function() {
+            var urlParameters = QueryString();
+            urlParameters.zoom = 'all';
+            projTransition(totalProjection, totalProjection);
+            window.location.hash = encodeURL(urlParameters);
+        });
+        
+        d3.select("#ps-zoom").on("click", function() {
+            var urlParameters = QueryString();
+            urlParameters.zoom = 'ps';
+            projTransition(psProjectionLo, psProjection);
+            window.location.hash = encodeURL(urlParameters);
+        });
+        
+        d3.select("#jt-zoom").on("click", function() {
+            var urlParameters = QueryString();
+            urlParameters.zoom = 'jt';
+            projTransition(jtProjectionLo, jtProjection);
+            window.location.hash = encodeURL(urlParameters);
+        });
+        
+        d3.select("#gateway-zoom").on("click", function() {
+            var urlParameters = QueryString();
+            urlParameters.zoom = 'gateway';
+            projTransition(gatewayProjectionLo, gatewayProjection);
+            window.location.hash = encodeURL(urlParameters);
+        });
+        
+        d3.select("#mw-zoom").on("click", function() {
+            var urlParameters = QueryString();
+            urlParameters.zoom = 'mw';
+            projTransition(mwProjectionLo, mwProjection);
+            window.location.hash = encodeURL(urlParameters);
+        });
+        
+        d3.select("#pf-zoom").on("click", function() {
+            var urlParameters = QueryString();
+            urlParameters.zoom = 'pf';
+            projTransition(pfProjectionLo, pfProjection);
+            window.location.hash = encodeURL(urlParameters);
+        });
+
+        d3.select("#wc-zoom").on("click", function() {
+            var urlParameters = QueryString();
+            urlParameters.zoom = 'wc';
+            projTransition(wcProjectionLo, wcProjection);
+            window.location.hash = encodeURL(urlParameters);
+        });
+
+        function urlChanged(e) {
+            var qs = QueryString();
+
+            if (qs.search) {
+                d3.select("#search").property("value", qs.search);
+                search(photos);
+            }
+
+            if (qs.image) {
+                var i = parseInt(qs.image);
+                d3.select("#caption").text(photos[i].caption);
+                var newimg = "thumbs/SNAP" + ("0000" + (2 + i)).substr(-4, 4) + ".JPG";
+                d3.select("#photo-img").attr("src", newimg);
+            }
+
+            // capturing the zoom part works!
+            if (qs.zoom) {
+                var projections = getProjection(qs);
+                var currentProjection = projections[0];
+                var currentProjectionLo = projections[1];
+
+                projTransition(currentProjectionLo, currentProjection);
+            }   
+        }
+
+        window.addEventListener('hashchange', urlChanged);
+    }
+    
+    function projTransition(newProjectionLo, newProjectionHi) {
+        d3.selectAll(".border-fill")
+                .attr("d", d3.geoPath().projection(newProjectionLo));
+        
+        d3.selectAll(".urban")
+                .attr("d", d3.geoPath().projection(newProjectionLo));
+        
+        d3.selectAll(".park")
+                .attr("d", d3.geoPath().projection(newProjectionLo));
+        
+        d3.selectAll(".river")
+                .attr("d", d3.geoPath().projection(newProjectionLo));
+        
+        d3.selectAll(".roadtrip")
+                .attr("d", d3.geoPath().projection(newProjectionHi));
+        
+        d3.selectAll(".photo-marker")
+                .attr("cx", function(d) { return newProjectionHi([d.longitude, d.latitude])[0] })
+                .attr("cy", function(d) { return newProjectionHi([d.longitude, d.latitude])[1] })
+        
+    }
+
+
+
+
+</script>
+</body>

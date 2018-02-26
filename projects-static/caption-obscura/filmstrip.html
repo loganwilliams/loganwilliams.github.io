@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<style>
+
+    body {
+        background-color: black;
+        color: white;
+        font-family: Helvetica, sans-serif;
+    }
+    
+    #search-bar {
+        margin-bottom: 5px;
+    }
+
+    #loading {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        font-size: 1em;
+        z-index: -1;
+    }
+
+    #photos {
+        z-index: 1;
+    }
+    
+</style>
+<title>Roadtrip Filmstrip View</title>
+</head>
+<body>
+    <div id="search-bar">
+        Search in captions: <input id="search" />
+        Resize to fit? <input type="checkbox" id="resizeCheckbox" />
+    </div>
+    <div id="photos">
+    </div>
+    <div id="loading">
+    Loading... this will take a few moments.
+    </div>
+
+<script src="js/d3.js"></script>
+<script src="js/d3-queue.js"></script>
+<script>
+    
+    var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) - 10;
+    var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 50;
+    console.log(width);
+    console.log(height);
+
+    var svg = d3.select("#photos").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+    
+    var caption = d3.select("#caption");
+    
+     d3.queue()
+        .defer(d3.csv, "data/captions.csv")
+        .defer(d3.csv, "data/thumbnails_sm.csv")
+        .defer(d3.csv, "data/thumbnails.csv")
+            .await(displayMap);
+
+    function displayMap(error, photos, thumbnails, thumbnails_larger) {
+        if (error) return console.error(error);
+
+        var n = photos.length;
+        var h = Math.sqrt(((width*height)/n)/(4/3));
+        var w = h * 4/3;
+        var row_size = Math.ceil(width/w);
+        var w = width / row_size;
+        var h = w * 3/4;
+                
+        svg.selectAll("image")
+            .data(photos)
+            .enter()
+            .append("svg:image")
+            .attr("xlink:href", function(d,i) {
+                return "data:image/jpeg;base64," + thumbnails[i].data;
+            })
+            .attr("height", h)
+            .attr("width", w)
+            .attr("x", function(d,i) {
+                var x = (i % row_size) * w;
+                return x;
+            })
+            .attr("y", function(d,i) {
+                var y = Math.floor(i / row_size) * h;
+                return y;
+            })
+            .attr("id", function(d,i) { return "img-" + i});
+
+        console.log("done with images?");
+
+        var search = function() {
+            d3.select("#loading").text("");
+            var v = d3.select("#search").property("value");
+            
+            if (v.length > 0) {
+                var selected = [];
+                var n = 0;
+
+                for (var i = 0; i < photos.length; i++) {
+                    if (photos[i].caption.includes(v)) {
+                        d3.select("#img-" + i).attr("display", "inline");
+                        selected.push(i);
+                        n++;
+                    } else {
+                        d3.select("#img-" + i).attr("display", "none");
+                    }
+                }
+                
+                if (d3.select("#resizeCheckbox").property("checked")) {
+                    var h = Math.sqrt(((width*height)/n)/(4/3));
+                    var w = h * 4/3;
+                    var row_size = Math.ceil(width/w);
+                    var w = width / row_size;
+                    var h = w * 3/4;
+
+                    for (var i = 0; i < selected.length; i++) {
+                        if (w < 40) {
+                            d3.select("#img-" + selected[i])
+                                .attr("xlink:href", "data:image/jpeg;base64," + thumbnails_larger[selected[i]].data);
+                        } else {
+                            d3.select("#img-" + selected[i])
+                                .attr("xlink:href", "thumbs/SNAP" + ("0000" + (selected[i] + 2)).substr(-4,4) + ".JPG");
+                        }
+
+                        d3.select("#img-" + selected[i])
+                            .transition(1000)
+                            .attr("height", h)
+                            .attr("width", w)
+                            .attr("x", (i % row_size) * w)
+                            .attr("y", Math.floor(i/row_size) * h)
+                            .attr("display", "inline");
+                    }
+                } else {
+                    var n = photos.length;
+                    var h = Math.sqrt(((width*height)/n)/(4/3));
+                    var w = h * 4/3;
+                    var row_size = Math.ceil(width/w);
+                    var w = width / row_size;
+                    var h = w * 3/4;
+                    
+                    for (var i =0; i < selected.length; i++) {
+                        d3.select("#img-" + selected[i])
+                            .attr("height", h)
+                            .attr("width", w)
+                            .attr("x", (selected[i] % row_size) * w)
+                            .attr("y", Math.floor(selected[i]/row_size) * h)
+                    }
+                }
+
+            } else {
+                var n = photos.length;
+                var h = Math.sqrt(((width*height)/n)/(4/3));
+                var w = h * 4/3;
+                var row_size = Math.ceil(width/w);
+                var w = width / row_size;
+                var h = w * 3/4;
+                
+                for (var i = 0; i < photos.length; i++) {
+                    if (d3.select("#resizeCheckbox").property("checked")) {
+                        d3.select("#img-" + i)
+                            .attr("xlink:href", "data:image/jpeg;base64," + thumbnails[i].data);    
+
+                        d3.select("#img-" + i)
+                            .transition(1000)
+                            .attr("height", h)
+                            .attr("width", w)
+                            .attr("x", (i % row_size) * w)
+                            .attr("y", Math.floor(i/row_size) * h)
+                            .attr("display", "inline");
+                    } else {
+                        d3.select("#img-" + i)
+                            .attr("display", "inline");
+                    }
+                }
+            }
+        }
+        
+        d3.select("#search").on("input", search);
+        d3.select("#resizeCheckbox").on("click", search);
+    }
+    
+</script>
+</body>
