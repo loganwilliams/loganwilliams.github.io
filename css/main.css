@@ -46,6 +46,21 @@ a:visited {
 	color: blue;
 }
 
+.cards:hover .card .text {
+	opacity: 1.0;
+	transition: 0.6s;
+}
+
+.cards:hover .card .background {
+	opacity: 0.6;
+	filter: grayscale(50%);
+}
+
+.cards:hover .featured .background {
+	filter: grayscale(15%);
+	opacity: 0.8;
+}
+
 /* card styling */
 
 .card {
@@ -65,13 +80,6 @@ a:visited {
     z-index: -1;
     position: absolute;
     background-position: bottom center;
-    opacity: 0.6;
-	filter: grayscale(50%);
-}
-
-.featured .background {
-	filter: grayscale(15%);
-	opacity: 0.8;
 }
 
 .card:hover .background {
@@ -85,14 +93,21 @@ a:visited {
 	padding: 0.5em;
 	margin: 0.5em;
 	border-radius: 2px;
+	opacity: 0.0;
+	transition: 0.6s;
 }
 
 .card:hover .text {
 	background-color: rgba(255,255,255,0.8);
+	transition: 0.4s;
 }
 
 .description {
 	margin-top: 5px;
+}
+
+.card:hover .description {
+	display: block;
 }
 
 /* post display */
