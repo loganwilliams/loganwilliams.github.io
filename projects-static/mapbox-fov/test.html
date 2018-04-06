@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Mapbox adjustable FOV demo</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='mapbox-gl.js'></script>
+    <link href='mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+
+        body {
+            margin:0; 
+            padding:0;
+            font-family: Helvetica;
+        }
+
+        #map { 
+            position:absolute; 
+            top: 55px; 
+            bottom:0; 
+            width:100%;
+        }
+
+        .header {
+            margin-left: 5px;
+            margin-top: 5px;
+        }
+
+        .slidecontainer {
+            display: flex;
+            margin-top: 5px;
+        }
+
+        .title {
+            overflow: hidden;
+            max-height: 20px;
+        }
+
+        label {
+            margin-right: 5px;
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            margin-right: 0px;
+            margin-left: auto;
+            height: 15px;
+            border-radius: 5px;   
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 25%; 
+            background: #48aefc;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 25%;
+            background: #48aefc;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+
+<div class="title">
+   <strong>A webmap with an adjustable FOV.</strong> As the slider below is changed, the ratio between the size of objects in the foreground and in the background is altered. Based on a <a href="https://github.com/mapbox/mapbox-gl-js">Mapbox GL JS</a> <a href="https://github.com/loganwilliams/mapbox-gl-js">fork</a> by <a href="https://subject.space
+   ">Logan Williams</a>.
+</div>
+
+<div class="slidecontainer">
+    <label for="buildings">Buildings?</label>
+    <input type="checkbox" id="buildings" checked>
+    <label for="fov">FOV:</label>
+    <input type="range" min="1" max="1000" value="720" class="slider" id="fov">
+</div>
+
+</div>
+
+
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoibG9nYW53IiwiYSI6IlQzWHJqc3cifQ.KY3j-syHXeYmI69JmLqGqQ';
+
+var map = new mapboxgl.Map({
+    style: 'mapbox://styles/mapbox/streets-v9',
+    center: [-74.0066, 40.7135],
+    zoom: 15.5,
+    pitch: 55,
+    bearing: -17.6,
+    hash: true,
+    container: 'map'
+});
+
+var fovSlider = document.getElementById("fov");
+var buildingsCheck = document.getElementById("buildings");
+var buildings = true;
+
+// Update the current slider value (each time you drag the slider handle)
+fovSlider.oninput = function() {
+    var fov = Math.pow(this.value/1000, 3) * 100;
+    console.log(fov);
+    map.setFov(fov);
+}
+
+buildingsCheck.onclick = function() {
+    if (this.checked && !buildings) {
+        buildings = true;
+        addBuildings(map);
+    } else if (!this.checked && buildings) {
+        buildings = false;
+        map.removeLayer("3d-buildings");
+    }
+}
+
+function addBuildings(map) {
+    // insert  the layer beneath any symbol layer
+
+    var layers = map.getStyle().layers;
+    var labelLayerId;
+    for (var i = 0; i < layers.length; i++) {
+        if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+            labelLayerId = layers[i].id;
+            break;
+        }
+    }
+
+    map.addLayer({
+        'id': '3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 10,
+        'paint': {
+            'fill-extrusion-color': '#aaa',
+            'fill-extrusion-height': ["get", "height"],
+            'fill-extrusion-base': ["get", "min_height"],
+            'fill-extrusion-opacity': .6
+        }
+    }, labelLayerId);
+}
+
+map.on('load', function() {
+    map.setFov(37.3);
+    window.map = map;
+    addBuildings(map);
+});
+</script>
+
+</body>
+</html>
