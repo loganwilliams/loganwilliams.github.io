@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<title>Fogust</title>
+
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.css">
+
+<style>
+
+body, html {
+  margin: 0px;
+  padding: 0px;
+}
+
+#map {
+  width: 100%;
+  height: 100vh;
+}
+
+svg {
+  position: relative;
+}
+
+path {
+  fill: #000;
+  fill-opacity: .2;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+path:hover {
+  fill: brown;
+  fill-opacity: .7;
+}
+
+canvas {
+  position: absolute;
+}
+
+</style>
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>
+
+<div id="map"></div>
+
+<script>
+var map = new L.Map("map", {center: [37.8, -122.9], zoom: 9, minZoom: 7, maxZoom: 12})
+    .addLayer(new L.TileLayer("https://api.mapbox.com/styles/v1/loganw/cjg41wgdr1ie52skf1v5c7yd9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibG9nYW53IiwiYSI6IlQzWHJqc3cifQ.KY3j-syHXeYmI69JmLqGqQ"));
+
+
+var canvas = d3.select(map.getPanes().overlayPane).append("canvas").attr("class", "leaflet-zoom-hide");
+
+var context = canvas.node().getContext('2d');
+
+var customBase = document.createElement('custom');
+var custom = d3.select(customBase);
+
+d3.json("fogust_sm.json", function(error, collection) {
+  if (error) throw error;
+
+  var transform = d3.geo.transform({point: projectPoint}),
+      path = d3.geo.path().projection(transform).pointRadius(function(d) {
+        return d.properties.clearprob * 10;
+      });
+
+  var feature = custom.selectAll("path")
+      .data(collection.features)
+    .enter().append("path");
+
+
+  map.on("viewreset", reset);
+  reset();
+
+
+  // Reposition the canvas to cover the features.
+  function reset() {
+    path = d3.geo.path().projection(transform).pointRadius(function(d) {
+      if (map.getZoom() <= 7) {
+        return d.properties.clearprob * 4;
+      } else if (map.getZoom() <= 9) {
+        return d.properties.clearprob * 7;
+      } else if (map.getZoom() <= 9) {
+        return d.properties.clearprob * 10;
+      } else if (map.getZoom() <= 10) {
+        return d.properties.clearprob * 14;
+      } else if (map.getZoom() <= 11) {
+        return d.properties.clearprob * 20;
+      } else {
+        return d.properties.clearprob * 30;
+      }
+    });
+
+    var bounds = path.bounds(collection),
+        topLeft = bounds[0],
+        bottomRight = bounds[1];
+
+    canvas.attr("width", bottomRight[0] - topLeft[0])
+          .attr("height", bottomRight[1] - topLeft[1])
+          .style("left", topLeft[0] + "px")
+          .style("top", topLeft[1] + "px");
+
+    context.clearRect(0, 0, canvas.attr("width"), canvas.attr("height"));
+
+    feature.attr("d", path);
+    draw();
+  }
+
+  // Use Leaflet to implement a D3 geometric transformation.
+  function projectPoint(x, y) {
+    var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+    this.stream.point(point.x, point.y);
+  }
+
+  function draw() {
+    context.fillStyle = 'rgba(200, 200, 200, 0.8)';
+    context.strokeStyle = '#000';
+
+    var bounds = path.bounds(collection),
+        topLeft = bounds[0],
+        bottomRight = bounds[1];
+
+    context.translate(-topLeft[0], -topLeft[1]);
+    
+    var elements = custom.selectAll('path')
+
+    elements.each(function(d,i) {
+      var node = d3.select(this);
+      var p = new Path2D(node.attr("d"));
+      context.fill(p);
+    });
+
+  }
+  
+});
+</script>
