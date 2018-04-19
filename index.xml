@@ -6,10 +6,19 @@
     <description>Recent content on Logan Williams</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 14 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 19 Apr 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Fogust</title>
+      <link>localhost:1313/projects/fogust/</link>
+      <pubDate>Thu, 19 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>localhost:1313/projects/fogust/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Conceptquest</title>

@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<title>Fogust</title>
+
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.css">
+
+<style>
+
+body, html {
+  margin: 0px;
+  padding: 0px;
+}
+
+#map {
+  width: 100%;
+  height: calc(100vh - 20px);
+  top: 20px;
+}
+
+svg {
+  position: relative;
+}
+
+path {
+  fill: #000;
+  fill-opacity: .2;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+path:hover {
+  fill: brown;
+  fill-opacity: .7;
+}
+
+canvas {
+  position: absolute;
+  transform: translateZ(0)
+}
+
+</style>
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>
+
+<button id="jan">January</button>
+<button id="feb">February</button>
+<button id="mar">March</button>
+<button id="apr">April</button>
+<button id="may">May</button>
+<button id="jun">June</button>
+<button id="jul">July</button>
+<button id="aug">August</button>
+<button id="sep">September</button>
+<button id="oct">October</button>
+<button id="nov">November</button>
+<button id="dec">December</button>
+
+<div id="map"></div>
+
+<script>
+
+var month = 7;
+
+var map = new L.Map("map", {center: [37.8, -122.9], zoom: 9, minZoom: 7, maxZoom: 12})
+    .addLayer(new L.TileLayer("https://api.mapbox.com/styles/v1/loganw/cjg41wgdr1ie52skf1v5c7yd9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibG9nYW53IiwiYSI6IlQzWHJqc3cifQ.KY3j-syHXeYmI69JmLqGqQ"));
+
+
+var canvas = d3.select(map.getPanes().overlayPane).append("canvas").attr("class", "leaflet-zoom-hide");
+
+var context = canvas.node().getContext('2d');
+
+var customBase = document.createElement('custom');
+var custom = d3.select(customBase);
+
+d3.json("fog.json", function(error, collection) {
+  if (error) throw error;
+
+  // TODO
+  // change to working from CSV
+  // manually do the projection of each point
+  // try to add a transition based on new virtualdom
+
+  var transform = d3.geo.transform({point: projectPoint}),
+      path = d3.geo.path().projection(transform);
+
+  var join = custom.selectAll("path")
+      .data(collection.features)
+  
+  var feature = join.enter().append("path");
+
+  // var exitSel = join.exit()
+  // .transition()
+  // .attr('d', path)
+  // .remove();
+
+
+  map.on("viewreset", reset);
+
+  document.getElementById("jan").addEventListener("click", () => {
+    month = 0;
+    reset();
+  });
+
+  document.getElementById("feb").addEventListener("click", () => {
+    month = 1;
+    reset();
+  });
+
+document.getElementById("mar").addEventListener("click", () => {
+    month = 2;
+    reset();
+  });
+document.getElementById("apr").addEventListener("click", () => {
+    month = 3;
+    reset();
+  });
+document.getElementById("may").addEventListener("click", () => {
+    month = 4;
+    reset();
+  });
+document.getElementById("jun").addEventListener("click", () => {
+    month = 5;
+    reset();
+  });
+document.getElementById("jul").addEventListener("click", () => {
+    month = 6;
+    reset();
+  });
+
+  document.getElementById("aug").addEventListener("click", () => {
+    month = 7;
+    reset();
+  });
+
+  document.getElementById("sep").addEventListener("click", () => {
+    month = 8;
+    reset();
+  });
+
+  document.getElementById("oct").addEventListener("click", () => {
+    month = 9;
+    reset();
+  });
+
+  document.getElementById("nov").addEventListener("click", () => {
+    month = 10;
+    reset();
+  });
+
+  document.getElementById("dec").addEventListener("click", () => {
+    month = 11;
+    reset();
+  });
+
+  reset();
+
+
+  // Reposition the canvas to cover the features.
+  function reset() {
+    path = d3.geo.path().projection(transform).pointRadius(function(d) {
+      var p = d.properties.p[month];
+
+      if (p < 0.1) {
+        return 0;
+      }
+
+      if (map.getZoom() <= 7) {
+        return p * 4;
+      } else if (map.getZoom() <= 9) {
+        return p * 7;
+      } else if (map.getZoom() <= 9) {
+        return p * 10;
+      } else if (map.getZoom() <= 10) {
+        return p * 14;
+      } else if (map.getZoom() <= 11) {
+        return p * 20;
+      } else {
+        return p * 30;
+      }
+    });
+
+    var bounds = path.bounds(collection),
+        topLeft = bounds[0],
+        bottomRight = bounds[1];
+
+    canvas.attr("width", bottomRight[0] - topLeft[0])
+          .attr("height", bottomRight[1] - topLeft[1])
+          .style("left", topLeft[0] + "px")
+          .style("top", topLeft[1] + "px");
+
+    context.clearRect(0, 0, canvas.attr("width"), canvas.attr("height"));
+
+    feature.attr("d", path);
+    draw();
+  }
+
+  // Use Leaflet to implement a D3 geometric transformation.
+  function projectPoint(x, y) {
+    var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+    this.stream.point(point.x, point.y);
+  }
+
+  function draw() {
+    context.fillStyle = 'rgba(200, 200, 200, 0.8)';
+    context.strokeStyle = '#000';
+
+    var bounds = path.bounds(collection),
+        topLeft = bounds[0],
+        bottomRight = bounds[1];
+
+    context.translate(-topLeft[0], -topLeft[1]);
+    
+    var elements = custom.selectAll('path')
+
+    elements.each(function(d,i) {
+      var node = d3.select(this);
+      var p = new Path2D(node.attr("d"));
+      context.fill(p);
+    });
+
+  }
+  
+});
+</script>

@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<title>Fogust</title>
+
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.css">
+
+<style>
+
+body, html {
+  margin: 0px;
+  padding: 0px;
+}
+
+#map {
+  width: 100%;
+  height: calc(100vh - 20px);
+  top: 20px;
+}
+
+svg {
+  position: relative;
+}
+
+path {
+  fill: #000;
+  fill-opacity: .2;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+path:hover {
+  fill: brown;
+  fill-opacity: .7;
+}
+
+canvas {
+  position: absolute;
+  transform: translateZ(0);
+  /*filter: blur(2px);*/
+}
+
+</style>
+
+<script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>
+
+<button id="jan">January</button>
+<button id="feb">February</button>
+<button id="mar">March</button>
+<button id="apr">April</button>
+<button id="may">May</button>
+<button id="jun">June</button>
+<button id="jul">July</button>
+<button id="aug">August</button>
+<button id="sep">September</button>
+<button id="oct">October</button>
+<button id="nov">November</button>
+<button id="dec">December</button>
+
+<div id="map"></div>
+
+<script>
+
+var projectedData, min, max;
+var xscale = 0.45;
+
+var currentMonth = 'jun';
+
+var map = new L.Map("map", {center: [37.8, -122.9], zoom: 10, minZoom: 7, maxZoom: 12})
+    .addLayer(new L.TileLayer("https://api.mapbox.com/styles/v1/loganw/cjg41wgdr1ie52skf1v5c7yd9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibG9nYW53IiwiYSI6IlQzWHJqc3cifQ.KY3j-syHXeYmI69JmLqGqQ"));
+
+
+var canvas = d3.select(map.getPanes().overlayPane).append("canvas").attr("class", "leaflet-zoom-hide").attr("width", 1000).attr("height", 1000);
+
+var context = canvas.node().getContext('2d');
+
+var customBase = document.createElement('custom');
+var custom = d3.select(customBase);
+
+d3.csv("fog.csv", function(data) {
+
+  // TODO
+  // change to working from CSV
+  // manually do the projection of each point
+  // try to add a transition based on new virtualdom
+
+  var join = custom.selectAll("circle")
+      .data(data)
+
+  var feature = join.enter().append("circle")
+                      .attr("cx", (d) => {
+                        return projectPoint(d.lon, d.lat).x
+                      })
+                      .attr("cy", (d) => {
+                        return projectPoint(d.lon, d.lat).y
+                      })
+                      .attr("r", (d) => {
+                        return d.jun * 10;
+                      });
+  
+  // var feature = join.enter().append("path");
+
+  // var exitSel = join.exit()
+  // .transition()
+  // .attr('d', path)
+  // .remove();
+
+
+  map.on("viewreset", reset);
+
+  document.getElementById("jan").addEventListener("click", () =>transitionTo("jan"));
+  document.getElementById("feb").addEventListener("click", () =>transitionTo("feb"));
+  document.getElementById("mar").addEventListener("click", () =>transitionTo("mar"));
+  document.getElementById("apr").addEventListener("click", () =>transitionTo("apr"));
+  document.getElementById("may").addEventListener("click", () =>transitionTo("may"));
+  document.getElementById("jun").addEventListener("click", () =>transitionTo("jun"));
+  document.getElementById("jul").addEventListener("click", () =>transitionTo("jul"));
+  document.getElementById("aug").addEventListener("click", () =>transitionTo("aug"));
+  document.getElementById("sep").addEventListener("click", () =>transitionTo("sep"));
+  document.getElementById("oct").addEventListener("click", () =>transitionTo("oct"));
+  document.getElementById("nov").addEventListener("click", () =>transitionTo("nov"));
+  document.getElementById("dec").addEventListener("click", () =>transitionTo("dec"));
+
+  reset();
+
+
+  function transitionTo(month) {
+    var t = d3.timer((elapsed) => {
+      drawNoZoom(currentMonth, month, elapsed/1000);
+      if (elapsed > 1000) {
+        t.stop();
+        currentMonth = month;
+      }
+    });
+  }
+
+  // Reposition the canvas to cover the features.
+  function reset() {
+    console.log("reset");
+    // path = d3.geo.path().projection(transform).pointRadius(function(d) {
+    //   var p = d.properties.p[month];
+
+    //   if (p < 0.1) {
+    //     return 0;
+    //   }
+
+    //   if (map.getZoom() <= 7) {
+    //     return p * 4;
+    //   } else if (map.getZoom() <= 9) {
+    //     return p * 7;
+    //   } else if (map.getZoom() <= 9) {
+    //     return p * 10;
+    //   } else if (map.getZoom() <= 10) {
+    //     return p * 14;
+    //   } else if (map.getZoom() <= 11) {
+    //     return p * 20;
+    //   } else {
+    //     return p * 30;
+    //   }
+    // });
+
+    // var bounds = path.bounds(collection),
+    //     topLeft = bounds[0],
+    // //     bottomRight = bounds[1];
+
+    // canvas.attr("width", bottomRight[0] - topLeft[0])
+    //       .attr("height", bottomRight[1] - topLeft[1])
+    //       .style("left", topLeft[0] + "px")
+    //       .style("top", topLeft[1] + "px");
+
+
+    // feature.attr("d", path);
+    draw();
+  }
+
+
+  function projectPoint(x, y) {
+    var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+    return point;
+  }
+
+  function drawNoZoom(month1, month2, interp) {
+    interp = interp > 1 ? 1 : interp;
+    interp = interp < 0 ? 0 : interp;
+
+    context.setTransform(1, 0, 0, 1, 0, 0);
+
+    context.clearRect(0, 0, canvas.attr("width"), canvas.attr("height"));
+    context.translate(-min[0], -min[1]);
+    context.fillStyle = 'rgba(200, 200, 200, 0.8)';
+    context.strokeStyle = '#000';
+
+    projectedData.map(function(d,i) {
+      // var r = 40;
+      var r = scaleR(data[i][month1] * (1 - interp) + data[i][month2] * interp);
+      
+
+      if (i == 0) {
+        console.log(r);
+      }
+
+    //   if (i % 100 == 0) {
+
+    //   console.log(d.x, d.y);
+    //   console.log(min);
+    //   console.log(d.x + min[0], d.y + min[1]);
+    //   console.log(window.innerWidth, window.innerHeight);
+    // }
+
+      // trying to only do this if we are visible
+      // if ((d.x > 0) && (d.x < window.innerWidth) && (d.y > 0) && (d.x < window.innerHeight)) {
+      // if ((d.x + 2*min[0] > 0) && (d.x + 2*min[0] < 500) && (d.y + 2*min[1] > 0) && (d.y + 2*min[1] < 500)) {
+        // context.fillRect(d.x - r/2 * xscale, d.y - r/2, r*xscale, r);
+        // context.beginPath();
+        // context.arc(d.x, d.y, r, 0, 2 * Math.PI);
+        // context.fill();
+          drawHex(context, d.x, d.y, r*0.48, r*1.5, -0.05);
+      // }
+    });
+  }
+
+  function draw() {
+    min = [10000, 10000];
+    max = [-10000, -10000];
+
+    projectedData = data.map(function(d,i) {
+      var proj = projectPoint(d.lon, d.lat);
+      min[0] = proj.x < min[0] ? proj.x : min[0];
+      min[1] = proj.y < min[1] ? proj.y : min[1];
+      max[0] = proj.x > max[0] ? proj.x : max[0];
+      max[1] = proj.y > max[1] ? proj.y : max[1];
+      return {x: proj.x, y: proj.y, r: scaleR(d[currentMonth])};
+    });
+
+    canvas.attr("width", max[0] - min[0])
+          .attr("height", max[1] - min[1])
+          .style("left", min[0] + "px")
+          .style("top", min[1] + "px");
+
+    // var bounds = path.bounds(collection),
+    //     topLeft = bounds[0],
+    //     bottomRight = bounds[1];
+
+
+    context.clearRect(0, 0, canvas.attr("width"), canvas.attr("height"));
+    context.translate(-min[0], -min[1]);
+    context.fillStyle = 'rgba(200, 200, 200, 0.8)';
+    context.strokeStyle = '#000';
+    
+    // var elements = custom.selectAll('circle')
+
+    projectedData.map(function(d,i) {
+
+
+    // context.fillRect(d.x - d.r/2 * xscale, d.y - d.r/2, d.r * xscale, d.r);
+    // context.beginPath();
+    // context.arc(d.x, d.y, d.r, 0, 2 * Math.PI);
+    // context.fill();
+
+    drawHex(context, d.x, d.y, d.r*0.48, d.r*1.5, -0.05);
+    // drawRect(context, d.x, d.y, d.r*0.48, d.r*1.5, -0.05)
+
+    });
+
+  }
+
+  function scaleR(r) {
+    r = r < 0.1 ? 0 : r;
+    r =  r * 1.6 * 0.012*(Math.pow(2, map.getZoom()));
+    return r;
+  }
+
+  function drawHex(context, cx, cy, w, h, angle) {
+    var c = Math.cos(-angle);
+    var s = Math.sin(-angle);
+
+    context.beginPath();
+    context.moveTo(cx + c * 0    + s * (-h/2 )  ,cy + c * (-h/2 ) - s * (0   ) );
+    context.lineTo(cx + c * -w/2 + s * ( -h/5)  ,cy + c * ( -h/5) - s * (-w/2) );
+    context.lineTo(cx + c * -w/2 + s * ( h/5 )  ,cy + c * ( h/5 ) - s * (-w/2) );
+    context.lineTo(cx + c * 0    + s * ( h/2 )  ,cy + c * ( h/2 ) - s * (0   ) );
+    context.lineTo(cx + c * w/2  + s * ( h/5 )  ,cy + c * ( h/5 ) - s * (w/2 ) );
+    context.lineTo(cx + c * w/2  + s * ( -h/5)  ,cy + c * ( -h/5) - s * (w/2 ) );
+    context.lineTo(cx + c * 0    + s * ( -h/2)  ,cy + c * ( -h/2) - s * (0   ) );
+    context.fill();
+  }
+
+
+  
+});
+</script>
