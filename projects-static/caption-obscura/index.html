@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-    
+
     body {
         background-color: white;
         font-family: Helvetica, sans-serif;
@@ -28,7 +28,7 @@
         display: flex;
         margin-left: 1em;
     }
-    
+
     #navigation {
         position: absolute;
         top: 15px;
@@ -39,12 +39,12 @@
         text-align: center;
         margin-right: 1em;
     }
-    
+
     #search-bar {
         margin-right: 1em;
         padding-left: 1em;
     }
-    
+
     #search-bar input {
         width: 250px;
         height: 24px;
@@ -62,7 +62,7 @@
     #photo-search h2 {
         text-align: center;
     }
-    
+
     #photo {
         border: 1px solid black;
         padding: 1em;
@@ -72,7 +72,7 @@
         margin-right: 1em;
         background: white;
     }
-    
+
     #navigation button {
         padding: 5px;
         border-radius: 5px;
@@ -88,15 +88,15 @@
     .overview-row button {
         width: 200px;
     }
-    
+
     #navigation button:hover {
         background-color: dodgerblue;
     }
-    
+
     svg {
         background-color: lightblue;
     }
-    
+
     .border-fill {
         fill: white;
         stroke: none;
@@ -107,53 +107,53 @@
         stroke: #666;
         stroke-dasharray: 2,3;
     }
-    
+
     .urban {
         fill: #e2ceae;
         stroke: none;
     }
-    
+
     .park {
         fill: lightgreen;
         stroke: none;
     }
-    
+
     .place {
         point-radius: 2px;
     }
-    
+
     .place-label {
         font-family: Helvetica;
         color: #666;
         font-size: 10px;
     }
-    
+
     .roadtrip {
         stroke: black;
         fill: none;
     }
-    
+
     .river {
         stroke: lightblue;
         fill: none;
     }
-    
+
     .photo-marker {
         fill: black;
     }
-    
+
     .photo-marker:hover {
         fill: black;
         r: 10;
         stroke: black;
     }
-    
+
     .selected {
         fill: white;
         stroke: red;
         r: 10;
     }
-    
+
     #footer {
         font-style: italic;
     }
@@ -194,11 +194,11 @@
         <button id="la-zoom">Los Angeles</button>
         <button id="ps-zoom">Palm Springs</button>
         <button id="jt-zoom">Joshua Tree</button>
-        <button id="wc-zoom">Walnut Canyon</button>    
-        <button id="gateway-zoom">Gateway Ranch</button>  
+        <button id="wc-zoom">Walnut Canyon</button>
+        <button id="gateway-zoom">Gateway Ranch</button>
         <button id="pf-zoom">Petrified Forest</button>
         <button id="mw-zoom">Meow Wolf</button>
-    </div>  
+    </div>
     <div id="canvas"></div>
     <div id="info">
 
@@ -214,7 +214,7 @@
         <p><a href="filmstrip.html" target="_blank">I also tried another, simpler, method of visualizing these photographs.</a> Warning: it is slow to load.</p>
         <p>Return to <a href="http://subject.space">subject.space</a>.</p>
         </div>
-        
+
         <div id="photo-search">
             <div id="search-bar">
                 <h2>Caption search</h2>
@@ -228,7 +228,7 @@
             </div>
         </div>
 
-        
+
 
 
     </div>
@@ -240,7 +240,7 @@
 <script>
 
     var QueryString = function () {
-      // This function is anonymous, is executed immediately and 
+      // This function is anonymous, is executed immediately and
       // the return value is assigned to QueryString!
       var query_string = {};
       var query = window.location.hash.substring(1);
@@ -258,7 +258,7 @@
         } else {
           query_string[pair[0]].push(decodeURIComponent(pair[1]));
         }
-      } 
+      }
       return query_string;
     };
 
@@ -275,7 +275,7 @@
 
     var width = Math.max(1400, document.documentElement.clientWidth),
         height = 400;
-    
+
    var totalProjection = d3.geoConicEqualArea()
     .center([0, 34.5])
     .rotate([112, 0])
@@ -291,7 +291,7 @@
     .scale(100000)
     .translate([width/2, 250])
     .precision(0.001);
-    
+
      var laProjectionLo = d3.geoConicEqualArea()
     .center([0, 34.004])
     .rotate([118.359, 0])
@@ -299,7 +299,7 @@
     .scale(100000)
     .translate([width/2, 250])
     .precision(0.01);
-    
+
     var psProjection = d3.geoConicEqualArea()
     .center([0, 33.7853])
     .rotate([116.4053, 0])
@@ -307,7 +307,7 @@
     .scale(100000)
     .translate([width/2, 250])
     .precision(0.001);
-    
+
     var psProjectionLo = d3.geoConicEqualArea()
     .center([0, 33.7853])
     .rotate([116.4053, 0])
@@ -315,7 +315,7 @@
     .scale(100000)
     .translate([width/2, 250])
     .precision(0.01);
-    
+
     var jtProjectionLo = d3.geoConicEqualArea()
     .center([0, 33.997])
     .rotate([116.06122, 0])
@@ -323,7 +323,7 @@
     .scale(3000000)
     .translate([width/2, 200])
     .precision(0.01);
-    
+
     var jtProjection = d3.geoConicEqualArea()
     .center([0, 33.997])
     .rotate([116.06122, 0])
@@ -331,7 +331,7 @@
     .scale(3000000)
     .translate([width/2, 200])
     .precision(0.0001);
-    
+
     var gatewayProjectionLo = d3.geoConicEqualArea()
     .center([0, 35.3883644])
     .rotate([111.2794581, 0])
@@ -339,7 +339,7 @@
     .scale(3000000)
     .translate([width/2, 180])
     .precision(0.01);
-    
+
     var gatewayProjection = d3.geoConicEqualArea()
     .center([0, 35.3883644])
     .rotate([111.2794581, 0])
@@ -347,7 +347,7 @@
     .scale(3000000)
     .translate([width/2, 180])
     .precision(0.0001);
-    
+
     var mwProjectionLo = d3.geoConicEqualArea()
     .center([0, 35.655824])
     .rotate([105.9954, 0])
@@ -355,7 +355,7 @@
     .scale(3000000)
     .translate([width/2, 150])
     .precision(0.01);
-    
+
     var mwProjection = d3.geoConicEqualArea()
     .center([0, 35.655824])
     .rotate([105.9954, 0])
@@ -371,7 +371,7 @@
     .scale(70000)
     .translate([width/2, 180])
     .precision(0.01);
-    
+
     var pfProjection = d3.geoConicEqualArea()
     .center([0, 34.95285])
     .rotate([109.86265, 0])
@@ -387,7 +387,7 @@
     .scale(2500000)
     .translate([width/2, 250])
     .precision(0.01);
-    
+
     var wcProjection = d3.geoConicEqualArea()
     .center([0, 35.17039])
     .rotate([111.5125, 0])
@@ -395,15 +395,15 @@
     .scale(2500000)
     .translate([width/2, 250])
     .precision(0.0001);
-        
+
     var current_im = -1;
 
     var svg = d3.select("#canvas").append("svg")
         .attr("width", width)
         .attr("height", height);
-    
+
     var caption = d3.select("#caption");
-    
+
      d3.queue()
         .defer(d3.json, "data/urban.json")
         .defer(d3.csv, "data/captions.csv")
@@ -427,10 +427,11 @@
                     n++;
 
                     if (n < 25) {
-                        d3.select("#caption-list").append(function() { var li = document.createElement("li"); 
-                            var newContent = document.createTextNode(photos[i].caption); 
-                            li.appendChild(newContent);
-                            return li;
+                        d3.select("#caption-list").append(function() {
+                          var li = document.createElement("li");
+                          var newContent = document.createTextNode(photos[i].caption);
+                          li.appendChild(newContent);
+                          return li;
                         });
                     }
 
@@ -488,33 +489,33 @@
 
         var projections = getProjection(QueryString());
         var currentProjection = projections[0];
-        var currentProjectionLo = projections[1];                
-                 
+        var currentProjectionLo = projections[1];
+
         svg.append("path")
             .datum(topojson.feature(us, us.objects.subunits_all))
             .attr("d", d3.geoPath().projection(currentProjectionLo))
             .attr("class", "border-fill");
-         
+
         svg.append("path")
             .datum(topojson.feature(us, us.objects.urban_areas))
             .attr("d", d3.geoPath().projection(currentProjectionLo))
             .attr("class", "urban");
-         
+
         svg.append("path")
             .datum(topojson.feature(us, us.objects.parks))
             .attr("d", d3.geoPath().projection(currentProjectionLo))
             .attr("class", "park");
-        
+
         svg.append("path")
             .datum(topojson.feature(us, us.objects.rivers))
             .attr("d", d3.geoPath().projection(currentProjectionLo))
             .attr("class", "river");
-  
+
         svg.append("path")
             .datum(topojson.feature(us, us.objects.roadtrip))
             .attr("d", d3.geoPath().projection(currentProjection))
             .attr("class", "roadtrip");
-         
+
         svg.selectAll("circle")
             .data(photos)
             .enter()
@@ -548,51 +549,51 @@
             var newimg = "thumbs/SNAP" + ("0000" + (2 + i)).substr(-4, 4) + ".JPG";
             d3.select("#photo-img").attr("src", newimg);
         }
-        
+
         d3.select("#search").on("input", updateSearchURL);
 
         d3.select("#la-zoom").on("click", function() {
             var urlParameters = QueryString();
             urlParameters.zoom = 'la';
             projTransition(laProjectionLo, laProjection);
-            window.location.hash = encodeURL(urlParameters);            
+            window.location.hash = encodeURL(urlParameters);
         });
-        
+
         d3.select("#all-zoom").on("click", function() {
             var urlParameters = QueryString();
             urlParameters.zoom = 'all';
             projTransition(totalProjection, totalProjection);
             window.location.hash = encodeURL(urlParameters);
         });
-        
+
         d3.select("#ps-zoom").on("click", function() {
             var urlParameters = QueryString();
             urlParameters.zoom = 'ps';
             projTransition(psProjectionLo, psProjection);
             window.location.hash = encodeURL(urlParameters);
         });
-        
+
         d3.select("#jt-zoom").on("click", function() {
             var urlParameters = QueryString();
             urlParameters.zoom = 'jt';
             projTransition(jtProjectionLo, jtProjection);
             window.location.hash = encodeURL(urlParameters);
         });
-        
+
         d3.select("#gateway-zoom").on("click", function() {
             var urlParameters = QueryString();
             urlParameters.zoom = 'gateway';
             projTransition(gatewayProjectionLo, gatewayProjection);
             window.location.hash = encodeURL(urlParameters);
         });
-        
+
         d3.select("#mw-zoom").on("click", function() {
             var urlParameters = QueryString();
             urlParameters.zoom = 'mw';
             projTransition(mwProjectionLo, mwProjection);
             window.location.hash = encodeURL(urlParameters);
         });
-        
+
         d3.select("#pf-zoom").on("click", function() {
             var urlParameters = QueryString();
             urlParameters.zoom = 'pf';
@@ -629,32 +630,32 @@
                 var currentProjectionLo = projections[1];
 
                 projTransition(currentProjectionLo, currentProjection);
-            }   
+            }
         }
 
         window.addEventListener('hashchange', urlChanged);
     }
-    
+
     function projTransition(newProjectionLo, newProjectionHi) {
         d3.selectAll(".border-fill")
                 .attr("d", d3.geoPath().projection(newProjectionLo));
-        
+
         d3.selectAll(".urban")
                 .attr("d", d3.geoPath().projection(newProjectionLo));
-        
+
         d3.selectAll(".park")
                 .attr("d", d3.geoPath().projection(newProjectionLo));
-        
+
         d3.selectAll(".river")
                 .attr("d", d3.geoPath().projection(newProjectionLo));
-        
+
         d3.selectAll(".roadtrip")
                 .attr("d", d3.geoPath().projection(newProjectionHi));
-        
+
         d3.selectAll(".photo-marker")
                 .attr("cx", function(d) { return newProjectionHi([d.longitude, d.latitude])[0] })
                 .attr("cy", function(d) { return newProjectionHi([d.longitude, d.latitude])[1] })
-        
+
     }
 
 
