@@ -235,7 +235,7 @@
           return acc;
         });
 
-        let scale = d3.scaleLinear().domain([0, total_area]).range([0, 600])
+        let scale = d3.scaleLinear().domain([0, total_area]).range([0, 450])
 
         item.transition().style("height", d => colors[d].header ? "25px" : ((d === "Urban" || d === "Managed Wetland") ? "12px" : ((scale(areas[d]) || 0) + "px")));
 
