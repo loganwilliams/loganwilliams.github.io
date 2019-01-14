@@ -1,0 +1,252 @@
+<html>
+  <head>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+    <title>What's Growing in California?</title>
+    <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Helvetica;
+      font-size: 10px;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+    #title {
+      position: absolute;
+      top: 2.5em;
+      left: 2em;
+      z-index: 101;
+      padding-left: 1em;
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 14px;
+    }
+
+    #legend {
+      position: absolute;
+      top: 2em;
+      left: 2em;
+
+      z-index: 100;
+
+      background-color: rgba(255,255,255,0.8);
+
+      padding: 0.5em;
+      padding-top: 4em;
+    }
+
+    .box {
+      width: 15px;
+      height: 15px;
+      margin-right: 10px;
+    }
+
+    .item {
+      display: flex;
+      align-content: center;
+      overflow: hidden;
+    }
+
+    .name {
+      width: 200px;
+      padding-left: 2em;
+    }
+
+    .header {
+      padding-left: 1em;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .flip {
+      color: white;
+    }
+
+</style>
+  </head>
+  <body>
+    <div id='map'></div>
+    <div id='title'>What's growing in California?</div>
+    <div id='legend'></div>
+
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibG9nYW53IiwiYSI6IlQzWHJqc3cifQ.KY3j-syHXeYmI69JmLqGqQ';
+
+    var map = new mapboxgl.Map({
+      container: 'map', // container id
+      style: 'mapbox://styles/loganw/cjqvmiy3lejp22qqhng4l2y2n', // stylesheet location
+      center: [-119.4, 36.7], // starting position
+      zoom: 8 // starting zoom
+    });
+
+    let colors = {
+        'Nonagricultural': {c: 'rgba(0,0,0,0)', header: true},
+        'Urban': {c: 'rgba(0,0,0,0.1)'},
+        'Managed Wetland': {c: 'rgba(0,100,0,0.1)'},
+
+        'Nonproductive agricultural': {c: 'rgba(0,0,0,0)', header: true},
+        'Idle': {c: '#CCCCCC'},
+        'Young Perennials': {c: '#AADDAA'},
+
+        'Feed crops': {c: 'rgba(0,0,0,0)', header: true},
+        'Mixed Pasture': {c: '#30819C', flip: true},
+        'Alfalfa and Alfalfa Mixtures': {c: '#539CB4', flip: true},
+        'Miscellaneous Grasses': {c: '#3679B9', flip: true},
+        'Miscellaneous Grain and Hay': {c: '#29AFAF', flip: true},
+
+        'Nut trees': {c: 'rgba(0,0,0,0)', header: true},
+        'Almonds': {c: '#4b2f1b', flip: true},
+        'Walnuts': {c: '#594333', flip: true},
+        'Pistachios': {c: '#543A1E', flip: true},
+
+        'Fruit trees': {c: 'rgba(0,0,0,0)', header: true},
+        'Citrus': {c: '#C77000'},
+        'Peaches/Nectarines': {c: '#F2961F'},
+        'Plums, Prunes and Apricots': {c: '#DD790C'},
+        'Pomegranete': {c: '#8B0036', flip: true},
+        'Cherries': {c: '#B32B00'},
+        'Apples': {c: '#DD1B0C'},
+        'Olives': {c: '#8A7800', flip: true},
+        'Dates': {c: '#837100', flip: true},
+        'Avocados': {c: '#476019', flip: true},
+        'Kiwis': {c: '#4C6222', flip: true},
+        'Pears': {c: '#C8AD0A'},
+        'Miscellaneous Subtropical Fruits': {c: '#E97B00'},
+        'Miscellaneous Deciduous': {c: '#908200'},
+
+        'Truck crops': {c: 'rgba(0,0,0,0)', header: true},
+        'Strawberries': {c: '#009E00', flip: true},
+        'Cole Crops': {c: '#008000', flip: true},
+        'Tomatoes': {c: '#00C200'},
+        'Peppers': {c: '#76DC00'},
+        'Lettuce/Leafy Greens': {c: '#43D923'},
+        'Melons, Squash and Cucumbers': {c: '#BFEA00'},
+        'Flowers, Nursery and Christmas Tree Farms': {c: '#007138', flip: true},
+        'Bush Berries': {c: '#054F7F', flip: true},
+        'Grapes': {c: '#611DA6', flip: true},
+        'Greenhouse': {c: '#A8C100'},
+        'Miscellaneous Truck Crops': {c: '#56DD24'},
+
+        'Grains': {c: 'rgba(0,0,0,0)', header: true},
+        'Wheat': {c: '#F0F082'},
+        'Corn, Sorghum and Sudan': {c: '#FFFF7A'},
+        'Rice': {c: '#D4F691'},
+        'Wild Rice': {c: '#DEE8B2'},
+        'Miscellaneous Field Crops': {c: '#FFF8A9'},
+
+        'Machine harvested crops': {c: 'rgba(0,0,0,0)', header: true},
+        'Cotton': {c: '#CF2287', flip: true},
+        'Sunflowers': {c: '#FFF749'},
+        'Safflowers': {c: '#FFE949'},
+        'Beans (Dry)': {c: '#D4C346'},
+        'Onions and Garlic': {c: '#FAEF62'},
+        'Potatoes and Sweet Potatoes': {c: '#CEC767'},
+        'Carrots': {c: '#FFCB5C'},
+      };
+
+    let title = d3.select("#title");
+
+    let item = d3.select("#legend")
+      .selectAll("div")
+        .data(Object.keys(colors))
+      .enter()
+        .append("div")
+          .attr("class", "item")
+          .style("background-color", d => colors[d].c)
+          .style("height", d => (colors[d].header ? "25px" : "0px"));
+
+
+    item.append("div")
+          .attr("class", d => ("name" + (colors[d].header ? " header" : "") + (colors[d].flip ? " flip" : "")))
+          .append("span")
+          .html(d => d);
+
+
+    map.on('load', () => {
+
+      let color_list = Object.keys(colors).reduce((acc, cur) => {
+        return [...acc, cur, colors[cur].c];
+      }, []);
+
+      map.addLayer({
+        'id': 'crops-2014',
+        'type': 'fill',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://loganw.2b2rcqa6'
+        },
+        'source-layer': 'Crop__Mapping_2014',
+        'paint': {
+          'fill-color': ['match', ['get', 'Crop2014'],
+            ...color_list,
+            'rgba(0,0,0,0)']
+        }
+      });
+
+      map.addLayer({
+        'id': 'crops-2014-label',
+        'type': 'symbol',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://loganw.2b2rcqa6'
+        },
+        'source-layer': 'Crop__Mapping_2014',
+        'minzoom': 12,
+        "layout": {
+          "text-field": "{Crop2014}",
+          "text-font": [
+            "DIN Offc Pro Medium",
+            "Arial Unicode MS Bold"
+          ],
+          "text-size": 10,
+        },
+        "paint": {
+          "text-color": "black",
+          "text-halo-color": "rgba(255,255,255,0.5)",
+          "text-halo-width": 1.5
+        }
+      });
+
+      map.addLayer({
+
+      })
+
+      let updateStats = () => {
+         let features = map.queryRenderedFeatures({layers: ['crops-2014']})
+          .filter(f => (
+            f.properties.Crop2014 !== "Urban" && f.properties.Crop2014 !== "Managed Wetland"));
+
+        let total_area = 0;
+        let areas = features.reduce((acc, cur) => {
+          let area = turf.area(cur);
+          total_area += area;
+          acc[cur.properties.Crop2014] = acc[cur.properties.Crop2014] ? (acc[cur.properties.Crop2014] + area) : area;
+          return acc;
+        });
+
+        let scale = d3.scaleLinear().domain([0, total_area]).range([0, 600])
+
+        item.transition().style("height", d => colors[d].header ? "25px" : ((d === "Urban" || d === "Managed Wetland") ? "12px" : ((scale(areas[d]) || 0) + "px")));
+
+        title.html("What's growing in California?<br />" + Math.round(total_area/4046.86).toLocaleString() + " acres visible");
+      }
+
+      window.setTimeout(updateStats, 1000);
+
+      map.on('moveend', updateStats);
+
+    })
+</script>
+  </body>
+</html>
