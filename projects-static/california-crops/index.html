@@ -92,7 +92,7 @@
 
     var map = new mapboxgl.Map({
       container: 'map', // container id
-      style: 'mapbox://styles/loganw/cjqvmiy3lejp22qqhng4l2y2n', // stylesheet location
+      style: 'mapbox://styles/loganw/cjqvy9wb632d82spcbb0z89zj', // stylesheet location
       center: [-121, 37.416], // starting position
       zoom: 6 // starting zoom
     });
@@ -197,7 +197,11 @@
         'paint': {
           'fill-color': ['match', ['get', 'Crop2014'],
             ...color_list,
-            'rgba(0,0,0,0)']
+            'rgba(0,0,0,0)'],
+          'fill-opacity': ['interpolate', ['linear'], ['zoom'],
+            12, 1,
+            14, 0.5,
+            16, 0.1]
         }
       });
 
