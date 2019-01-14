@@ -99,7 +99,7 @@
 
     let colors = {
         'Nonagricultural': {c: 'rgba(0,0,0,0)', header: true},
-        'Urban': {c: 'rgba(0,0,0,0.1)'},
+        'Urban': {c: 'rgba(0,0,0,0.0)'},
         'Managed Wetland': {c: 'rgba(0,100,0,0.1)'},
 
         'Nonproductive agricultural': {c: 'rgba(0,0,0,0)', header: true},
@@ -210,6 +210,7 @@
         },
         'source-layer': 'Crop__Mapping_2014',
         'minzoom': 12,
+        "filter": ['!=', 'Crop2014', 'Urban'],
         "layout": {
           "text-field": "{Crop2014}",
           "text-font": [
