@@ -5,6 +5,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
     <title>What's Growing in California?</title>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@obtusatum" />
+    <meta property="og:url" content="http://subject.space/projects-static/california-crops/" />
+    <meta property="og:title" content="What's growing in California?" />
+    <meta property="og:description" content="California has the most diverse and productive agricultural land in the United States. What's growing? Who grows it? Who owns it?" />
+    <meta property="og:image" content="http://subject.space/projects-static/california-crops/overview.jpg" />
+
     <style>
     body {
       margin: 0;
@@ -86,8 +93,8 @@
     var map = new mapboxgl.Map({
       container: 'map', // container id
       style: 'mapbox://styles/loganw/cjqvmiy3lejp22qqhng4l2y2n', // stylesheet location
-      center: [-119.4, 36.7], // starting position
-      zoom: 8 // starting zoom
+      center: [-121, 37.416], // starting position
+      zoom: 6 // starting zoom
     });
 
     let colors = {
@@ -235,7 +242,7 @@
           return acc;
         });
 
-        let scale = d3.scaleLinear().domain([0, total_area]).range([0, 600])
+        let scale = d3.scaleLinear().domain([0, total_area]).range([0, window.innerHeight > 600 ? (window.innerHeight - 330) : (600 - 330)])
 
         item.transition().style("height", d => colors[d].header ? "25px" : ((d === "Urban" || d === "Managed Wetland") ? "12px" : ((scale(areas[d]) || 0) + "px")));
 
