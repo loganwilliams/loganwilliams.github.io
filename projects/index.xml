@@ -6,10 +6,28 @@
     <description>Recent content in Projects on Logan Williams</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Stamen: Art Proccessors</title>
+      <link>localhost:1313/projects/mona/</link>
+      <pubDate>Wed, 15 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>localhost:1313/projects/mona/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Stamen: Google Cloud Storage</title>
+      <link>localhost:1313/projects/google-cloud-storage/</link>
+      <pubDate>Wed, 15 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>localhost:1313/projects/google-cloud-storage/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Fogust</title>
