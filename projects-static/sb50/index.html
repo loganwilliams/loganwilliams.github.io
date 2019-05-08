@@ -143,79 +143,69 @@
       };
       map.on("load", function() {
         // Add a layer showing the places.
-        fetch("./merged.geojson")
-          .then(d => d.json())
-          .then(geojson => {
-            map.addLayer({
-              id: "places",
-              type: "circle",
-              source: {
-                type: "vector",
-                url: "mapbox://loganw.8vslfl7u"
-              },
-              "source-layer": "merged2",
-              paint: {
-                "circle-radius": {
-                  base: 1.75,
-                  stops: [[12, 4], [22, 180]]
-                },
-                "circle-color": [
-                  "case",
-                  ["get", "trainOrFerry"],
-                  "#d942f4",
-                  [
-                    "interpolate",
-                    ["linear"],
-                    ["get", "peak"],
-                    10,
-                    "#ffc519",
-                    10.01,
-                    "#26d8ef"
-                  ]
-                ],
-                "circle-opacity": [
-                  "case",
-                  ["get", "trainOrFerry"],
-                  0.8,
-                  [
-                    "interpolate",
-                    ["linear"],
-                    ["get", "peak"],
-                    15,
-                    0.8,
-                    16,
-                    0.05
-                  ]
-                ]
-              }
-            });
 
-            // When a click event occurs on a feature in the places layer, open a popup at the
-            // location of the feature, with description HTML from its properties.
-            map.on("click", "places", function(e) {
-              const properties = e.features[0].properties;
-              var coordinates = e.features[0].geometry.coordinates.slice();
+        map.addLayer({
+          id: "places",
+          type: "circle",
+          source: {
+            type: "vector",
+            url: "mapbox://loganw.8vslfl7u"
+          },
+          "source-layer": "merged2",
+          paint: {
+            "circle-radius": {
+              base: 1.75,
+              stops: [[12, 4], [22, 180]]
+            },
+            "circle-color": [
+              "case",
+              ["get", "trainOrFerry"],
+              "#d942f4",
+              [
+                "interpolate",
+                ["linear"],
+                ["get", "peak"],
+                10,
+                "#ffc519",
+                10.01,
+                "#26d8ef"
+              ]
+            ],
+            "circle-opacity": [
+              "case",
+              ["get", "trainOrFerry"],
+              0.8,
+              ["interpolate", ["linear"], ["get", "peak"], 15, 0.8, 16, 0.05]
+            ]
+          }
+        });
 
-              const format = n =>
-                n === 9999 ? "-" : Number(Math.round(n + "e2") + "e-2");
+        // When a click event occurs on a feature in the places layer, open a popup at the
+        // location of the feature, with description HTML from its properties.
+        map.on("click", "places", function(e) {
+          const properties = e.features[0].properties;
+          var coordinates = e.features[0].geometry.coordinates.slice();
 
-              const generateSchedule = schedule => {
-                return JSON.parse(schedule).reduce(
-                  (acc, s) =>
-                    acc +
-                    `<li>${Math.floor(s / (60 * 60))}:${Math.floor(
-                      (s - 60 * 60 * Math.floor(s / (60 * 60))) / 60
-                    )
-                      .toString()
-                      .padStart(2, "0")}</li>`,
-                  ""
-                );
-              };
+          const format = n =>
+            n === 9999 ? "-" : Number(Math.round(n + "e2") + "e-2");
 
-              var description = `
+          const generateSchedule = schedule => {
+            return JSON.parse(schedule).reduce(
+              (acc, s) =>
+                acc +
+                `<li>${Math.floor(s / (60 * 60))}:${Math.floor(
+                  (s - 60 * 60 * Math.floor(s / (60 * 60))) / 60
+                )
+                  .toString()
+                  .padStart(2, "0")}</li>`,
+              ""
+            );
+          };
+
+          var description = `
                       <div class="name">${properties.agency}: ${
-                properties.name
-              }</div>
+            properties.name
+          }</div>
                       ${
                         properties.trainOrFerry
                           ? `<div class="train">Train or ferry stop</div>`
@@ -280,19 +270,18 @@
                       </div>
                       `;
 
-              // Ensure that if the map is zoomed out such that multiple
-              // copies of the feature are visible, the popup appears
-              // over the copy being pointed to.
-              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-              }
+          // Ensure that if the map is zoomed out such that multiple
+          // copies of the feature are visible, the popup appears
+          // over the copy being pointed to.
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          }
 
-              new mapboxgl.Popup({ maxWidth: "400px" })
-                .setLngLat(coordinates)
-                .setHTML(description)
-                .addTo(map);
-            });
-          });
+          new mapboxgl.Popup({ maxWidth: "400px" })
+            .setLngLat(coordinates)
+            .setHTML(description)
+            .addTo(map);
+        });
 
         // Change the cursor to a pointer when the mouse is over the places layer.
         map.on("mouseenter", "places", function() {
