@@ -124,26 +124,67 @@
 
       document.getElementById("threshold10").onclick = () => {
         map.setFilter("places", ["<=", ["get", "peak"], 10]);
+        map.setFilter("places-merged", ["<=", ["get", "peak"], 10]);
       };
 
       document.getElementById("threshold15").onclick = () => {
         map.setFilter("places", ["<=", ["get", "peak"], 15]);
+        map.setFilter("places-merged", ["<=", ["get", "peak"], 15]);
       };
 
       document.getElementById("threshold11").onclick = () => {
         map.setFilter("places", ["<=", ["get", "peak"], 11]);
+        map.setFilter("places-merged", ["<=", ["get", "peak"], 11]);
       };
 
       document.getElementById("threshold16").onclick = () => {
         map.setFilter("places", ["<=", ["get", "peak"], 16]);
+        map.setFilter("places-merged", ["<=", ["get", "peak"], 16]);
       };
 
       document.getElementById("thresholdall").onclick = () => {
         map.setFilter("places", null);
+        map.setFilter("places-merged", null);
       };
       map.on("load", function() {
         // Add a layer showing the places.
 
+        map.addLayer({
+          id: "places-merged",
+          type: "circle",
+          source: {
+            type: "vector",
+            url: "mapbox://loganw.1xs06soo"
+          },
+          "source-layer": "merged2",
+          paint: {
+            "circle-radius": {
+              base: 1.75,
+              stops: [[12, 4], [22, 180]]
+            },
+            "circle-color": [
+              "case",
+              ["get", "trainOrFerry"],
+              "#d942f4",
+              [
+                "interpolate",
+                ["linear"],
+                ["get", "peak"],
+                10,
+                "#ffc519",
+                10.01,
+                "#26d8ef"
+              ]
+            ],
+            "circle-opacity": [
+              "case",
+              ["get", "trainOrFerry"],
+              0.8,
+              ["interpolate", ["linear"], ["get", "peak"], 15, 0.8, 16, 0.05]
+            ]
+          },
+          maxzoom: 9
+        });
         map.addLayer({
           id: "places",
           type: "circle",
