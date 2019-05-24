@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset='utf-8' />
+    <meta charset="utf-8" />
     <title>Cool Climate Data</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300i,400,700&display=swap" rel="stylesheet">
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto+Mono:300i,400,700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       body {
@@ -21,223 +30,335 @@
         width: 100%;
       }
 
-      #menu  {
-          z-index: 10;
-          position: absolute;
-          left: 2em;
-          top: 2em;
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: flex-start;
-          width: 400px;
+      #menu {
+        z-index: 10;
+        position: absolute;
+        left: 2em;
+        top: 2em;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: 400px;
       }
 
       button {
-          font-family: "Roboto Mono";
-          padding: 5px;
-          border: none;
-          background-color: rgba(255,255,255,0.8);
-          border-radius: 2px;
-          margin-bottom: 0.5em;
-          box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-          border: 1px solid rgba(64,64,64,0.25);
-          text-align: left;
+        font-family: "Roboto Mono";
+        padding: 5px;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 2px;
+        margin-bottom: 0.5em;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(64, 64, 64, 0.25);
+        text-align: left;
+        margin-right: 0.6em;
       }
 
       button:hover {
-          box-shadow: 2px 2px 5px rgba(0,0,0,0.6);
-          border: 1px solid rgba(0.25,0.25,0.25,1);
-          background-color: white;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(0.25, 0.25, 0.25, 1);
+        background-color: white;
       }
 
       div.break {
-          height: 1px;
-          width: 400px;
-          background-color: rgba(255,255,255,0.5);
-          margin-bottom: 0.25em;
-          margin-top: 0.05em;
+        height: 1px;
+        width: 400px;
+        background-color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 0.25em;
+        margin-top: 0.05em;
       }
 
       button.active {
-          background-color: #fde725;
+        background-color: #fde725;
+      }
+
+      .bar {
+        height: 20px;
+        width: 100%;
+        background: linear-gradient(
+          to right,
+          #440154,
+          #3b528b,
+          #21918c,
+          #5ec962,
+          #fde725
+        );
+
+        border-radius: 2px;
+      }
+
+      #legend {
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 2px;
+        padding: 5px;
+        margin-bottom: 0.25em;
+        width: 100%;
+      }
+
+      .labels {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-family: "Roboto Mono";
+        color: black;
+        font-size: 12px;
       }
     </style>
   </head>
   <body>
+    <div id="menu">
+      <div id="legend">
+        <div class="bar"></div>
+        <div class="labels">
+          <div id="min">0</div>
+          <div id="qr">8</div>
+          <div id="mid">15</div>
+          <div id="tqr">23</div>
+          <div id="max">30</div>
+        </div>
+      </div>
+      <div class="break"></div>
+    </div>
+    <div id="map"></div>
+    <script>
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoibG9nYW53IiwiYSI6IlQzWHJqc3cifQ.KY3j-syHXeYmI69JmLqGqQ";
+      var map = new mapboxgl.Map({
+        container: "map", // container id
+        style: "mapbox://styles/loganw/cjw2jjoc9044x1do4wz74u72o",
+        center: [-74, 40.7], // starting position [lng, lat]
+        zoom: 9, // starting zoom
+        maxZoom: 14,
+        minZoom: 3
+      });
 
- <div id="menu"></div>
-  <div id='map'></div>
-  <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoibG9nYW53IiwiYSI6IlQzWHJqc3cifQ.KY3j-syHXeYmI69JmLqGqQ';
-    var map = new mapboxgl.Map({
-      container: 'map', // container id
-      style: 'mapbox://styles/loganw/cjw07vfvk1zd01cq8m0k6us7n',
-      center: [-93.261, 44.971], // starting position [lng, lat]
-      zoom: 10.5 // starting zoom
-    });
+      let min = 0;
+      let range = 30 - min;
 
-    let min = 0;
-    let range = 30 - min;
-
-    map.on('load', function() {
-      map.addLayer({
-        id: 'zipcodes',
-        type: 'fill',
-        source: {
-          type: 'vector',
-          url: 'mapbox://loganw.6l0uhilq'
-        },
-        'source-layer': 'joined2',
-        paint: {
-            'fill-color': ['interpolate', 
-                ['linear'], ['/', ['get', 'Total Household Carbon Footprint (tCO2e/yr)'], ['get', 'PersonsPerHousehold']],
-                0*range+min, '#440154',
-                0.25*range+min, '#3b528b',
-                0.5*range+min, "#21918c",
-                0.75*range+min, "#5ec962",
-                1.0*range+min, "#fde725"],
-            'fill-opacity': ["case", ['has', 'Total Household Carbon Footprint (tCO2e/yr)'], 0.8, 0.0],
-            'fill-outline-color': 'rgba(1,1,1,0)'
-        }
-      }, 'ferry');
-
-      let variables = [
-      {
-                id: ['/', ['get', 'Total Household Carbon Footprint (tCO2e/yr)'], ['get', 'PersonsPerHousehold']],
-                min: 0,
-                max: 30,
-                name: 'Per capita carbon footprint (tCO2e/yr normalized by household size)',
-                default: true
+      map.on("load", function() {
+        map.addLayer(
+          {
+            id: "zipcodes",
+            type: "fill",
+            source: {
+              type: "vector",
+              url: "mapbox://loganw.6l0uhilq"
             },
-            {
-                id: ['/', ['get', 'Total Zip Code Carbon Footprint (tCO2e/yr)'], ['get', 'Population']],
-                min: 0,
-                max: 30,
-                name: 'Per capita carbon footprint (tCO2e/yr normalized by ZIP)'
-            },
-            {
-                id: 'Total Household Carbon Footprint (tCO2e/yr)', 
-                min: 0,
-                max: 75
-            },
-            {
-                id: 'break'
-            },
-            {
-                id: 'Housing (tCO2e/yr)',
-                min: 3.84,
-                max: 25
-            },
-            {
-                id: 'Transport (tCO2e/yr)',
-                min: 2.76,
-                max: 30
-            },
-            {
-                id: 'Food (tCO2e/yr)',
-                min: 3,
-                max: 10
-            },
-            {
-                id: 'Goods (tCO2e/yr)',
-                min: 2.5,
-                max: 10
-            },
-            {
-                id: 'Services (tCO2e/yr)',
-                min: 2.5,
-                max: 10
-            },
-            {
-                id: 'break'
-            },
-            {
-                id: 'Nat. Gas (cu.ft.)',
-                min: 3505.63,
-                max: 103259.13
-            },
-            {
-                id: 'FUELOIL (gallons)',
-                min: 0,
-                max: 700
-            },
-            {
-                id: 'Vehicle miles traveled',
-                min: 3271,
-                max: 40000
-            },
-            {
-                id: 'electricity (kWh)',
-                max: 27728.96,
-                min:  1156
-            },
-            {
-                id: 'PersonsPerHousehold',
-                min: 1,
-                max: 4
-            },
-            {
-                id: 'IncomePerHousehold',
-                min: 2500,
-                max: 150000
-            },
-            {
-                id: 'popden',
-                min: 0,
-                max: 30000,
-                name: 'Population density',
-                base: 2
-            },
-            {
-                id: 'Elevation',
-                min: 0,
-                max: 9000,
-                base: 2
+            "source-layer": "joined2",
+            paint: {
+              "fill-color": [
+                "interpolate",
+                ["linear"],
+                [
+                  "/",
+                  ["get", "Total Household Carbon Footprint (tCO2e/yr)"],
+                  ["get", "PersonsPerHousehold"]
+                ],
+                0 * range + min,
+                "#440154",
+                0.25 * range + min,
+                "#3b528b",
+                0.5 * range + min,
+                "#21918c",
+                0.75 * range + min,
+                "#5ec962",
+                1.0 * range + min,
+                "#fde725"
+              ],
+              "fill-opacity": [
+                "case",
+                ["has", "Total Household Carbon Footprint (tCO2e/yr)"],
+                0.8,
+                0.0
+              ],
+              "fill-outline-color": "rgba(1,1,1,0)"
             }
+          },
+          "ferry"
+        );
+
+        let variables = [
+          {
+            id: [
+              "/",
+              ["get", "Total Household Carbon Footprint (tCO2e/yr)"],
+              ["get", "PersonsPerHousehold"]
+            ],
+            min: 0,
+            max: 30,
+            name:
+              "Per capita carbon footprint (tCO2e/yr normalized by household size)",
+            default: true
+          },
+          {
+            id: [
+              "/",
+              ["get", "Total Zip Code Carbon Footprint (tCO2e/yr)"],
+              ["get", "Population"]
+            ],
+            min: 0,
+            max: 30,
+            name: "Per capita carbon footprint (tCO2e/yr normalized by ZIP)"
+          },
+          {
+            id: "Total Household Carbon Footprint (tCO2e/yr)",
+            min: 0,
+            max: 75
+          },
+          {
+            id: "break"
+          },
+          {
+            id: "Housing (tCO2e/yr)",
+            min: 3.84,
+            max: 25
+          },
+          {
+            id: "Transport (tCO2e/yr)",
+            min: 2.76,
+            max: 30
+          },
+          {
+            id: "Food (tCO2e/yr)",
+            min: 3,
+            max: 12
+          },
+          {
+            id: "Goods (tCO2e/yr)",
+            min: 2.5,
+            max: 10
+          },
+          {
+            id: "Services (tCO2e/yr)",
+            min: 2.5,
+            max: 12
+          },
+          {
+            id: "break"
+          },
+          {
+            id: "Nat. Gas (cu.ft.)",
+            min: 3505.63,
+            max: 103259.13,
+            name: "Natural gas (cu.ft./year)"
+          },
+          {
+            id: "FUELOIL (gallons)",
+            min: 0,
+            max: 700,
+            name: "Fuel oil (gallons/year)"
+          },
+          {
+            id: "electricity (kWh)",
+            max: 19000,
+            min: 2000,
+            name: "Electricity (kWh/year)"
+          },
+          {
+            id: "PersonsPerHousehold",
+            min: 1,
+            max: 4,
+            name: "Persons per household"
+          },
+          {
+            id: "Vehicle miles traveled",
+            min: 3271,
+            max: 40000,
+            name: "Vehicle miles traveled (miles/year)"
+          },
+          {
+            id: "IncomePerHousehold",
+            min: 2500,
+            max: 130000,
+            name: "Income per household",
+            units: "$"
+          },
+          {
+            id: "AverageHouseValue",
+            min: 20000,
+            max: 800000,
+            name: "Average house value",
+            base: 2,
+            units: "$"
+          },
+          {
+            id: "popden",
+            min: 0,
+            max: 30000,
+            name: "Population density (pop/sq. mi.)",
+            base: 2
+          },
+          {
+            id: "Elevation (ft)",
+            min: 0,
+            max: 9000,
+            base: 2
+          }
         ];
 
         variables.forEach(v => {
-            if (v.id === "break") {
-                let br = document.createElement("div");
-                br.classList.add("break");
-                document.getElementById("menu").appendChild(br);
-                return;
+          if (v.id === "break") {
+            let br = document.createElement("div");
+            br.classList.add("break");
+            document.getElementById("menu").appendChild(br);
+            return;
+          }
+          let b = document.createElement("button");
+          let fillValue = v.id;
+          if (!Array.isArray(fillValue)) {
+            fillValue = ["get", fillValue];
+          }
+
+          let range = v.max - v.min;
+          let min = v.min;
+          let base = v.base || 1;
+          let units = v.units || "";
+
+          let fillStyle = [
+            "interpolate",
+            ["linear"],
+            fillValue,
+            Math.pow(0, base) * range + min,
+            "#440154",
+            Math.pow(0.25, base) * range + min,
+            "#3b528b",
+            Math.pow(0.5, base) * range + min,
+            "#21918c",
+            Math.pow(0.75, base) * range + min,
+            "#5ec962",
+            Math.pow(1.0, base) * range + min,
+            "#fde725"
+          ];
+
+          console.log(fillStyle);
+          b.onclick = () => {
+            map.setPaintProperty("zipcodes", "fill-color", fillStyle);
+            let buttons = document.getElementsByTagName("button");
+            for (let i = 0; i < buttons.length; i++) {
+              buttons[i].classList.remove("active");
             }
-            let b = document.createElement("button");
-            let fillValue = v.id;
-            if (!Array.isArray(fillValue)) {
-                fillValue = ['get', fillValue];
-            }
+            document
+              .getElementById((v.name ? v.name : v.id).replace(/[\W_]+/g, "_"))
+              .classList.add("active");
+            document.getElementById("min").innerHTML =
+              units + Math.round(Math.pow(0, base) * range + min);
+            document.getElementById("qr").innerHTML =
+              units + Math.round(Math.pow(0.25, base) * range + min);
+            document.getElementById("mid").innerHTML =
+              units + Math.round(Math.pow(0.5, base) * range + min);
+            document.getElementById("tqr").innerHTML =
+              units + Math.round(Math.pow(0.75, base) * range + min);
+            document.getElementById("max").innerHTML =
+              units + Math.round(Math.pow(1.0, base) * range + min);
+          };
+          b.innerHTML = v.name ? v.name : v.id;
+          b.id = (v.name ? v.name : v.id).replace(/[\W_]+/g, "_");
+          if (v.default) b.classList.add("active");
 
-            let range = v.max - v.min;
-            let min = v.min;
-            let base = v.base || 1;
-
-            let fillStyle = ['interpolate', 
-                ['linear'], fillValue,
-                Math.pow(0, base)*range+min, '#440154',
-                Math.pow(0.25, base)*range+min, '#3b528b',
-                Math.pow(0.5, base)*range+min, "#21918c",
-                Math.pow(0.75, base)*range+min, "#5ec962",
-                Math.pow(1.0, base)*range+min, "#fde725"];
-
-            console.log(fillStyle);
-            b.onclick = () => {
-                map.setPaintProperty('zipcodes', 'fill-color', fillStyle);
-                let buttons = document.getElementsByTagName("button");
-                for (let i = 0; i < buttons.length; i++) {
-                    buttons[i].classList.remove("active");
-                }
-                document.getElementById((v.name ? v.name : v.id).replace(/[\W_]+/g,"_")).classList.add("active");
-            };
-            b.innerHTML = v.name ? v.name : v.id;
-            b.id = (v.name ? v.name : v.id).replace(/[\W_]+/g,"_")
-            if (v.default) b.classList.add("active");
-
-            document.getElementById("menu").appendChild(b);
+          document.getElementById("menu").appendChild(b);
         });
-    });
-  </script>
+      });
+    </script>
   </body>
 </html>
