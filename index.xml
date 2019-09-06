@@ -6,10 +6,19 @@
     <description>Recent content on Logan Williams</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Carbon footprint modeling maps</title>
+      <link>localhost:1313/projects/cool-climate/</link>
+      <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>localhost:1313/projects/cool-climate/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Stamen: Art Proccessors</title>
