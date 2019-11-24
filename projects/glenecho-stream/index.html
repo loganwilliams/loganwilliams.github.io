@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>
+      Logan Williams — glenecho.stream
+    </title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@0.7.3/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="/css/main.css" />
+
+    
+    <link rel="stylesheet" href="/css/viz.css" />
+    <link rel="stylesheet" href="/css/scrolly.css" />
+    
+
+    
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-87740234-3"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-87740234-3");
+    </script>
+  </head>
+  <body></body>
+</html>
+
+
+<main>
+  <header class="header">
+    <h1><a href="/">Logan Williams</a></h1>
+  </header>
+
+  <div class="post">
+		<h1>glenecho.stream</h1>
+		<p><div class="intro">
+  Reflections, data, and <a href="#observations">observations</a> of an urban
+  creek.
+</div>
+
+<script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+<script src="https://unpkg.com/scrollama"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+<div id="vizcontainer">
+  <div id="viz">
+    <svg width="900" height="450"></svg>
+    <div id="date">
+      <div class="row date"><div class="datevalue"></div></div>
+      <div class="row air">
+        <div class="airt value"></div>
+        <div class="airh value"></div>
+        <div class="airv value"></div>
+      </div>
+      <div class="row water">
+        <div class="watert value"></div>
+        <div class="waterd value"></div>
+        <div class="wateru value"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="image">
+  <img id="imageimg" />
+</div>
+<div id="text">
+  <div class="block" step-data="shifting-baseline">
+    <p>
+      "With ongoing environmental degradation at local, regional, and global
+      scales, people's accepted thresholds for environmental conditions are
+      continually being lowered. In the absence of past information or
+      experience with historical conditions, members of each new generation
+      accept the situation in which they were raised as being normal."
+    </p>
+    <p class="citation">
+      Soga, M. and Gaston, K. "Shifting baseline syndrome: causes, consequences,
+      and implications," <em>Frontiers in Ecology and the Environment</em> 16-4
+      (2018).
+    </p>
+  </div>
+  <div
+    class="block"
+    step-data="earth-breathing"
+    step-credit='Animation by <a href="http://www.datasketch.es/april/code/nadieh/">Nadieh Bremer</a>.'
+  >
+    <p>This is one year of the Earth.</p>
+  </div>
+  <div
+    class="block"
+    step-data="california-breathing"
+    step-credit='Data from <a href="https://www.ospo.noaa.gov/Operations/GOES/15/index.html">NOAA&#39;s GOES-15</a>. For more, see <a hfref="http://fog.today/fogust">Fogust</a>.'
+  >
+    <p>This is one year of California.</p>
+  </div>
+  <div
+    class="block"
+    step-data="wetland-loss"
+    step-credit="Carle, D. <em>Introduction to Water in California</em>. (2004)"
+  >
+    <p>
+      Imagine 100. Imagine watching landscape-scale changes manifest, the ones we can only
+      read about now. Imagine watching the yearly exhalation of
+      Sierra-fed wetlands cease.
+    </p>
+  </div>
+  <div class="block" step-data-type="viz" step-data="anywhere">
+    <p>
+      The research on the “shifting baseline” problem is surprisingly young —
+      two oft-cited papers at the forefront of describing the issue were
+      published in 1995.
+    </p>
+    <p>
+      Recent papers also suggest ways to fix the baseline in place: observation,
+      measurement, and communication.
+    </p>
+    <p class="citation">
+      Pauly, D. "Anecdotes and the shifting baseline syndrome of fisheries,"
+      <em>Trends in Ecology & Evolution</em>, 10-10 (1995).<br />
+      Kahn, P. and Friedman B. "Environmental Views and Values of Children in an
+      Inner‐City Black Community," <em>Child Development</em>, 66-5 (1995).<br />
+      Soga, M. and Gaston, K. "Shifting baseline syndrome: causes, consequences,
+      and implications," <em>Frontiers in Ecology and the Environment</em> 16-4
+      (2018).
+    </p>
+  </div>
+  <div class="block" step-data-type="viz" step-data="anywhere">
+    <p>
+      I built a water-monitoring station for Glen Echo Creek, the small urban
+      stream flowing beside my house.
+    </p>
+    <p>
+      There it sat, a depth sensing strip hanging a few centimeters in the water
+      like a citizen scientist's toe, while I tried to decide why and for what I
+      had built it.
+    </p>
+    <p>
+      The visualization accompanying this text shows its complete output:
+      several months of water and atmospheric observations, recorded with
+      intermittent consistency and accuracy.
+    </p>
+    <p class="citation">
+      More technical details are available in
+      <a href="https://github.com/loganwilliams/glenecho">the repository</a> and
+      <a href="http://exclav.es">exclaves</a>.
+    </p>
+  </div>
+  <div
+    class="block"
+    step-data="grizzly"
+    step-credit='Illustration by <a href="https://heydaybooks.com/book/a-state-of-change/">Laura Cunningham</a>. (It&#39;s a wonderful book!)'
+  >
+    <p>
+      I wish I could explain how it feels to read Muir, listen to the Sierra
+      stories of my uncle, or even read a BackpackingLite forum post from 2006.
+      It's a shameful kind of jealousy and sadness and anger. Knowing that these
+      experiences of isolation, wildlife, and discovery are gone now.
+    </p>
+    <p>
+      To know that ducks over the Central Valley could blot out the sky at
+      sunset; to learn that insects have lost 70% of their population; to hear of cities
+    that were meadows not 100 years ago but 40 years ago; to imagine bears
+      roaming the grasslands off that sick joke, Grizzly Peak.
+    </p>
+  </div>
+  <div class="block" step-data="seasons">
+    <p>
+      I wish I could justify the frustration I feel when someone says
+      "there are no seasons here."
+    </p>
+  </div>
+  <div class="block" step-data="measuring">
+    <p>
+      In the face of shifting baselines, the act of measuring becomes an act of
+      resistance.
+    </p>
+  </div>
+  <div class="block" step-data="block-diagram">
+    <p>
+      When all you have is a hammer, everything looks like a nail.
+    </p>
+  </div>
+  <div class="block" step-data="flood">
+    <p>
+      Of course I managed to under-estimate the strength of the creek.
+    </p>
+  </div>
+  <div class="block" step-data="map">
+    <p>
+      On the hardscape of urban Oakland, rainstorms drain too quickly.
+    </p>
+  </div>
+  <div class="block" step-data-type="viz" step-data="3600">
+    <p>
+      One morning, woken by a tempestuous pattering and grimacing against a
+      horizontal deluge, I spotted the sensor awash downstream, dangling from a
+      CAT5 cable.
+    </p>
+  </div>
+  <div class="block" step-data="historic-map">
+    <p>
+      The creek didn't always have behave so ferociously, of course. And to a
+      signficant degree, that was
+      <em>why</em> I was doing this &mdash; the possibility of connecting to
+      something greater than me in space and time.
+    </p>
+  </div>
+  <div class="block" step-data="otter" step-data-type="video">
+    <p>
+      And the rains did bring some welcome and unexpected moments of suprising
+      connection among the chaos. A river otter began to frequent the creek,
+      spending several months intermittently appearing in the night &mdash;
+      perhaps using the creek as a corridor between Lake Temescal and the bay.
+    </p>
+  </div>
+  <div class="block" step-data="spacelapse">
+    <p>
+      The creek isn't wild, but it's far enough from our life to be something
+      different.
+    </p>
+  </div>
+  <div class="block" step-data="road">
+    <p>
+      I cling to this echo, but must resist the temptation to claim this
+      mangled, distorted and subdued replication as the thing itself. I must
+      resist this misrepresentation as equally in the Sierra as I do at our
+      creek.
+    </p>
+    <p>
+      The only thing worse than claiming wildness exists is claiming
+      <em>wildness</em> exists.
+    </p>
+  </div>
+  <div class="block" step-data="10900" step-data-type="viz">
+    <p>
+      In the end, it was neither nearly being washed away, nor the flooding from
+      tupperware's predictable vincibility to the drumbeat persistance of an
+      atmospheric river that ended the sensor.
+    </p>
+  </div>
+  <div class="block" step-data="earth-churn" step-credit='<a href="https://livemap.mpgranch.com/v2/">MPG Ranch</a>'>
+    <p>
+      Instead, the year-scale churning of plants upward, leaves downward, algae
+      outward, that slow and ignorable recycling of the entire ground of our
+      existence, choked its sensors and its solar panel.
+    </p>
+    <p>It simply could not compete.</p>
+  </div>
+  <div class="block" step-data="sunfish" step-data-type="video">
+    <p>
+      As I write this, the creek's shallow pools trickle languidly with what's
+      left of last year's rain. The pile of trash under the bridge keeps
+      growing. The shallow light no longers shines at the right angle to
+      illuminate the
+      <a href="https://www.inaturalist.org/observations/29664665">sculpin</a>
+      and
+      <a href="https://www.inaturalist.org/observations/29664402">sunfish</a>
+      beneath the surface.
+    </p>
+  </div>
+  <div class="block" step-data="autumn">
+    <p>
+      Our dry November continues for now. This is the most difficult, uncertain,
+      and dramatic time in California, a hundred thousand acres of predictable
+      earthquakes.
+    </p>
+    <p>
+      All the annuals but the nichest natives are gone, every perennial's
+      taproot stretched deep as possible, all but the last leaf dropped in a
+      desperate attempt to make it to that first drop of rainfall. And when the
+      rain does fall, these dry terrible ticks somehow sprout leaves anew.
+    </p>
+  </div>
+  <div class="block" step-data="raccoon" step-data-type="video">
+    <p>
+      Animals can't do that.
+    </p>
+    <p>We can't do that.</p>
+    <p>I'm not sure how people don't notice this.</p>
+  </div>
+
+<p><div class="block end" step-end="true" id="observations">
+    <div id="videomatrix"></div>
+  </div>
+</div></p>
+
+<script src="./viz.js"></script>
+<script src="./scrolly.js"></script>
+</p>
+	</div>
+</main>
+
+    </body>
+</html>

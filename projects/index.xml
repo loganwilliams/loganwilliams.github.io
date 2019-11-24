@@ -6,10 +6,19 @@
     <description>Recent content in Projects on Logan Williams</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 10 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>glenecho.stream</title>
+      <link>localhost:1313/projects/glenecho-stream/</link>
+      <pubDate>Tue, 10 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>localhost:1313/projects/glenecho-stream/</guid>
+      <description>Reflections, data, and observations of an urban creek.                     &#34;With ongoing environmental degradation at local, regional, and global scales, people&#39;s accepted thresholds for environmental conditions are continually being lowered. In the absence of past information or experience with historical conditions, members of each new generation accept the situation in which they were raised as being normal.</description>
+    </item>
     
     <item>
       <title>Carbon footprint modeling maps</title>
@@ -18,6 +27,15 @@
       
       <guid>localhost:1313/projects/cool-climate/</guid>
       <description></description>
+    </item>
+    
+    <item>
+      <title>Points West</title>
+      <link>localhost:1313/projects/selected-photography/</link>
+      <pubDate>Sun, 20 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>localhost:1313/projects/selected-photography/</guid>
+      <description>                                                                      </description>
     </item>
     
     <item>
@@ -82,15 +100,6 @@ With this isometric view, everything is granted equal importance and nothing can
       
       <guid>localhost:1313/projects/concept-net-poet/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>Points West</title>
-      <link>localhost:1313/projects/selected-photography/</link>
-      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>localhost:1313/projects/selected-photography/</guid>
-      <description>                                                                      </description>
     </item>
     
     <item>

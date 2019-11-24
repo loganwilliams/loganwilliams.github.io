@@ -1,0 +1,92 @@
+circle {
+  fill: rgba(144, 217, 252, 0.9);
+  fill-opacity: 0.4;
+}
+
+line {
+  /* stroke: rgba(255, 255, 255, 0.7); */
+  stroke: rgba(144, 217, 252, 0.9);
+  stroke-width: 2.5px;
+  stroke-opacity: 0.4;
+}
+
+path {
+  stroke: rgba(0, 0, 0, 0.1);
+  fill-opacity: 0.8;
+}
+
+circle.scale {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.1);
+}
+
+#date {
+  color: #666;
+  font-family: "Times New Roman";
+  position: absolute;
+  left: 432px;
+  top: calc(200px - 110px);
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  cursor: default;
+}
+
+#date div.row {
+  display: flex;
+  flex-direction: row;
+  color: black;
+}
+
+#date div.date {
+  display: flex;
+  flex-direction: row;
+  color: #444;
+  opacity: 1;
+  margin: 0.25em;
+}
+
+#date div.row div.value {
+  width: 110px;
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+  margin: 0.25em;
+}
+
+circle.depth {
+  fill-opacity: 0.5;
+}
+
+#date .date {
+  overflow: hidden;
+  max-height: 28px;
+  max-width: 110px;
+}
+
+#date:hover .date {
+  max-width: 500px;
+}
+
+#date .air,
+#date .water {
+  opacity: 0;
+  transition: 0.6s opacity;
+}
+
+#date:hover .air,
+#date:hover .water {
+  opacity: 0.6;
+}
+
+#date div.date {
+  margin-top: 110px;
+  transition: 0.6s margin-top;
+}
+
+#date:hover div.date {
+  margin-top: 0.25em;
+}
