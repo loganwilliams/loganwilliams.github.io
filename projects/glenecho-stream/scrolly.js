@@ -126,6 +126,12 @@ function startVideoPlay() {
     .style("top", "1em")
     .style("left", "-1em");
 
+  d3.select("#date .air").style("opacity", 0.0);
+  d3.select("#date .water").style("opacity", 0.0);
+  d3.select("#date .date").style("margin-top", "110px");
+  d3.select("#date .date").style("max-width", "110px");
+  d3.select("#date").style("background-color", "rgba(255,255,255,0)");
+
   d3.select(".date").style("color", "white");
   // d3.select("#vizcontainer").style("opacity", 0);
   autoAdvance = window.setInterval(() => {
@@ -163,6 +169,12 @@ function endVideoPlay() {
     .style("left", null);
 
   d3.select(".date").style("color", null);
+
+  d3.select("#date .air").style("opacity", null);
+  d3.select("#date .water").style("opacity", null);
+  d3.select("#date .date").style("margin-top", null);
+  d3.select("#date .date").style("max-width", null);
+  d3.select("#date").style("background-color", null);
 
   window.clearInterval(autoAdvance);
 }

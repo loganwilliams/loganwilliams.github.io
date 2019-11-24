@@ -46,7 +46,7 @@ header h1 {
 #vizcontainer {
   position: fixed;
   bottom: 1em;
-  left: 0px;
+  left: 30px;
   width: 100%;
   /* background: linear-gradient(
           to bottom,
@@ -148,8 +148,19 @@ svg {
   transition: 0.3s background-color;
 }
 
-#date:hover {
+#date {
   background-color: rgba(255, 255, 255, 1);
+}
+
+#date:hover {
+  background-color: rgba(255, 255, 255, 1) !important;
+}
+
+svg {
+  background-color: white;
+  max-width: 400px;
+  max-height: 400px;
+  border-radius: 200px;
 }
 
 #date:hover .date {
@@ -197,5 +208,9 @@ svg {
 
   header {
     z-index: -1;
+  }
+
+  .label {
+    opacity: 1 !important;
   }
 }

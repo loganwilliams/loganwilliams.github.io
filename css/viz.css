@@ -64,29 +64,50 @@ circle.depth {
 #date .date {
   overflow: hidden;
   max-height: 28px;
-  max-width: 110px;
+  max-width: 500px;
 }
 
 #date:hover .date {
-  max-width: 500px;
+  max-width: 500px !important;
 }
 
 #date .air,
 #date .water {
-  opacity: 0;
+  opacity: 0.6;
   transition: 0.6s opacity;
 }
 
 #date:hover .air,
 #date:hover .water {
-  opacity: 0.6;
+  opacity: 0.6 !important;
 }
 
 #date div.date {
-  margin-top: 110px;
+  margin-top: 0.25em;
   transition: 0.6s margin-top;
 }
 
 #date:hover div.date {
-  margin-top: 0.25em;
+  margin-top: 0.25em !important;
+}
+
+.value {
+  position: relative;
+  height: 100%;
+}
+
+.value .label {
+  position: absolute;
+  left: 0.25em;
+  top: 0.25em;
+  font-size: 14px;
+}
+
+#date .label {
+  opacity: 0;
+  transition: 0.3s opacity;
+}
+
+#date:hover .label {
+  opacity: 1;
 }

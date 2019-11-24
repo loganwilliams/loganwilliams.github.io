@@ -206,7 +206,6 @@ d3.csv("./cleaned_up_rows.csv").then(data => {
     );
 
     d3.select(".airt")
-      .html(ctof(d.air_temperature).toFixed(1) + "°F")
       .transition()
       .duration(200)
       .style(
@@ -216,8 +215,9 @@ d3.csv("./cleaned_up_rows.csv").then(data => {
           .copy({ opacity: 0.5 })
       );
 
+    d3.select(".airt .inner").html(ctof(d.air_temperature).toFixed(1) + "°F");
+
     d3.select(".airh")
-      .html((+d.humidity).toFixed(0) + "% RH")
       .transition()
       .duration(200)
       .style(
@@ -225,14 +225,16 @@ d3.csv("./cleaned_up_rows.csv").then(data => {
         colorScheme2(normalizedHumidityScale(+d.absolute_humidity))
       );
 
+    d3.select(".airh .inner").html((+d.humidity).toFixed(0) + "%");
+
     d3.select(".airv")
-      .html((+d.log_gas).toFixed(1))
       .transition()
       .duration(200)
       .style("background-color", colorScheme2(normalizedVocScale(+d.log_gas)));
 
+    d3.select(".airv .inner").html((+d.log_gas).toFixed(1));
+
     d3.select(".watert")
-      .html(ctof(d.water_temperature).toFixed(1) + "°F")
       .transition()
       .duration(200)
       .style(
@@ -242,16 +244,22 @@ d3.csv("./cleaned_up_rows.csv").then(data => {
           .copy({ opacity: 0.5 })
       );
 
+    d3.select(".watert .inner").html(
+      ctof(d.water_temperature).toFixed(1) + "°F"
+    );
+
     d3.select(".waterd")
-      .html((+d.depth).toFixed(1) + " in")
       .transition()
       .duration(200)
       .style("background-color", colorScheme(normalizedDepthScale(d.depth)));
 
+    d3.select(".waterd .inner").html((+d.depth).toFixed(1) + " in");
+
     d3.select(".wateru")
-      .html((+d.turbidity).toFixed(1))
       .transition()
       .duration(200)
       .style("background-color", colorScheme(d.turbidity));
+
+    d3.select(".wateru .inner").html((+d.turbidity).toFixed(1));
   };
 });
