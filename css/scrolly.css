@@ -99,6 +99,7 @@ header h1 {
   max-height: 100%;
   width: auto;
   height: auto;
+  object-fit: contain;
 }
 
 .block {
@@ -168,14 +169,33 @@ svg {
   #image {
     width: 100%;
     left: 0em;
+    max-height: calc(100% - 7em);
+    justify-content: flex-start;
   }
 
   #viz {
     margin-left: -4em;
   }
 
+  #text {
+    padding-top: 85%;
+  }
+
   #text div p {
     margin-left: 0px;
     background-color: white;
+  }
+
+  .intro {
+    max-width: 100%;
+    z-index: -1;
+  }
+
+  h1 {
+    z-index: -1;
+  }
+
+  header {
+    z-index: -1;
   }
 }
