@@ -24,14 +24,14 @@ header.header {
 }
 
 h1 {
-  font-size: 24px;
+  font-size: 1.333em;
   position: fixed;
   top: 40px;
 }
 
 header h1 {
   position: relative;
-  font-size: 24px;
+  font-size: 1.333em;
   top: 0px;
 }
 
