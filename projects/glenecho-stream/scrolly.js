@@ -93,9 +93,10 @@ function startVideoPlay() {
     .style("width", "100%")
     .style("height", "auto")
     .attr("id", d => "video" + d)
+    .attr("muted", "")
+    .attr("autoplay", "")
     .property("muted", true)
-    .property("autoplay", true)
-    .property("playsinline", true)
+    .attr("playsinline", "")
     .on("ended", d => {
       let el = d3.select("#video" + d);
 
@@ -203,9 +204,10 @@ scroller
       if (response.element.getAttribute("step-data-type") === "video") {
         d3.select("#image")
           .append("video")
-          .property("autoplay", true)
+          .attr("autoplay", "")
+          .attr("muted", "")
           .property("muted", true)
-          .property("playsinline", true)
+          .attr("playsinline", "")
           .append("source")
           .attr("src", images[key])
           .attr("type", "video/mp4");
