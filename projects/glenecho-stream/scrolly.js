@@ -205,6 +205,7 @@ scroller
           .append("video")
           .property("autoplay", true)
           .property("muted", true)
+          .property("playsinline", true)
           .append("source")
           .attr("src", images[key])
           .attr("type", "video/mp4");
