@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://subject.space/projects/health-atlas/</loc>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://subject.space/projects/glenecho-stream/</loc>
     <lastmod>2019-09-10T00:00:00+00:00</lastmod>
   </url>
@@ -164,7 +169,7 @@
   
   <url>
     <loc>http://subject.space/</loc>
-    <lastmod>2019-09-10T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -174,7 +179,7 @@
   
   <url>
     <loc>http://subject.space/projects/</loc>
-    <lastmod>2019-09-10T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
