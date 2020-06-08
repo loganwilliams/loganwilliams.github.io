@@ -6,10 +6,19 @@
     <description>Recent content on Logan Williams</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 06 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://subject.space/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>East Bay Live</title>
+      <link>http://subject.space/projects/east-bay-live/</link>
+      <pubDate>Sat, 06 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://subject.space/projects/east-bay-live/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Stamen: UCSF Health Atlas</title>
