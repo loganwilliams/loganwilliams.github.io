@@ -55,274 +55,286 @@
 
   <div class="post">
 		<h1>Squarecave</h1>
-		<p><!-- raw HTML omitted -->
-<pre><code>&lt;a href=&quot;images/case.jpg&quot; title=&quot;The completed Squarecave.&quot;&gt;&lt;img class=&quot;thumb&quot; src=&quot;images/case_sm.jpg&quot;&gt;&lt;/a&gt;
+		<p><div>
+    <p>In 2009, I built the Squarecave, an analog synthesizer and sequencer. It uses digital CMOS ICs to generate a sequence of oscillations of varying pitch and volume, and then pipes the result through analog filters (lo-pass, hi-pass, band-pass). If I built this again now, there are so many things that I would change, but I still think it sounds great &mdash; maybe someday, I'll build version 2. (It might even follow a conventional tuning system!)</p>
 
-&lt;h3&gt;Oscillator Section Prototype&lt;/h3&gt;
-&lt;p&gt;The oscillator section is based of 4000 series CMOS ICs. A 40106 forms a simple resistance controlled oscillator. From there, a 4040 binary counter/divider divides the oscillator by 2 thrice, creating three slower oscillations. Those three new waveforms are piped into the control channels for an 8 bit multiplexer, the 4051. Three 4051s sequence through a set of eight different potentiometers, adjusting the pitch and volume on another 40106.&lt;/p&gt;
-&lt;p&gt;The digital prototype was one of the easier parts to create, as it was simple to start small (with just a single oscillator), and progress from there.&lt;/p&gt;
-&lt;a href=&quot;images/digital.jpg&quot; title=&quot;The first successful breadboarded sequencer prototype.&quot;&gt;&lt;img class=&quot;thumb&quot; src=&quot;images/digital_sm.jpg&quot;&gt;&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;images/digital_schem.jpg&quot; title=&quot;The first hand-drawn schematic.&quot;&gt;&lt;img style=&quot;border-top: none&quot; class=&quot;thumb&quot; src=&quot;images/digital_schem_sm.jpg&quot;&gt;&lt;/a&gt;
+    <a href="images/case.jpg" title="The completed Squarecave."><img class="thumb" src="images/case_sm.jpg"></a>
 
-&lt;h3&gt;Filter Prototype&lt;/h3&gt;
-&lt;p&gt;The analog development was much more difficult. I had originally intended to use a very simple analog filter, but that did not produce the results I had desired. After trying many different things, and with the help of &lt;a href=&quot;http://mysite.wanadoo-members.co.uk/tstinchcombe/index.html&quot;&gt;Tim Stinchombe&lt;/a&gt;, I eventually settled on the EDP wasp filter, as it was designed to run off of the +5/+0 voltage I was using. The schematics that I used for creating this are from &lt;a href=&quot;http://www.elby-designs.com/pixie/pixie-about.htm&quot;&gt;The Pixie&lt;/a&gt;, and are slightly modified so as to use potentiometers rather then CV inputs.&lt;/p&gt;
+    <h3>Oscillator Section Prototype</h3>
+    <p>The oscillator section is based of 4000 series CMOS ICs. A 40106 forms a simple resistance controlled oscillator. From there, a 4040 binary counter/divider divides the oscillator by 2 thrice, creating three slower oscillations. Those three new waveforms are piped into the control channels for an 8 bit multiplexer, the 4051. Three 4051s sequence through a set of eight different potentiometers, adjusting the pitch and volume on another 40106.</p>
+    <p>The digital prototype was one of the easier parts to create, as it was simple to start small (with just a single oscillator), and progress from there.</p>
+    <a href="images/digital.jpg" title="The first successful breadboarded sequencer prototype."><img class="thumb" src="images/digital_sm.jpg"></a><br />
+    <a href="images/digital_schem.jpg" title="The first hand-drawn schematic."><img style="border-top: none" class="thumb" src="images/digital_schem_sm.jpg"></a>
 
-&lt;iframe src=&quot;https://player.vimeo.com/video/257320540?title=0&amp;byline=0&amp;portrait=0&quot; width=&quot;640&quot; height=&quot;483&quot; frameborder=&quot;0&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+    <h3>Filter Prototype</h3>
+    <p>The analog development was much more difficult. I had originally intended to use a very simple analog filter, but that did not produce the results I had desired. After trying many different things, and with the help of <a href="http://mysite.wanadoo-members.co.uk/tstinchcombe/index.html">Tim Stinchombe</a>, I eventually settled on the EDP wasp filter, as it was designed to run off of the +5/+0 voltage I was using. The schematics that I used for creating this are from <a href="http://www.elby-designs.com/pixie/pixie-about.htm">The Pixie</a>, and are slightly modified so as to use potentiometers rather then CV inputs.</p>
+    
+    <iframe src="https://player.vimeo.com/video/257320540?title=0&byline=0&portrait=0" width="640" height="483" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
-&lt;p&gt;The EDP wasp filter provides a lowpass, highpass and midpass filter, and is 100% analog.&lt;/p&gt;
-&lt;h3&gt;Designing the PCB&lt;/h3&gt;
-&lt;p&gt;From a working analog prototype, the next logical step was to package it up in something nice. I bought a case from Hammond Manufacturing, and ordered a PCB to fit. After the PCB arrived, it took a couple of weeks to solder and assemble everything, and a frustrating few more to figure out why it still wasn't working.&lt;/p&gt;
-&lt;a href=&quot;images/board.jpg&quot; title=&quot;The PCB&quot;&gt;&lt;img class=&quot;thumb&quot; src=&quot;images/board_sm.jpg&quot;&gt;&lt;/a&gt;
+    <p>The EDP wasp filter provides a lowpass, highpass and midpass filter, and is 100% analog.</p>
+    <h3>Designing the PCB</h3>
+    <p>From a working analog prototype, the next logical step was to package it up in something nice. I bought a case from Hammond Manufacturing, and ordered a PCB to fit. After the PCB arrived, it took a couple of weeks to solder and assemble everything, and a frustrating few more to figure out why it still wasn't working.</p>
+    <a href="images/board.jpg" title="The PCB"><img class="thumb" src="images/board_sm.jpg"></a>
 
-&lt;h3&gt;Finality&lt;/h3&gt;
-&lt;p&gt;Here is a photo and a sample MP3 of the completed Squarecave. &lt;em style=&quot;padding-left: 0px;&quot;&gt;Note: the sample mp3 really isn't producing &quot;the squarecave sound,&quot; for that, check out the video up above, of the breadboarded Squarecave.&lt;/em&gt;&lt;/p&gt;
-&lt;a href=&quot;images/case.jpg&quot; title=&quot;The completed Squarecave.&quot;&gt;&lt;img class=&quot;thumb&quot; src=&quot;images/case_sm.jpg&quot;&gt;&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;images/sample1.mp3&quot;&gt;Audio sample: &lt;/a&gt;
-&lt;audio controls&gt;
-  &lt;source src=&quot;images/sample1.mp3&quot; type=&quot;audio/mpeg&quot;&gt;
-Your browser does not support the audio element.
-&lt;/audio&gt;
+    <h3>Finality</h3>
+    <p>Here is a photo and a sample MP3 of the completed Squarecave. <em style="padding-left: 0px;">Note: the sample mp3 really isn't producing "the squarecave sound," for that, check out the video up above, of the breadboarded Squarecave.</em></p>
+    <a href="images/case.jpg" title="The completed Squarecave."><img class="thumb" src="images/case_sm.jpg"></a><br />
+    <a href="images/sample1.mp3">Audio sample: </a>
+    <audio controls>
+      <source src="images/sample1.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+    </audio>
 
-&lt;h3&gt;Schematic&lt;/h3&gt;
-&lt;p&gt;The schematic for this synthesizer is in PNG form below. Information on the design of the digital and analog parts is available in the history. This is a revised version of the schematic; the built version photographed above is connected to the panel differently.&lt;/p&gt;
-&lt;a href=&quot;images/schem_f.png&quot; title=&quot;The Squarecave schematic.&quot;&gt;&lt;img class=&quot;thumb&quot; src=&quot;images/schem_sm.png&quot;&gt;&lt;/a&gt;
-&lt;h3&gt;Panel Mount&lt;/h3&gt;
-&lt;p&gt;This document shows how the panel of switches, LEDs and potentiometers connects to the circuit board. The panel mount does not have a board, and rather potentiometers are simply screwed down to the plastic and freewired to header housing. The panel is designed to be on an 8.66'' x 5.5'' &lt;a href=&quot;http://www.hammondmfg.com/dwg6pslp.htm&quot;&gt;case from Hammond Manufacturing&lt;/a&gt;. The diagram below shows how the panel is wired, and how it connects to the main PCB. (Diagram made with the latest CAD techniques) It is rather hard to follow, but the important part is how the potentiometers are wired to ground, and how they are connected to jumpers. The left 8 pots are all 100K linear, the middle 8 are 100K log, the top right pot is 1M log, the next one down is 10K linear, then 100K log, 4x3 rotary switch, then two more 100K logs.&lt;/p&gt;
-&lt;a href=&quot;images/panel.jpg&quot; title=&quot;Squarecave panel wiring&quot;&gt;&lt;img class=&quot;thumb&quot; src=&quot;images/panel_sm.jpg&quot;&gt;&lt;/a&gt;
-&lt;h3&gt;Files&lt;/h3&gt;
-&lt;ul&gt;
-    &lt;li&gt;&lt;a href=&quot;images/squarecave_revised.sch&quot;&gt;Revised schematic, as shown above (Eagle format)&lt;/a&gt; &lt;em&gt;Note: untested.&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;Parts List&lt;/h3&gt;
-&lt;table id=&quot;list&quot;&gt;
-    &lt;tr class=&quot;def&quot;&gt;
-        &lt;th&gt;Part Name&lt;/th&gt;
-        &lt;th&gt;Quantity&lt;/th&gt;
-        &lt;th&gt;Notes&lt;/th&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td class=&quot;divider&quot;&gt;Digital Oscillators/Sequencer&lt;/td&gt;
-        &lt;td class=&quot;divider&quot;&gt;&lt;/td&gt;
-        &lt;td class=&quot;divider&quot;&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;.2 &amp;mu;F capacitor&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;.1 &amp;mu;F capactior&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;40106 hex inverting buffer&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;7805 voltage reg.&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;4051 8 chan muxdemux&lt;/td&gt;
-        &lt;td&gt;4&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;4040 binary divider&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;2.2K&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; resistor&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;150&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; resistor&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;1N4148 diode&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;em&gt;More of these in the analog section&lt;/em&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td class=&quot;divider&quot;&gt;Analog Filters&lt;/td&gt;
-        &lt;td class=&quot;divider&quot;&gt;&lt;/td&gt;
-        &lt;td class=&quot;divider&quot;&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;220 nF capacitor&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;.047 &amp;mu;F capacitor&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;220 &amp;mu;F electrolytic capacitor&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;1 nF capacitor&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;68 pF capacitor&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;1N4148 diode&lt;/td&gt;
-        &lt;td&gt;3&lt;/td&gt;
-        &lt;td&gt;&lt;em&gt;One more in the digital section above&lt;/em&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;CA3080 OTA&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;&lt;em&gt;Hard to find. A NTE 996 will also work&lt;/em&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;4069 hex inverter&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;LM386 audio amplifier&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;33K&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; resistor&lt;/td&gt;
-        &lt;td&gt;7&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;100K&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; resistor&lt;/td&gt;
-        &lt;td&gt;4&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;1K&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; resistor&lt;/td&gt;
-        &lt;td&gt;5&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;4.7K&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; resistor&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;15K&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; resistor&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;330&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; resistor&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;10&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; resistor&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td class=&quot;divider&quot;&gt;Connectors&lt;/td&gt;
-        &lt;td class=&quot;divider&quot;&gt;&lt;/td&gt;
-        &lt;td class=&quot;divider&quot;&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;1x8 90&amp;deg; male .100'' header&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;1x9 90&amp;deg; male .100'' header&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;1x3 90&amp;deg; male .100'' header&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;1x2 90&amp;deg; male .100'' header&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;1x6 90&amp;deg; male .100'' header&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;2x2 90&amp;deg; male .100'' header&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;2x8 90&amp;deg; male .100'' header&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;1x8 female .100'' housing&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;1x9 female .100'' housing&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;1x3 female .100'' housing&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;1x2 female .100'' housing&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;1x6 female .100'' housing&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;2x2 female .100'' housing&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;2x8 female .100'' housing&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td class=&quot;divider&quot;&gt;Case&lt;/td&gt;
-        &lt;td class=&quot;divider&quot;&gt;&lt;/td&gt;
-        &lt;td class=&quot;divider&quot;&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;Hammond Manufacturing 1599KSTLGYBAT&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;em&gt;&lt;a href=&quot;http://www.hammondmfg.com/dwg6pslp.htm&quot;&gt;Hammond Mfg&lt;/a&gt;&lt;/em&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;Hammond Manufacturing BS61KIT&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;em&gt;&lt;a href=&quot;http://www.hammondmfg.com/dwg6pslp.htm&quot;&gt;Hammond Mfg&lt;/a&gt;&lt;/em&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td class=&quot;divider&quot;&gt;Panel&lt;/td&gt;
-        &lt;td class=&quot;divider&quot;&gt;&lt;/td&gt;
-        &lt;td class=&quot;divider&quot;&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;Alpha 100K&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; linear pot&lt;/td&gt;
-        &lt;td&gt;10&lt;/td&gt;
-        &lt;td&gt;&lt;em&gt;24mm panel mount&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;Alpha 100K&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; log pot&lt;/td&gt;
-        &lt;td&gt;9&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;Alpha 4x3 rotary switch&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;Alpha 10K linear pot&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;Toggle switch&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;&lt;em&gt;any type&lt;/em&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;3.5mm jack&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;em&gt;any type, panel mount&lt;/em&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr&gt;
-        &lt;td&gt;Alpha 1M&lt;span style=&quot;text-transform: none&quot;&gt;&amp;Omega;&lt;/span&gt; log pot&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;&lt;/td&gt;
-    &lt;/tr&gt;&lt;tr class=&quot;alternate&quot;&gt;
-        &lt;td&gt;Panel mount LED&lt;/td&gt;
-        &lt;td&gt;8&lt;/td&gt;
-        &lt;td&gt;&lt;em&gt;&lt;a href=&quot;http://www.jameco.com/webapp/wcs/stores/servlet/ProductDisplay?langId=-1&amp;storeId=10001&amp;catalogId=10001&amp;productId=141111&quot;&gt;Ex: Jameco product #141111&lt;/a&gt;&lt;/em&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;
-</code></pre>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<p>Some samples of assorted circuit bending projects:</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+    <h3>Schematic</h3>
+    <p>The schematic for this synthesizer is in PNG form below. Information on the design of the digital and analog parts is available in the history. This is a revised version of the schematic; the built version photographed above is connected to the panel differently.</p>
+    <a href="images/schem_f.png" title="The Squarecave schematic."><img class="thumb" src="images/schem_sm.png"></a>
+    <h3>Panel Mount</h3>
+    <p>This document shows how the panel of switches, LEDs and potentiometers connects to the circuit board. The panel mount does not have a board, and rather potentiometers are simply screwed down to the plastic and freewired to header housing. The panel is designed to be on an 8.66'' x 5.5'' <a href="http://www.hammondmfg.com/dwg6pslp.htm">case from Hammond Manufacturing</a>. The diagram below shows how the panel is wired, and how it connects to the main PCB. (Diagram made with the latest CAD techniques) It is rather hard to follow, but the important part is how the potentiometers are wired to ground, and how they are connected to jumpers. The left 8 pots are all 100K linear, the middle 8 are 100K log, the top right pot is 1M log, the next one down is 10K linear, then 100K log, 4x3 rotary switch, then two more 100K logs.</p>
+    <a href="images/panel.jpg" title="Squarecave panel wiring"><img class="thumb" src="images/panel_sm.jpg"></a>
+    <h3>Files</h3>
+    <ul>
+        <li><a href="images/squarecave_revised.sch">Revised schematic, as shown above (Eagle format)</a> <em>Note: untested.</em></li>
+    </ul>
+    <h3>Parts List</h3>
+    <table id="list">
+        <tr class="def">
+            <th>Part Name</th>
+            <th>Quantity</th>
+            <th>Notes</th>
+        </tr><tr>
+            <td class="divider">Digital Oscillators/Sequencer</td>
+            <td class="divider"></td>
+            <td class="divider"></td>
+        </tr><tr>
+            <td>.2 &mu;F capacitor</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>.1 &mu;F capactior</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>40106 hex inverting buffer</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>7805 voltage reg.</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>4051 8 chan muxdemux</td>
+            <td>4</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>4040 binary divider</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>2.2K<span style="text-transform: none">&Omega;</span> resistor</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>150<span style="text-transform: none">&Omega;</span> resistor</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>1N4148 diode</td>
+            <td>1</td>
+            <td><em>More of these in the analog section</em></td>
+        </tr><tr>
+            <td class="divider">Analog Filters</td>
+            <td class="divider"></td>
+            <td class="divider"></td>
+        </tr><tr>
+            <td>220 nF capacitor</td>
+            <td>2</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>.047 &mu;F capacitor</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>220 &mu;F electrolytic capacitor</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>1 nF capacitor</td>
+            <td>2</td>
+            <td></td>
+        </tr><tr>
+            <td>68 pF capacitor</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>1N4148 diode</td>
+            <td>3</td>
+            <td><em>One more in the digital section above</em></td>
+        </tr><tr>
+            <td>CA3080 OTA</td>
+            <td>2</td>
+            <td><em>Hard to find. A NTE 996 will also work</em></td>
+        </tr><tr class="alternate">
+            <td>4069 hex inverter</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>LM386 audio amplifier</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>33K<span style="text-transform: none">&Omega;</span> resistor</td>
+            <td>7</td>
+            <td></td>
+        </tr><tr>
+            <td>100K<span style="text-transform: none">&Omega;</span> resistor</td>
+            <td>4</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>1K<span style="text-transform: none">&Omega;</span> resistor</td>
+            <td>5</td>
+            <td></td>
+        </tr><tr>
+            <td>4.7K<span style="text-transform: none">&Omega;</span> resistor</td>
+            <td>2</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>15K<span style="text-transform: none">&Omega;</span> resistor</td>
+            <td>2</td>
+            <td></td>
+        </tr><tr>
+            <td>330<span style="text-transform: none">&Omega;</span> resistor</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>10<span style="text-transform: none">&Omega;</span> resistor</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td class="divider">Connectors</td>
+            <td class="divider"></td>
+            <td class="divider"></td>
+        </tr><tr>
+            <td>1x8 90&deg; male .100'' header</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>1x9 90&deg; male .100'' header</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>1x3 90&deg; male .100'' header</td>
+            <td>2</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>1x2 90&deg; male .100'' header</td>
+            <td>2</td>
+            <td></td>
+        </tr><tr>
+            <td>1x6 90&deg; male .100'' header</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>2x2 90&deg; male .100'' header</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>2x8 90&deg; male .100'' header</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>1x8 female .100'' housing</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>1x9 female .100'' housing</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>1x3 female .100'' housing</td>
+            <td>2</td>
+            <td></td>
+        </tr><tr>
+            <td>1x2 female .100'' housing</td>
+            <td>2</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>1x6 female .100'' housing</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>2x2 female .100'' housing</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>2x8 female .100'' housing</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td class="divider">Case</td>
+            <td class="divider"></td>
+            <td class="divider"></td>
+        </tr><tr>
+            <td>Hammond Manufacturing 1599KSTLGYBAT</td>
+            <td>1</td>
+            <td><em><a href="http://www.hammondmfg.com/dwg6pslp.htm">Hammond Mfg</a></em></td>
+        </tr><tr class="alternate">
+            <td>Hammond Manufacturing BS61KIT</td>
+            <td>1</td>
+            <td><em><a href="http://www.hammondmfg.com/dwg6pslp.htm">Hammond Mfg</a></em></td>
+        </tr><tr>
+            <td class="divider">Panel</td>
+            <td class="divider"></td>
+            <td class="divider"></td>
+        </tr><tr>
+            <td>Alpha 100K<span style="text-transform: none">&Omega;</span> linear pot</td>
+            <td>10</td>
+            <td><em>24mm panel mount</td>
+        </tr><tr class="alternate">
+            <td>Alpha 100K<span style="text-transform: none">&Omega;</span> log pot</td>
+            <td>9</td>
+            <td></td>
+        </tr><tr>
+            <td>Alpha 4x3 rotary switch</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>Alpha 10K linear pot</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr>
+            <td>Toggle switch</td>
+            <td>2</td>
+            <td><em>any type</em></td>
+        </tr><tr class="alternate">
+            <td>3.5mm jack</td>
+            <td>1</td>
+            <td><em>any type, panel mount</em></td>
+        </tr><tr>
+            <td>Alpha 1M<span style="text-transform: none">&Omega;</span> log pot</td>
+            <td>1</td>
+            <td></td>
+        </tr><tr class="alternate">
+            <td>Panel mount LED</td>
+            <td>8</td>
+            <td><em><a href="http://www.jameco.com/webapp/wcs/stores/servlet/ProductDisplay?langId=-1&storeId=10001&catalogId=10001&productId=141111">Ex: Jameco product #141111</a></em></td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+<h2 style="margin-top:2em"><strong>Circuit Bending</strong></h2>
+
+Some samples of assorted circuit bending projects:
+
+<ul>
+    <li>"Star Hate" (1): <audio controls> <source src="images/star3.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio></li>
+    <li>"Star Hate" (2): <audio controls> <source src="images/star4.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio></li>
+    <li>"Star Hate" (3): <audio controls> <source src="images/star2.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio></li>
+    <li>"The Bookstrip" (1):<audio controls> <source src="images/bookstrip1.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio></li>
+    <li>"The Bookstrip" (2):<audio controls> <source src="images/bookstrip2.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio></li>
+</ul>
+
+</div>
 </p>
 	</div>
 </main>

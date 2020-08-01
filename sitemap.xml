@@ -8,6 +8,18 @@
   </url>
   
   <url>
+    <loc>http://subject.space/</loc>
+    <lastmod>2020-06-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://subject.space/projects/</loc>
+    <lastmod>2020-06-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://subject.space/projects/health-atlas/</loc>
     <lastmod>2020-04-15T00:00:00+00:00</lastmod>
   </url>
@@ -173,19 +185,7 @@
   </url>
   
   <url>
-    <loc>http://subject.space/</loc>
-    <lastmod>2020-06-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://subject.space/projects/pair-garments/</loc>
-  </url>
-  
-  <url>
-    <loc>http://subject.space/projects/</loc>
-    <lastmod>2020-06-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
