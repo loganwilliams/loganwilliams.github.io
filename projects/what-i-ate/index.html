@@ -63,33 +63,24 @@ Before I'm asked to throw them out,<br>
 I play with every little doubt.
 <td>An attempt at tracking correlation between geography and happiness.
 </tr></table></p></em>
-
 <div id="map" style="width: 90%; height: 520px; position:relative; background: white; overflow-y: hidden;"></div>
-
 <p style="margin-top: 1em"><strong>Q:</strong> So, how is the happiness variable plotted?</p>
-
 <p><strong>A:</strong> It isn't.</p>
-
 <p><strong>Q:</strong> Isn't happiness an important part of correlating happiness and location? Why was it excluded?</p>
-
 <p><strong>A:</strong> It was difficult to collect enough data.</p>
-
 <p><strong>Q:</strong> Why was it difficult to collect data?</p>
-
 <p><strong>A:</strong> Being asked about your happiness every few hours has side effects.</p>
-
 <script src="https://unpkg.com/leaflet@0.7.3/dist/leaflet.js"></script>
 <script src="leaflet-providers.js"></script>
-
 <script>
 
 
 
 
-    var map = L.map('map').setView([37.7450395792,-122.426516575], 13);
-    var tiles = L.tileLayer.provider('Stamen.Watercolor');
+	var map = L.map('map').setView([37.7450395792,-122.426516575], 13);
+	var tiles = L.tileLayer.provider('Stamen.Watercolor');
 
-    tiles.setOpacity(0.2).addTo(map);
+	tiles.setOpacity(0.2).addTo(map);
 
 var latlngs3 = [[37.3321611888,-122.029392745],[37.332256685,-122.029435672],[37.3322553537,-122.02936833],[37.3305620307,-122.03017953],[37.3303214603,-122.030092244],[37.3301684549,-122.030135478]];
 var polyline3 = L.polyline(latlngs3, {color: '#bf00ac', opacity: 0.100013686696}).addTo(map);
