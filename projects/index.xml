@@ -6,7 +6,16 @@
     <description>Recent content in Projects on Logan Williams</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 06 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://subject.space/projects/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 07 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://subject.space/projects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stamen: 12 Sunsets</title>
+      <link>http://subject.space/projects/stamen-12-sunsets/</link>
+      <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://subject.space/projects/stamen-12-sunsets/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>East Bay Live</title>
       <link>http://subject.space/projects/east-bay-live/</link>
@@ -31,7 +40,7 @@
       <pubDate>Tue, 10 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>http://subject.space/projects/glenecho-stream/</guid>
-      <description>Reflections, data, and observations of an urban creek.        AIR   HUMIDITY   QUALITY    WATER   DEPTH   TURBIDITY         &#34;With ongoing environmental degradation at local, regional, and global scales, people&#39;s accepted thresholds for environmental conditions are continually being lowered. In the absence of past information or experience with historical conditions, members of each new generation accept the situation in which they were raised as being normal.</description>
+      <description>Reflections, data, and observations of an urban creek. AIR HUMIDITY QUALITY WATER DEPTH TURBIDITY &#34;With ongoing environmental degradation at local, regional, and global scales, people&#39;s accepted thresholds for environmental conditions are continually being lowered. In the absence of past information or experience with historical conditions, members of each new generation accept the situation in which they were raised as being normal.&#34; Soga, M. and Gaston, K. &#34;Shifting baseline syndrome: causes, consequences, and implications,&#34;</description>
     </item>
     
     <item>
@@ -49,7 +58,7 @@
       <pubDate>Sun, 20 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>http://subject.space/projects/selected-photography/</guid>
-      <description>                                                                      </description>
+      <description> </description>
     </item>
     
     <item>
@@ -159,7 +168,7 @@ With this isometric view, everything is granted equal importance and nothing can
       
       <guid>http://subject.space/projects/no-tifier/</guid>
       <description>For the Stupid Hackathon 2017, I made a portable wooden rectangle. Every few minutes, it buzzes briefly to deliver a notification. By carrying it in your pocket, you can be notified wherever you are, no matter what you are doing. The medium is the massage.
-         You can make one yourself! I used an AVR microcontroller and a scavenged cell phone buzzer driven with a MOSFET.</description>
+You can make one yourself! I used an AVR microcontroller and a scavenged cell phone buzzer driven with a MOSFET. The source code is stupid-hackathon-simple.</description>
     </item>
     
     <item>
@@ -180,7 +189,7 @@ With this isometric view, everything is granted equal importance and nothing can
       <description>About the poem. If a landmark unrecognized does not exist, a non-existent landmark recognized becomes one. Cross the sidewalk and crest the ridgeline. Continue straight, past the library and through the marsh thistles. Follow the stream down the street. Knock on the door and collapse on the summit.
 What topographic ritual summons city from chaparral? Where is the boundary between psychogeography and psychogeographical break?
 The poem:
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;gpx version=&amp;quot;1.</description>
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;gpx version=&amp;#34;1.</description>
     </item>
     
     <item>
@@ -201,7 +210,7 @@ The poem:
       <description>Two attempts to reproduce interesting results from computational photography papers.
 Phase based motion amplification From Phase-Based Motion Amplification, by Neal Wadhwa, Michael Rubinstein, Fr&amp;eacute;do Durand, and William T. Freeman.
 One of the most impressive results from the original paper, the motion of a sleeping baby&#39;s breath amplified. There are some small likely aliasing-related artifacts visible in my version.
-Your browser does not support the video tag.  Amplified atmospheric light bending from the heat of a stove burner.</description>
+Your browser does not support the video tag. Amplified atmospheric light bending from the heat of a stove burner.</description>
     </item>
     
     <item>
@@ -219,8 +228,7 @@ Your browser does not support the video tag.  Amplified atmospheric light bendin
       <pubDate>Sun, 20 Dec 2015 00:00:00 +0000</pubDate>
       
       <guid>http://subject.space/projects/hokusai-backpack/</guid>
-      <description>A handmade backpack with custom dyed fabric based on Hokusai&amp;rsquo;s Kirifuri Waterfall at Kurokami Mountain in Shimotsuke.
-                   </description>
+      <description>A handmade backpack with custom dyed fabric based on Hokusai&amp;rsquo;s Kirifuri Waterfall at Kurokami Mountain in Shimotsuke.</description>
     </item>
     
     <item>
@@ -229,7 +237,7 @@ Your browser does not support the video tag.  Amplified atmospheric light bendin
       <pubDate>Mon, 30 Mar 2015 00:00:00 +0000</pubDate>
       
       <guid>http://subject.space/projects/wears-the-territory/</guid>
-      <description> Chagrin, Ohio.   Cotton and silk.   200 by 1000 stitches.      Cambridge and Boston, Massachusetts.  </description>
+      <description> Chagrin, Ohio. Cotton and silk. 200 by 1000 stitches. Cambridge and Boston, Massachusetts. </description>
     </item>
     
     <item>
@@ -296,7 +304,7 @@ A conventional camera focuses all light rays emitted from an object to the same 
       <pubDate>Sat, 20 Apr 2013 00:00:00 +0000</pubDate>
       
       <guid>http://subject.space/projects/academic-projects/</guid>
-      <description>Recursive Augmented Reality Image Processing System 6.111 (FPGA Laboratory) final project, with Jos&amp;eacute; Cruz Serral&amp;eacute;s.  Abstract: We have implemented an augmented reality system that can overlay a digital image on a video stream of a real world environment. We read NTSC video data from a video camera and store it in external ZBT memory. A picture frame with colored markers on the corners is held in front of the camera.</description>
+      <description>Recursive Augmented Reality Image Processing System 6.111 (FPGA Laboratory) final project, with Jos&amp;eacute; Cruz Serral&amp;eacute;s. Abstract: We have implemented an augmented reality system that can overlay a digital image on a video stream of a real world environment. We read NTSC video data from a video camera and store it in external ZBT memory. A picture frame with colored markers on the corners is held in front of the camera. We then perform chroma-based object recognition to locate the coordinates of the corners.</description>
     </item>
     
     <item>
@@ -323,8 +331,7 @@ A conventional camera focuses all light rays emitted from an object to the same 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://subject.space/projects/pair-garments/</guid>
-      <description>The extra-long-sleeved twonic. A product of the San Francisco Stupid Shit No One Needs and Terrible Ideas Hackathon, of which I was a co-organizer.
-  </description>
+      <description>The extra-long-sleeved twonic. A product of the San Francisco Stupid Shit No One Needs and Terrible Ideas Hackathon, of which I was a co-organizer.</description>
     </item>
     
     <item>
@@ -336,8 +343,7 @@ A conventional camera focuses all light rays emitted from an object to the same 
       <description>The room is filled with ancient dates,
 Where I&#39;ve been and what I ate.
 Before I&#39;m asked to throw them out,
-I play with every little doubt. An attempt at tracking correlation between geography and happiness. 
-  Q: So, how is the happiness variable plotted?
+I play with every little doubt. An attempt at tracking correlation between geography and happiness. Q: So, how is the happiness variable plotted?
 A: It isn&#39;t.
 Q: Isn&#39;t happiness an important part of correlating happiness and location? Why was it excluded?
 A: It was difficult to collect enough data.</description>
