@@ -324,6 +324,7 @@
       });
 
       var mode = "all";
+      var value = 90;
 
       map.addControl(
         new maplibregl.NavigationControl({
@@ -362,7 +363,7 @@
         });
 
         // "#ffb34f",
-        //     "#7541b0",
+        // "#7541b0",
 
         const SINGLE_PAINT = {
           "circle-color": [
@@ -399,6 +400,40 @@
             ["exponential", 2],
             ["zoom"],
             11.5,
+            0,
+            16,
+            1,
+          ],
+        };
+
+        const NA_PAINT = {
+          "circle-color": "#777",
+          "circle-opacity": [
+            "interpolate",
+            ["exponential", 1],
+            ["zoom"],
+            12,
+            0.6,
+            18,
+            0.9,
+          ],
+          "circle-radius": [
+            "interpolate",
+            ["exponential", 2],
+            ["zoom"],
+            4,
+            1,
+            10,
+            2.25,
+            18,
+            20,
+          ],
+          "circle-stroke-color": "white",
+          "circle-stroke-width": [
+            "interpolate",
+            ["exponential", 2],
+            ["zoom"],
+            12,
             0,
             16,
             1,
@@ -442,9 +477,7 @@
           ],
         };
 
-        function get_cluster_filter(mode) {
-          var filters = ["all", ["has", "sqrt_point_count"]];
-
+        function get_filters(filters, mode) {
           if (mode == "plants") {
             filters.push(["==", "kingdom", "Plantae"]);
           } else if (mode == "fungi") {
@@ -476,44 +509,17 @@
           return filters;
         }
 
-        function get_filters(tourist, value, mode) {
-          var filters = [
+        map.addLayer({
+          id: "observation_na",
+          type: "circle",
+          source: "observation_source",
+          "source-layer": "h3_filtered",
+          paint: NA_PAINT,
+          filter: get_filters([
             "all",
-            [">", "date_range_user", Math.min(90, value) * 24 * 60 * 60],
-            [tourist ? "<" : ">=", "date_range_cell", value * 24 * 60 * 60],
-            ["none", ["has", "sqrt_point_count"]],
-          ];
-
-          if (mode == "plants") {
-            filters.push(["==", "kingdom", "Plantae"]);
-          } else if (mode == "fungi") {
-            filters.push(["==", "kingdom", "Fungi"]);
-          } else if (mode == "animals") {
-            filters.push(["==", "kingdom", "Animalia"]);
-          } else if (mode == "birds") {
-            filters.push(["==", "kingdom", "Animalia"]);
-            filters.push(["==", "class", "Aves"]);
-          } else if (mode == "mammals") {
-            filters.push(["==", "kingdom", "Animalia"]);
-            filters.push(["==", "class", "Mammalia"]);
-          } else if (mode == "herps") {
-            filters.push(["==", "kingdom", "Animalia"]);
-            filters.push([
-              "any",
-              ["==", "class", "Reptilia"],
-              ["==", "class", "Amphibia"],
-            ]);
-          } else if (mode == "arthro") {
-            filters.push(["==", "kingdom", "Animalia"]);
-            filters.push(["==", "phylum", "Arthropoda"]);
-          } else if (mode == "other") {
-            filters.push(["!=", "kingdom", "Animalia"]);
-            filters.push(["!=", "kingdom", "Plantae"]);
-            filters.push(["!=", "kingdom", "Fungi"]);
-          }
-
-          return filters;
-        }
+            ["<=", "date_range_user", 90 * 24 * 60 * 60],
+          ]),
+        });
 
         map.addLayer({
           id: "observation_clusters",
@@ -530,7 +536,15 @@
           source: "observation_source",
           "source-layer": "h3_filtered",
           paint: SINGLE_PAINT,
-          filter: get_filters(false, 90, mode),
+          filter: get_filters(
+            [
+              "all",
+              [">", "date_range_user", 90 * 24 * 60 * 60],
+              [">=", "date_range_cell", 90 * 24 * 60 * 60],
+              ["none", ["has", "sqrt_point_count"]],
+            ],
+            mode
+          ),
         });
 
         map.addLayer({
@@ -539,8 +553,56 @@
           source: "observation_source",
           "source-layer": "h3_filtered",
           paint: SINGLE_PAINT,
-          filter: get_filters(true, 90, mode),
+          filter: get_filters(
+            [
+              "all",
+              [">", "date_range_user", 90 * 24 * 60 * 60],
+              ["<", "date_range_cell", 90 * 24 * 60 * 60],
+              ["none", ["has", "sqrt_point_count"]],
+            ],
+            mode
+          ),
         });
+
+        function updateFilters(value, mode) {
+          // var clampedValue = Math.min(90, value);
+          var clampedValue = value;
+
+          // RESET FILTERS
+          map.setFilter(
+            "observations",
+            get_filters(
+              [
+                "all",
+                [">", "date_range_user", clampedValue * 24 * 60 * 60],
+                [">=", "date_range_cell", value * 24 * 60 * 60],
+                ["none", ["has", "sqrt_point_count"]],
+              ],
+              mode
+            )
+          );
+          map.setFilter(
+            "observations_tourist",
+            get_filters(
+              [
+                "all",
+                [">", "date_range_user", clampedValue * 24 * 60 * 60],
+                ["<", "date_range_cell", value * 24 * 60 * 60],
+                ["none", ["has", "sqrt_point_count"]],
+              ],
+              mode
+            )
+          );
+          map.setFilter(
+            "observation_na",
+            get_filters([
+              "all",
+              ["<=", "date_range_user", clampedValue * 24 * 60 * 60],
+            ], mode)
+          );
+
+          map.setFilter("observation_clusters", get_filters(["all", ["has", "sqrt_point_count"]], mode))
+        }
 
         let options = [
           "all",
@@ -563,9 +625,7 @@
 
           mode = m;
 
-          map.setFilter("observations", get_filters(false, value, mode));
-          map.setFilter("observations_tourist", get_filters(true, value, mode));
-          map.setFilter("observation_clusters", get_cluster_filter(mode));
+          updateFilters(value, mode);
 
           if (m == "fungi") {
             map.setPaintProperty("observation_clusters", "circle-opacity", [
@@ -613,7 +673,7 @@
         var slider = document.getElementById("tourist");
         var value = 90;
 
-        slider.oninput = function () {
+        slider.onchange = function () {
           value = this.value;
 
           document.getElementById("threshold1").innerHTML = this.value;
@@ -627,20 +687,18 @@
           map.setPaintProperty("observations_tourist", "circle-color", [
             "case",
             ["<", ["get", "date_range_cell"], value * 24 * 60 * 60],
-            "#ffb34f",
+            "#ff9900",
             "#7541b0",
           ]);
 
           map.setPaintProperty("observations", "circle-color", [
             "case",
             ["<", ["get", "date_range_cell"], value * 24 * 60 * 60],
-            "#ffb34f",
+            "#ff9900",
             "#7541b0",
           ]);
 
-          // RESET FILTERS
-          map.setFilter("observations", get_filters(false, value, mode));
-          map.setFilter("observations_tourist", get_filters(true, value, mode));
+          updateFilters(value, mode);
         };
 
         // CODE FOR LINKING TO OBSERVATIONS ON CLICK
@@ -651,12 +709,18 @@
         map.on("click", "observations_tourist", function (e) {
           window.open(e.features[0].properties.occurrenceID, "_blank");
         });
+        map.on("click", "observation_na", function (e) {
+          window.open(e.features[0].properties.occurrenceID, "_blank");
+        });
 
         // Change the cursor to a pointer when the mouse is over the places layer.
         map.on("mouseenter", "observations", function () {
           map.getCanvas().style.cursor = "pointer";
         });
         map.on("mouseenter", "observations_tourist", function () {
+          map.getCanvas().style.cursor = "pointer";
+        });
+        map.on("mouseenter", "observation_na", function () {
           map.getCanvas().style.cursor = "pointer";
         });
 
@@ -666,6 +730,9 @@
         });
 
         map.on("mouseleave", "observations_tourist", function () {
+          map.getCanvas().style.cursor = "";
+        });
+        map.on("mouseleave", "observation_na", function () {
           map.getCanvas().style.cursor = "";
         });
       });
