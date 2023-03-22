@@ -13,11 +13,21 @@
       property="og:description"
       content="A global map of 'locals' and 'tourists' on iNaturalist based on observation history in the vicinity of each observation."
     />
-    <meta property="og:image" content="https://subject.space/projects-static/inaturalist/header.jpg" />
+    <meta
+      property="og:image"
+      content="https://subject.space/projects-static/inaturalist/header.jpg"
+    />
+    <meta
+      property="og:url"
+      content="https://subject.space/projects-static/inaturalist/"
+    />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@obtusatum" />
     <meta name="twitter:title" content="iNaturalist 'Locals' and 'Tourists'" />
-    <meta name="twitter:description" content="A global map of 'locals' and 'tourists' on iNaturalist based on observation history in the vicinity of each observation." />
+    <meta
+      name="twitter:description"
+      content="A global map of 'locals' and 'tourists' on iNaturalist based on observation history in the vicinity of each observation."
+    />
     <meta
       name="twitter:image"
       content="https://subject.space/projects-static/inaturalist/header.jpg"
@@ -263,15 +273,35 @@
       let protocol = new pmtiles.Protocol();
       maplibregl.addProtocol("pmtiles", protocol.tile);
 
+      var searchParams = new URLSearchParams(window.location.search);
+
+      var center = [-88.13734351262877, 35.137451890638886];
+      var zoom = 4;
+
+      if (searchParams.get("lat") && searchParams.get("lng")) {
+        center = [searchParams.get("lng"), searchParams.get("lat")];
+      }
+
+      if (searchParams.get("z")) {
+        zoom = searchParams.get("z");
+      }
+
       var map = new maplibregl.Map({
         container: "map",
         style:
-          "https://api.maptiler.com/maps/basic-v2-dark/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
-        center: [-88.13734351262877, 35.137451890638886],
-        zoom: 4,
+          "https://api.maptiler.com/maps/basic-v2-dark/style.json?key=BO0rAf7nscZz6lLkzwOL",
+        center,
+        zoom,
       });
 
       var mode = "all";
+
+      map.addControl(
+        new maplibregl.NavigationControl({
+          showZoom: true,
+          showCompass: true,
+        })
+      );
 
       map.on("load", function () {
         map.on("zoom", function () {
@@ -281,6 +311,20 @@
           } else {
             document.getElementById("tourist").disabled = false;
           }
+        });
+
+        map.on("move", function () {
+          var pos = map.getCenter();
+          var zoom = map.getZoom();
+
+          var searchParams = new URLSearchParams(window.location.search);
+          searchParams.set("lat", pos.lat);
+          searchParams.set("lng", pos.lng);
+          searchParams.set("z", zoom);
+
+          var newRelativePathQuery =
+            window.location.pathname + "?" + searchParams.toString();
+          history.replaceState(null, "", newRelativePathQuery);
         });
 
         map.addSource("observation_source", {
