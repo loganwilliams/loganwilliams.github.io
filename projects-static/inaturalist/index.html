@@ -361,7 +361,7 @@
 
         map.addSource("observation_source", {
           type: "vector",
-          url: "pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/observations.pmtiles",
+          url: "pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/observations_unfiltered.pmtiles",
         });
 
         // "#ffb34f",
@@ -515,7 +515,7 @@
           id: "observation_na",
           type: "circle",
           source: "observation_source",
-          "source-layer": "h3_filtered",
+          "source-layer": "h3_unfiltered",
           paint: NA_PAINT,
           filter: get_filters([
             "all",
@@ -527,7 +527,7 @@
           id: "observation_clusters",
           type: "circle",
           source: "observation_source",
-          "source-layer": "h3_filtered",
+          "source-layer": "h3_unfiltered",
           paint: CLUSTER_PAINT,
           filter: ["has", "sqrt_point_count"],
         });
@@ -536,7 +536,7 @@
           id: "observations",
           type: "circle",
           source: "observation_source",
-          "source-layer": "h3_filtered",
+          "source-layer": "h3_unfiltered",
           paint: SINGLE_PAINT,
           filter: get_filters(
             [
@@ -553,7 +553,7 @@
           id: "observations_tourist",
           type: "circle",
           source: "observation_source",
-          "source-layer": "h3_filtered",
+          "source-layer": "h3_unfiltered",
           paint: SINGLE_PAINT,
           filter: get_filters(
             [
