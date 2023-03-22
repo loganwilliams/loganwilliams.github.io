@@ -118,7 +118,7 @@
         width: 8px;
         height: 8px;
         border-radius: 4px;
-        background-color: #f1cd1b;
+        background-color: #ff9900;
       }
 
       .local_label {
@@ -131,6 +131,25 @@
         height: 8px;
         border-radius: 4px;
         background-color: #b778ff;
+      }
+
+      .cluster_label {
+        /* color: #b778ff; */
+      }
+
+      .cluster_symbol {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border-radius: 12px;
+        background-color: #b778ff;
+        margin-right: 0.5em;
+      }
+
+      .symbol.cluster {
+        width: 180px;
+        display: flex;
+        align-items: center;
       }
 
       h2 {
@@ -229,6 +248,12 @@
         </div>
         <div class="value">
           &gt; <span id="threshold2">90</span> days of local activity
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="symbol cluster">
+          <span class="cluster_symbol"></span>&nbsp;<span class="cluster_label">observation cluster</span>
         </div>
       </div>
 
