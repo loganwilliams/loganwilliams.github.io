@@ -6,7 +6,25 @@
     <description>Recent content on Logan Williams</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 07 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://subject.space/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 02 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://subject.space/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Observatory</title>
+      <link>http://subject.space/projects/observatory/</link>
+      <pubDate>Sun, 02 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://subject.space/projects/observatory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iNaturalist &#34;Locals&#34; and &#34;Tourists&#34;</title>
+      <link>http://subject.space/projects/inaturalist/</link>
+      <pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://subject.space/projects/inaturalist/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Stamen: 12 Sunsets</title>
       <link>http://subject.space/projects/stamen-12-sunsets/</link>
