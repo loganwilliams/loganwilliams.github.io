@@ -1,0 +1,751 @@
+<html>
+  <head>
+    <style>
+      body {
+        /* background-color: #252528; */
+        background-color: #ffffef;
+      }
+
+      .buttons {
+        display: flex;
+        align-items: center;
+        margin-top: 6em;
+        margin-left: 2em;
+        width: 960px;
+        height: 240px;
+      }
+
+      .buttonsgrid {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+      }
+
+      .buttons div,
+      svg {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* filter: saturate(30%) brightness(0%); */
+      }
+
+      .buttons svg {
+        width: 120px;
+        height: 120px;
+        /* filter: saturate(50%) contrast(20%) brightness(150%); */
+      }
+
+      .buttonsalt svg {
+        width: 120px;
+        height: 120px;
+        filter: saturate(30%) brightness(60%);
+      }
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      .buttons div:hover,
+      svg:hover {
+        filter: saturate(100%) brightness(100%);
+        cursor: pointer;
+      }
+
+      svg {
+        transition: 0.5s;
+      }
+
+      svg .shadow {
+        opacity: 0;
+      }
+
+      svg .base {
+        opacity: 0;
+      }
+
+      svg:hover .shadow {
+        opacity: 1;
+      }
+
+      svg, svg:hover {
+        width: 240px !important;
+        height: 240px !important;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <div class="buttons buttonsgrid">
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <defs>
+          <filter id="f0" x="0" y="0">
+            <feColorMatrix
+              type="matrix"
+              values=" 1.100  0.000  0.000  0.000  0.000 
+                    0.000  1.100  0.000  0.000  0.000 
+                    0.000  0.000  1.500  0.000  0.000 
+                    0.000  0.000  0.000  1.000  0.000"
+            ></feColorMatrix>
+          </filter>
+          <filter id="f1" x="0" y="0">
+            <feMorphology operator="dilate" radius="1" />
+            <feColorMatrix
+              type="matrix"
+              values=" 1.000  0.000  0.000  0.000  0.000 
+                    0.000  1.000  0.000  0.000  0.000 
+                    0.000  0.000  1.400  0.000  0.000 
+                    0.000  0.000  0.000  1.000  0.000"
+            ></feColorMatrix>
+            <feColorMatrix
+              type="matrix"
+              values=" 0  0.000  0.000  0.000  0.000 
+                    0.000  0  0.000  0.000  0.000 
+                    0.000  0.000  0  0.000  0.000 
+                    0.000  0.000  0.000  1.000  0.000"
+            ></feColorMatrix>
+          </filter>
+          <filter id="f2" x="0" y="0">
+            <feMorphology operator="dilate" radius="2" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+            <feColorMatrix
+              type="matrix"
+              values=" 1.000  0.000  0.000  0.000  0.000 
+                    0.000  1.000  0.000  0.000  0.000 
+                    0.000  0.000  1.400  0.000  0.000 
+                    0.000  0.000  0.000  1.000  0.000"
+            ></feColorMatrix>
+            <feColorMatrix
+              type="matrix"
+              values=" 0  0.000  0.000  0.000  0.000 
+                    0.000  0  0.000  0.000  0.000 
+                    0.000  0.000  0  0.000  0.000 
+                    0.000  0.000  0.000  1.000  0.000"
+            ></feColorMatrix>
+          </filter>
+        </defs>
+        <g class="fancyimage">
+          <image
+            href="Creeper.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Creeper.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Creeper.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Great Spotted Woodpecker.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Great Spotted Woodpecker.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Great Spotted Woodpecker.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Tawny Owl.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Tawny Owl.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Tawny Owl.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Jackdaw.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Jackdaw.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Jackdaw.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Coot.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Coot.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Coot.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Rose Ringed Parakeet.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Rose Ringed Parakeet.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Rose Ringed Parakeet.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Mallard.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Mallard.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Mallard.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Magpie.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Magpie.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Magpie.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+      <!-- </div>
+    <div class="buttons"> -->
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Crow.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Crow.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Crow.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Long-tailed Tit.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Long-tailed Tit.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Long-tailed Tit.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Great Tit.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Great Tit.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Great Tit.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Blue Tit.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Blue Tit.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Blue Tit.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Heron.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Heron.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Heron.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Moorhen.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Moorhen.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Moorhen.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Blackbird.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Blackbird.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Blackbird.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Redwing.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Redwing.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Redwing.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+      <!-- </div>
+
+    <div class="buttons"> -->
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Robin.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Robin.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Robin.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Goldcrest.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Goldcrest.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Goldcrest.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Wren.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Wren.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Wren.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Hawfinch.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Hawfinch.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Hawfinch.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Egyptian Goose.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Egyptian Goose.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Egyptian Goose.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="White-fronted Goose.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="White-fronted Goose.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="White-fronted Goose.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Graylag.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Graylag.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Graylag.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+      <svg height="300" width="300" viewBox="-10 -10 310 310">
+        <g class="fancyimage">
+          <image
+            href="Jay.png"
+            height="300"
+            width="300"
+            filter="url(#f1)"
+            class="base"
+          />
+          <image
+            class="shadow"
+            href="Jay.png"
+            height="300"
+            width="300"
+            filter="url(#f2)"
+          />
+          <image
+            class="outline"
+            href="Jay.png"
+            height="300"
+            width="300"
+            filter="url(#f0)"
+          />
+        </g>
+      </svg>
+    </div>
+  </body>
+</html>
