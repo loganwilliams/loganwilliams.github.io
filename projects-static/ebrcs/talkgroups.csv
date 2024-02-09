@@ -1,0 +1,609 @@
+DEC,HEX,MoD,Alpha Tag,Description,Tag,Group,Priority
+1001,3.00E+09,D,EBRCS Call 1,Calling,Interop,Interop,1
+1002,3ea,D,EBRCS IO 1,Interop 1,Interop,Interop,1
+1003,3eb,D,EBRCS IO 2,Interop 2,Interop,Interop,1
+1004,3ec,D,EBRCS IO 3,Interop 3,Interop,Interop,1
+1005,3ed,D,EBRCS IO 4,Interop 4,Interop,Interop,1
+1006,3ee,D,EBRCS IO 5,Interop 5,Interop,Interop,1
+1015,3f7,D,EBRCS Law 1,Law Interop 1,Interop,Interop,1
+1016,3f8,D,EBRCS Law 2,Law Interop 2,Interop,Interop,1
+1017,3f9,D,EBRCS Law 3,Law Interop 3,Interop,Interop,1
+1010,3f2,D,EBRCS Law 4,Law Interop 4,Interop,Interop,1
+1027,403,D,EBRCS Fire 1,Fire Interop 1,Interop,Interop,1
+1036,40c,D,EBRCS Fire 2,Fire Interop 2,Interop,Interop,1
+1039,40f,D,EBRCS EMS 1,EMS Interop 1,Interop,Interop,1
+1038,40e,D,EBRCS EMS 2,EMS Interop 2,Interop,Interop,1
+1032,408,D,BART,Bay Area Rapid Transit,Interop,Interop,1
+1042,412,D,ECC Intercom,ALCO/CCCO ECC Intercom,Interop,Interop,1
+1046,416,D,Helicopter-Grnd,Helicopter to Ground,Interop,Interop,1
+3005,bbd,D,Alameda PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3006,bbe,D,Alameda PD2,Police Ch 2,Law Tac,Law Tac,1
+3007,bbf,D,Alameda PD3,Police Ch 3,Law Tac,Law Tac,1
+3008,bc0,D,Alameda PD4,Police SIU,Law Tac,Law Tac,1
+3009,bc1,D,Alameda PD5,Police Investigations 1,Law Tac,Law Tac,1
+3010,bc2,D,Alameda PD6,Police Investigations 2,Law Tac,Law Tac,1
+3011,bc3,D,Alameda PD7,Police Narcotics,Law Tac,Law Tac,1
+3012,bc4,D,Alameda PD8,Police SWAT,Law Tac,Law Tac,1
+3013,bc5,D,Alameda PD9,Police CNT,Law Tac,Law Tac,1
+3014,bc6,D,Alameda PD10,Police 911,Law Tac,Law Tac,1
+4005,fa5,D,Alameda PW,Public Works,Public Works,Public Works,1
+4019,fb3,D,Alameda HA,Housing Authority,Other,Other,1
+5530,159a,D,ACMED1,Med 1,EMS Dispatch,EMS Dispatch,1
+5531,159b,D,ACMED2,Med 2,EMS-Tac,EMS-Tac,1
+5532,159c,D,ACMED3,Med 3,EMS-Tac,EMS-Tac,1
+5505,1581,D,Alameda,Alameda,Hospital,Hospital,1
+5506,1582,D,Alta Bates MC,Alta Bates Medical Center - Berkeley,Hospital,Hospital,1
+5507,1583,D,Childrens,Childrens - Oakland,Hospital,Hospital,1
+5508,1584,D,Eden MC,Eden Medical Center - Castro Valley,Hospital,Hospital,1
+5509,1585,D,Highland,Highland - Oakland,Hospital,Hospital,1
+5510,1586,D,Kaiser Fremont,Kaiser - Fremont,Hospital,Hospital,1
+5511,1587,D,Kaiser SL,Kaiser - San Leandro,Hospital,Hospital,1
+5512,1588,D,Kaiser Oakland,Kaiser - Oakland,Hospital,Hospital,1
+5513,1589,D,St Rose,St Rose - Hayward,Hospital,Hospital,1
+5514,158a,D,San Leandro,San Leandro Hospital,Hospital,Hospital,1
+5515,158b,D,San Ramon RMC,San Ramon Regional Medical Center,Hospital,Hospital,1
+5516,158c,D,Summit,Summit - Oakland,Hospital,Hospital,1
+5517,158d,D,Valley Care MC,ValleyCare Medical Center - Pleasanton,Hospital,Hospital,1
+5518,158e,D,Washington,Washington - Fremont,Hospital,Hospital,1
+5519,158f,D,Willow Rock Cntr,Willow Rock Center,Hospital,Hospital,1
+2800,af0,D,ACEMS Cmd 20,Command 20,EMS-Tac,EMS-Tac,1
+2801,af1,D,ACEMS Tac 40,Tac 40,EMS-Tac,EMS-Tac,1
+2802,af2,D,ACEMS Tac 60,Tac 60,EMS-Tac,EMS-Tac,1
+2803,af3,D,ACEMS Tac 61,Tac 61,EMS-Tac,EMS-Tac,1
+2804,af4,D,ACEMS Tac 62,Tac 62,EMS-Tac,EMS-Tac,1
+2805,af5,D,ACEMS Tac 63,Tac 63,EMS-Tac,EMS-Tac,1
+2806,af6,D,ACEMS Tac 64,Tac 64,EMS-Tac,EMS-Tac,1
+2807,af7,D,ACEMS Tac 65,Tac 65,EMS-Tac,EMS-Tac,1
+2808,af8,D,ACEMS Tac 66,Tac 66,EMS-Tac,EMS-Tac,1
+2809,af9,D,ACEMS Tac 67,Tac 67,EMS-Tac,EMS-Tac,1
+2810,afa,D,ACEMS Tac 68,Tac 68,EMS-Tac,EMS-Tac,1
+2600,a28,D,ACFD Announce,All Call,Fire Dispatch,Fire Dispatch,1
+2605,a2d,D,ACFD Dispatch 1,Dispatch 1,Fire Dispatch,Fire Dispatch,1
+2606,a2e,D,ACFD Dispatch 2,Dispatch 2,Fire Dispatch,Fire Dispatch,1
+2607,a2f,D,ACFD Dispatch 3,Dispatch 3,Fire Dispatch,Fire Dispatch,1
+2608,a30,D,ACFD Emergency,Emergency,Emergency Ops,Emergency Ops,1
+2650,a5a,D,ACFD Tone Outs,Tone Outs,Fire Dispatch,Fire Dispatch,1
+2661,a65,D,ACFD Tac 3,Tac 3,Fire-Tac,Fire-Tac,1
+2662,a66,D,ACFD Tac 4,Tac 4,Fire-Tac,Fire-Tac,1
+2663,a67,D,ACFD Tac 5,Tac 5,Fire-Tac,Fire-Tac,1
+2664,a68,D,ACFD Tac 6,Tac 6,Fire-Tac,Fire-Tac,1
+2665,a69,D,ACFD Tac 7,Tac 7,Fire-Tac,Fire-Tac,1
+2666,a6a,D,ACFD Tac 8,Tac 8,Fire-Tac,Fire-Tac,1
+2667,a6b,D,ACFD Tac 9,Tac 9,Fire-Tac,Fire-Tac,1
+2668,a6c,D,ACFD Tac 10,Tac 10,Fire-Tac,Fire-Tac,1
+2669,a6d,D,ACFD Tac 11,Tac 11,Fire-Tac,Fire-Tac,1
+2670,a6e,D,ACFD Command 10,Command 10 - Albany,Fire-Tac,Fire-Tac,1
+2671,a6f,D,ACFD Command 11,Command 11 - Berkeley,Fire-Tac,Fire-Tac,1
+2672,a70,D,ACFD Command 12,Command 12 - Berkeley,Fire-Tac,Fire-Tac,1
+2673,a71,D,ACFD Command 13,Command 13 - Hayward,Fire-Tac,Fire-Tac,1
+2674,a72,D,ACFD Command 14,Command 14 - Hayward,Fire-Tac,Fire-Tac,1
+2675,a73,D,ACFD Command 15,Command 15 - Piedmont,Fire-Tac,Fire-Tac,1
+2676,a74,D,ACFD Command 16,Command 16 - ALCO,Fire-Tac,Fire-Tac,1
+2677,a75,D,ACFD Command 17,Command 17 - ALCO,Fire-Tac,Fire-Tac,1
+2678,a76,D,ACFD Command 18,Command 18 - ALCO,Fire-Tac,Fire-Tac,1
+2679,a77,D,ACFD Command 19,Command 19 - ALCO,Fire-Tac,Fire-Tac,1
+2680,a78,D,ACFD Command 20,Command 20,Fire-Tac,Fire-Tac,1
+2681,a79,D,ACFD Tac 21,Tac 21 - Alameda,Fire-Tac,Fire-Tac,1
+2682,a7a,D,ACFD Tac 22,Tac 22 - Castro Valley / Hayward / San Lorenzo ,Fire-Tac,Fire-Tac,1
+2683,a7b,D,ACFD Tac 23,Tac 23 - Dublin / Livermore / Tracy,Fire-Tac,Fire-Tac,1
+2684,a7c,D,ACFD Tac 24,Tac 24 - Berkeley Lab / Emeryville / San Leandro,Fire-Tac,Fire-Tac,1
+2685,a7d,D,ACFD Tac 25,Tac 25 - Fremont,Fire-Tac,Fire-Tac,1
+2686,a7e,D,ACFD Tac 26,Tac 26 - Fremont,Fire-Tac,Fire-Tac,1
+2687,a7f,D,ACFD Tac 27,Tac 27 - Newark / Union City,Fire-Tac,Fire-Tac,1
+2688,a80,D,ACFD Tac 28,Tac 28,Fire-Tac,Fire-Tac,1
+2689,a81,D,ACFD Tac 29,Tac 29 - Livermore/Pleasanton,Fire-Tac,Fire-Tac,1
+2690,a82,D,ACFD Tac 30,Tac 30 - Albany,Fire-Tac,Fire-Tac,1
+2691,a83,D,ACFD Tac 31,Tac 31 - Berkeley,Fire-Tac,Fire-Tac,1
+2692,a84,D,ACFD Tac 32,Tac 32 - Berkeley,Fire-Tac,Fire-Tac,1
+2693,a85,D,ACFD Tac 33,Tac 33 - Hayward,Fire-Tac,Fire-Tac,1
+2694,a86,D,ACFD Tac 34,Tac 34 - Hayward,Fire-Tac,Fire-Tac,1
+2695,a87,D,ACFD Tac 35,Tac 35 - Piedmont,Fire-Tac,Fire-Tac,1
+2696,a88,D,ACFD Tac 36,Tac 36 - ALCO,Fire-Tac,Fire-Tac,1
+2697,a89,D,ACFD Tac 37,Tac 37 - ALCO,Fire-Tac,Fire-Tac,1
+2698,a8a,D,ACFD Tac 38,Tac 38 - ALCO,Fire-Tac,Fire-Tac,1
+2699,a8b,D,ACFD Tac 39,Tac 39 - ALCO,Fire-Tac,Fire-Tac,1
+2700,a8c,D,ACFD Tac 40,Tac 40,Fire-Tac,Fire-Tac,1
+2701,a8d,D,ACFD Tac 41,Tac 41 - Alameda,Fire-Tac,Fire-Tac,1
+2702,a8e,D,ACFD Tac 42,Tac 42 - Castro Valley / Hayward / San Lorenzo ,Fire-Tac,Fire-Tac,1
+2703,a8f,D,ACFD Tac 43,Tac 43 - Dublin / Livermore / Tracy,Fire-Tac,Fire-Tac,1
+2704,a90,D,ACFD Tac 44,Tac 44 - Berkeley Lab / Emeryville / San Leandro,Fire-Tac,Fire-Tac,1
+2705,a91,D,ACFD Tac 45,Tac 45 - Fremont,Fire-Tac,Fire-Tac,1
+2706,a92,D,ACFD Tac 46,Tac 46 - Fremont,Fire-Tac,Fire-Tac,1
+2707,a93,D,ACFD Tac 47,Tac 47 - Newark / Union City,Fire-Tac,Fire-Tac,1
+2708,a94,D,ACFD Tac 48,Tac 48,Fire-Tac,Fire-Tac,1
+2709,a95,D,ACFD Tac 49,Tac 49 - Livermore/Pleasanton,Fire-Tac,Fire-Tac,1
+2710,a96,D,ACFD Tac 50,Tac 50 - Albany,Fire-Tac,Fire-Tac,1
+2711,a97,D,ACFD Tac 51,Tac 51 - Berkeley,Fire-Tac,Fire-Tac,1
+2712,a98,D,ACFD Tac 52,Tac 52 - Berkeley,Fire-Tac,Fire-Tac,1
+2713,a99,D,ACFD Tac 53,Tac 53 - Hayward,Fire-Tac,Fire-Tac,1
+2714,a9a,D,ACFD Tac 54,Tac 54 - Hayward,Fire-Tac,Fire-Tac,1
+2715,a9b,D,ACFD Tac 55,Tac 55 - Piedmont,Fire-Tac,Fire-Tac,1
+2716,a9c,D,ACFD Tac 56,Tac 56 - ALCO,Fire-Tac,Fire-Tac,1
+2717,a9d,D,ACFD Tac 57,Tac 57 - ALCO,Fire-Tac,Fire-Tac,1
+2718,a9e,D,ACFD Tac 58,Tac 58 - ALCO,Fire-Tac,Fire-Tac,1
+2719,a9f,D,ACFD Tac 59,Tac 59 - ALCO,Fire-Tac,Fire-Tac,1
+2720,aa0,D,ACFD Tac 60,Tac 60,Fire-Tac,Fire-Tac,1
+2721,aa1,D,ACFD ICS 1,ICS 1,Fire-Talk,Fire-Talk,1
+2722,aa2,D,ACFD ICS 2,ICS 2,Fire-Talk,Fire-Talk,1
+2723,aa3,D,ACFD ICS 3,ICS 3,Fire-Talk,Fire-Talk,1
+2724,aa4,D,ACFD ICS 4,ICS 4,Fire-Talk,Fire-Talk,1
+2725,aa5,D,ACFD ICS 5,ICS 5,Fire-Talk,Fire-Talk,1
+2726,aa6,D,ACFD ICS 6,ICS 6,Fire-Talk,Fire-Talk,1
+2727,aa7,D,ACFD ICS 7,ICS 7,Fire-Talk,Fire-Talk,1
+2728,aa8,D,ACFD ICS 8,ICS 8,Fire-Talk,Fire-Talk,1
+2729,aa9,D,ACFD ICS 9,ICS 9,Fire-Talk,Fire-Talk,1
+2730,aaa,D,ACFD ICS 10,ICS 10,Fire-Talk,Fire-Talk,1
+2731,aab,D,ACFD ICS 11,ICS 11,Fire-Talk,Fire-Talk,1
+2732,aac,D,ACFD ICS 12,ICS 12,Fire-Talk,Fire-Talk,1
+2733,aad,D,ACFD Prevention1,Prevention 1,Fire-Talk,Fire-Talk,1
+2734,aae,D,ACFD Prevention2,Prevention 2,Fire-Talk,Fire-Talk,1
+2735,aaf,D,ACFD Prevention3,Prevention 3,Fire-Talk,Fire-Talk,1
+2736,ab0,D,ACFD Prevention4,Prevention 4,Fire-Talk,Fire-Talk,1
+2777,ad9,D,ACFD Training 71,Training 71,Fire-Talk,Fire-Talk,1
+2778,ada,D,ACFD Training 72,Training 72,Fire-Talk,Fire-Talk,1
+2779,adb,D,ACFD Training 73,Training 73,Fire-Talk,Fire-Talk,1
+2780,adc,D,ACFD Training 74,Training 74,Fire-Talk,Fire-Talk,1
+2781,add,D,ACFD Training 75,Training 75,Fire-Talk,Fire-Talk,1
+2782,aD,D,ACFD Training 76,Training 76,Fire-Talk,Fire-Talk,1
+2783,adf,D,ACFD Training 77,Training 77,Fire-Talk,Fire-Talk,1
+2784,ae0,D,ACFD Training 78,Training 78,Fire-Talk,Fire-Talk,1
+2785,ae1,D,ACFD Training 79,Training 79,Fire-Talk,Fire-Talk,1
+2786,ae2,D,ACFD Training 80,Training 80,Fire-Talk,Fire-Talk,1
+2787,ae3,D,ACFD Training 81,Training 81,Fire-Talk,Fire-Talk,1
+2788,ae4,D,ACFD Training 82,Training 82,Fire-Talk,Fire-Talk,1
+2789,ae5,D,ACFD Training 83,Training 83,Fire-Talk,Fire-Talk,1
+2790,ae6,D,ACFD Training 84,Training 84,Fire-Talk,Fire-Talk,1
+2791,ae7,D,ACFD Training 85,Training 85,Fire-Talk,Fire-Talk,1
+2792,ae8,D,ACFD Training 86,Training 86,Fire-Talk,Fire-Talk,1
+2793,ae9,D,ACFD Training 87,Training 87,Fire-Talk,Fire-Talk,1
+2794,aea,D,ACFD Training 88,Training 88,Fire-Talk,Fire-Talk,1
+2795,aeb,D,ACFD Training 89,Training 89,Fire-Talk,Fire-Talk,1
+2796,aec,D,ACFD Training 90,Training 90,Fire-Talk,Fire-Talk,1
+1011,3f3,D,ALCO Law 1,Law Interop 1,Interop,Interop,1
+1012,3f4,D,ALCO Law 2,Law Interop 2,Interop,Interop,1
+1013,3f5,D,ALCO Law 3,Law Interop 3,Interop,Interop,1
+1014,3f6,D,ALCO Law 4,Law Interop 4,Interop,Interop,1
+1025,401,D,ALCO Fire 1,Fire Interop 1,Interop,Interop,1
+1034,40a,D,ALCO Fire 2,Fire Interop 2,Interop,Interop,1
+1031,407,D,ALCO EMS 1,EMS Interop 1,Interop,Interop,1
+1033,409,D,ALCO EMS 2,EMS Interop 2,Interop,Interop,1
+1051,41b,D,ALCO North EOC,North EOC,Emergency Ops,Emergency Ops,1
+1052,41c,D,ALCO South EOC,South EOC,Emergency Ops,Emergency Ops,1
+1053,41d,D,ALCO East EOC,East EOC,Emergency Ops,Emergency Ops,1
+1022,3fe,D,ALCO NW IO,Northwest Interop,Interop,Interop,1
+1023,3ff,D,ALCO SW IO,Southwest Interop,Interop,Interop,1
+1024,400,D,ALCO East IO,East Interop,Interop,Interop,1
+1029,405,D,ALCO PW 1,Public Works 1,Public Works,Public Works,1
+3746,ea2,D,ALCO Juv Hall,Juvenile Hall,Corrections,Corrections,1
+3747,ea3,D,ALCO Juv Hall,Juvenile Hall,Corrections,Corrections,1
+3749,ea5,D,ALCO Juv Hall,Juvenile Hall,Corrections,Corrections,1
+4701,125d,D,ALCO PW1,Public Works 1,Public Works,Public Works,1
+4703,125f,D,ALCO PW3,Public Works 3,Public Works,Public Works,1
+4704,1260,D,ALCO PW4,Public Works 4,Public Works,Public Works,1
+4705,1261,D,ALCO PW5,Public Works 5,Public Works,Public Works,1
+4708,1264,D,ALCO PW8,Public Works 8,Public Works,Public Works,1
+4709,1265,D,ALCO PW9,Public Works 9,Public Works,Public Works,1
+5023,139f,D,ALCO Comm1,GSA Communications Dept - Radio Technicians,Public Works,Public Works,1
+5032,13a8,D,ALCO BMD East,GSA Building Maintenance Dept - East,Public Works,Public Works,1
+5033,13a9,D,ALCO BMD West,GSA Building Maintenance Dept - West,Public Works,Public Works,1
+5057,13c1,D,ALCO Prp/Sal,GSA Property & Salvage,Public Works,Public Works,1
+5070,13ce,D,ALCO OES Ops,OES Ops,Emergency Ops,Emergency Ops,1
+5071,13cf,D,ALCO OES Cmn,OES Common,Emergency Ops,Emergency Ops,1
+5072,13d0,D,ALCO OES East,OES East,Emergency Ops,Emergency Ops,1
+5073,13d1,D,ALCO OES West,OES West,Emergency Ops,Emergency Ops,1
+3705,e79,D,ACSO Dispatch 1,Dispatch 1,Law Dispatch,Law Dispatch,1
+3706,e7a,D,ACSO Service 1,Service 1,Law Tac,Law Tac,1
+3707,e7b,D,ACSO Dispatch 2,Dispatch 2,Law Dispatch,Law Dispatch,1
+3708,e7c,D,ACSO Service 2,Service 2,Law Tac,Law Tac,1
+3709,e7d,D,ACSO Dispatch 3,Dispatch 3,Law Dispatch,Law Dispatch,1
+3710,e7e,D,ACSO Service 3,Service 3,Law Tac,Law Tac,1
+3711,e7f,D,ACSO Tac 7,Tac 7,Law Tac,Law Tac,1
+3712,e80,D,ACSO Tac 8,Tac 8,Law Tac,Law Tac,1
+3713,e81,D,ACSO Tac 9,Tac 9,Law Tac,Law Tac,1
+3714,e82,D,ACSO Invest,Investigations,Law Talk,Law Talk,1
+3715,e83,D,ACSO Highland,Highland Hospital,Law Talk,Law Talk,1
+3719,e87,D,ACSO Admin,Administration,Law Talk,Law Talk,1
+3720,e88,D,ACSO Field Svcs,Field Services,Law Talk,Law Talk,1
+3721,e89,D,ACSO Coroner,Coroner,Law Talk,Law Talk,1
+3722,e8a,D,ACSO Civil,Civil,Law Talk,Law Talk,1
+3723,e8b,D,ACSO Transp,Transportation,Law Talk,Law Talk,1
+3724,e8c,D,ACSO Bailiff,Bailiffs,Law Tac,Law Tac,1
+3725,e8d,D,ACSO Berkeley CH,Berkeley Courthouse,Law Tac,Law Tac,1
+3726,e8e,D,ACSO Oakland CH,Oakland Courthouse,Law Tac,Law Tac,1
+3727,e8f,D,ACSO Alameda HOJ,Alameda Hall of Justice Courthouse,Law Tac,Law Tac,1
+3728,e90,D,ACSO Hayward HOJ,Hayward Hall of Justice Courthouse,Law Tac,Law Tac,1
+3729,e91,D,ACSO Fremont HOJ,Fremont Hall of Justice Courthouse,Law Tac,Law Tac,1
+3730,e92,D,ACSO Plesntn HOJ,Pleasanton Hall of Justice Courthouse,Law Tac,Law Tac,1
+3731,e93,D,ACSO JJC CH,Juvenile Justice Center Courthouse,Law Tac,Law Tac,1
+3733,e95,D,ACSO SRJ 1,Santa Rita Jail Main,Corrections,Corrections,1
+3734,e96,D,ACSO SRJ 2,Santa Rita Jail Service,Corrections,Corrections,1
+3735,e97,D,ACSO SRJ 3,Santa Rita Jail Tac 1,Corrections,Corrections,1
+3736,e98,D,ACSO SRJ 4,Santa Rita Jail Tac 2,Corrections,Corrections,1
+3737,e99,D,ACSO SRJ 5,Santa Rita Jail Tac 3,Corrections,Corrections,1
+3740,e9c,D,ACSO GDDF 1,Glenn Dyer Detention Facility Main,Corrections,Corrections,1
+3741,e9d,D,ACSO GDDF 2,Glenn Dyer Detention Facility Service,Corrections,Corrections,1
+3742,e9e,D,ACSO GDDF 3,Glenn Dyer Detention Facility Tac 1,Corrections,Corrections,1
+3743,e9f,D,ACSO GDDF 4,Glenn Dyer Detention Facility Tac 2,Corrections,Corrections,1
+3744,ea0,D,ACSO GDDF 5,Glenn Dyer Detention Facility Tac 3,Corrections,Corrections,1
+3055,bef,D,Albany PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3056,bf0,D,Albany PD2,Police Tac 2,Law Tac,Law Tac,1
+3057,bf1,D,Albany PD3,Police Ch 3,Law Tac,Law Tac,1
+3058,bf2,D,Albany PD4,Police Ch 4,Law Tac,Law Tac,1
+3059,bf3,D,Albany PD5,Police Ch 5,Law Tac,Law Tac,1
+2050,802,D,Albany FD All,Fire All Call,Fire Dispatch,Fire Dispatch,1
+2055,807,D,Albany FD1,Fire Dispatch,Fire Dispatch,Fire Dispatch,1
+2056,808,D,Albany FD2,Fire Emergency Revert,Fire-Tac,Fire-Tac,1
+2057,809,D,Albany FD3,Fire Ch 3,Fire-Tac,Fire-Tac,1
+2058,80a,D,Albany FD4,Fire Ch 4,Fire-Tac,Fire-Tac,1
+2059,80b,D,Albany FD5,Fire Ch 5,Fire-Tac,Fire-Tac,1
+4055,fd7,D,Albany PW,Public Works,Public Works,Public Works,1
+5551,15af,D,AMR 5551,Tac,EMS-Tac,EMS-Tac,1
+5554,15b2,D,AMR 5554,Tac,EMS-Tac,EMS-Tac,1
+5555,15b3,D,AMR CON-EMS,Unit Posts,EMS-Tac,EMS-Tac,1
+5556,15b4,D,AMR East,East County Dispatch,EMS Dispatch,EMS Dispatch,1
+5557,15b5,D,AMR 5557,Tac,EMS-Tac,EMS-Tac,1
+7005,1b5d,D,Antioch PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7006,1b5e,D,Antioch PD2,Police Ch 2,Law Tac,Law Tac,1
+7905,1ee1,D,Benicia PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7906,1ee2,D,Benicia PD2,Police Ch 2,Law Tac,Law Tac,1
+7907,1ee3,D,Benicia PD3,Police Ch 3,Law Tac,Law Tac,1
+6455,1937,D,Benicia FD1,Fire Dispatch,Fire Dispatch,Fire Dispatch,1
+6456,1938,D,Benicia FD2,Fire Tac,Fire-Tac,Fire-Tac,1
+6457,1939,D,Benicia FD3,Fire Tac,Fire-Tac,Fire-Tac,1
+3105,c21,D,Berkeley PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3106,c22,D,Berkeley PD2,Police Ch 2,Law Tac,Law Tac,1
+3107,c23,D,Berkeley PD3,Police Records,Law Talk,Law Talk,1
+3108,c24,D,Berkeley PD4,Police Ch 4,Law Tac,Law Tac,1
+3109,c25,D,Berkeley PD5,Police Ch 5,Law Tac,Law Tac,1
+3110,c26,D,Berkeley PD6,Police Investigations 1,Law Tac,Law Tac,1
+3111,c27,D,Berkeley PD7,Police Investigations 2,Law Tac,Law Tac,1
+3112,c28,D,Berkeley PD8,Police Parking Enforcement,Public Works,Public Works,1
+2105,839,D,Berkeley FD1,Fire Dispatch 1,Fire Dispatch,Fire Dispatch,1
+2106,83a,D,Berkeley FD2,Fire Dispatch 2,Fire Dispatch,Fire Dispatch,1
+2112,840,D,Berkeley FD Emer,Fire Emergency,Emergency Ops,Emergency Ops,1
+7055,1b8f,D,Brentwood PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7056,1b90,D,Brentwood PD2,Police Ch 2,Law Tac,Law Tac,1
+7108,1bc4,D,Clayton PD4,Police Ch 4,Law Tac,Law Tac,1
+8105,1fa9,D,Clayton PW,Public Works,Public Works,Public Works,1
+7155,1bf3,D,Concord PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7169,1c01,D,Concord PD2,Police Ch 2,Law Tac,Law Tac,1
+7170,1c02,D,Concord PD3,Police Ch 3,Law Tac,Law Tac,1
+7160,1bf8,D,Concord PD6,Police Ch 6,Law Tac,Law Tac,1
+7159,1bf7,D,Concord PD#,Police Ch #,Law Tac,Law Tac,1
+8158,1fD,D,Concord PR,Parks And Recreation Department,Public Works,Public Works,1
+6084,17c4,D,John Muir MC WC,John Muir Medical Center - Walnut Creek,Hospital,Hospital,1
+6085,17c5,D,John Muir MC Con,John Muir Medical Center - Concord,Hospital,Hospital,1
+6086,17c6,D,San Ramon RMC,San Ramon Regional Medical Center,Hospital,Hospital,1
+6087,17c7,D,Kaiser WC,Kaiser - Walnut Creek,Hospital,Hospital,1
+6088,17c8,D,CCRMC,Contra Costa Regional Medical Center - Martinez,Hospital,Hospital,1
+6089,17c9,D,Kaiser Antioch,Kaiser - Antioch,Hospital,Hospital,1
+6090,17ca,D,Sutter Delta MC,Sutter Delta Medical Center - Antioch,Hospital,Hospital,1
+6091,17cb,D,Kaiser Richmond,Kaiser - Richmond,Hospital,Hospital,1
+6092,17cc,D,Doctors MC,Doctors Medical Center - San Pablo,Hospital,Hospital,1
+6052,17a4,D,CONFD B1 Cen,Central Dispatch,Fire Dispatch,Fire Dispatch,1
+6006,1776,D,CONFD B2,Central Control - All Battalions,Fire-Tac,Fire-Tac,1
+6007,1777,D,CONFD B3,Central Tac - All Battalions,Fire-Tac,Fire-Tac,1
+6008,1778,D,CONFD B4,Central Incident - Battalion 1 & 2,Fire-Tac,Fire-Tac,1
+6009,1779,D,CONFD B5,Central Command - Battalion 1 & 2,Fire-Tac,Fire-Tac,1
+6010,177a,D,CONFD B6,Central Tac - Battalion 1 & 2,Fire-Tac,Fire-Tac,1
+6011,177b,D,CONFD B7,Central Incident - Battalion 4,Fire-Tac,Fire-Tac,1
+6012,177c,D,CONFD B8,Central Command - Battalion 4,Fire-Tac,Fire-Tac,1
+6013,177d,D,CONFD B9,Central Tac - Battalion 4,Fire-Tac,Fire-Tac,1
+6014,177e,D,CONFD B10,Central Mutual Aid,Interop,Interop,1
+6053,17a5,D,CONFD C1 Est,East Dispatch,Fire Dispatch,Fire Dispatch,1
+6031,178f,D,CONFD C2,East Control - All Battalions,Fire-Tac,Fire-Tac,1
+6032,1790,D,CONFD C3,East Tac - All Battalions,Fire-Tac,Fire-Tac,1
+6033,1791,D,CONFD C4,East Incident - Battalion 8,Fire-Tac,Fire-Tac,1
+6034,1792,D,CONFD C5,East Command - Battalion 8,Fire-Tac,Fire-Tac,1
+6035,1793,D,CONFD C6,East Tac - Battalion 8,Fire-Tac,Fire-Tac,1
+6036,1794,D,CONFD C7,East Incident - Battalion 5,Fire-Tac,Fire-Tac,1
+6037,1795,D,CONFD C8,East Command - Battalion 5,Fire-Tac,Fire-Tac,1
+6038,1796,D,CONFD C9,East Tac - Battalion 5,Fire-Tac,Fire-Tac,1
+6039,1797,D,CONFD C10,East Mutual Aid,Interop,Interop,1
+6054,17a6,D,CONFD E1 Wst,West Dispatch,Fire Dispatch,Fire Dispatch,1
+6041,1799,D,CONFD E2,West Control - All Battalions,Fire-Tac,Fire-Tac,1
+6042,179a,D,CONFD E3,West Tac - All Battalions,Fire-Tac,Fire-Tac,1
+6043,179b,D,CONFD E4,West Incident - Battalion 7,Fire-Tac,Fire-Tac,1
+6044,179c,D,CONFD E5,West Command - Battalion 7,Fire-Tac,Fire-Tac,1
+6045,179d,D,CONFD E6,West Tac - Battalion 7,Fire-Tac,Fire-Tac,1
+6046,179e,D,CONFD E7,West Incident - CRK & Battalion 7,Fire-Tac,Fire-Tac,1
+6047,179f,D,CONFD E8,West Command - CRK & Battalion 7,Fire-Tac,Fire-Tac,1
+6048,17a0,D,CONFD E9,West Tac - CRK & Battalion 7,Fire-Tac,Fire-Tac,1
+6049,17a1,D,CONFD E10,West Mutual Aid,Interop,Interop,1
+6093,17cd,D,CONFD I1,Training 1,Fire-Talk,Fire-Talk,1
+6023,1787,D,CONFD I2,Training 2,Fire-Talk,Fire-Talk,1
+6015,177f,D,CONFD I3,Training 3,Fire-Talk,Fire-Talk,1
+6016,1780,D,CONFD I4,Training 4,Fire-Talk,Fire-Talk,1
+6017,1781,D,CONFD I5,Training 5,Fire-Talk,Fire-Talk,1
+6018,1782,D,CONFD I6,Training 6,Fire-Talk,Fire-Talk,1
+6413,190d,D,CONFD I7,Training 7 - SRVF,Fire-Talk,Fire-Talk,1
+6414,190e,D,CONFD I8,Training 8 - SRVF,Fire-Talk,Fire-Talk,1
+6021,1785,D,CONFD I9,Training 9 - Richmond,Fire-Talk,Fire-Talk,1
+6022,1786,D,CONFD I10,Training 10 - Richmond,Fire-Talk,Fire-Talk,1
+6027,178b,D,CONFD I16,Training Emergency,Emergency Ops,Emergency Ops,1
+6096,17d0,D,CONFD J1,Petro-Chemical Mutual Aid Dispatch,Fire Dispatch,Fire Dispatch,1
+6097,17d1,D,CONFD J2,Petro-Chemical Mutual Aid Tac 2,Fire-Tac,Fire-Tac,1
+6098,17d2,D,CONFD J3,Petro-Chemical Mutual Aid Tac 3,Fire-Tac,Fire-Tac,1
+6099,17d3,D,CONFD J4,Petro-Chemical Mutual Aid Tac 4,Fire-Tac,Fire-Tac,1
+6004,1774,D,CONFD J16,Petro-Chemical Mutual Aid Emergency,Emergency Ops,Emergency Ops,1
+6061,17ad,D,CONFD P1,ICS 1,Interop,Interop,1
+6062,17ae,D,CONFD P2,ICS 2,Interop,Interop,1
+6063,17af,D,CONFD P3,ICS 3,Interop,Interop,1
+6064,17b0,D,CONFD P4,ICS 4 ,Interop,Interop,1
+6065,17b1,D,CONFD P5,ICS 5,Interop,Interop,1
+6066,17b2,D,CONFD P6,ICS 6,Interop,Interop,1
+6067,17b3,D,CONFD P7,ICS 7,Interop,Interop,1
+6068,17b4,D,CONFD P8,ICS 8,Interop,Interop,1
+6069,17b5,D,CONFD P9,ICS 9,Interop,Interop,1
+6070,17b6,D,CONFD P10,ICS 10,Interop,Interop,1
+6071,17b7,D,CONFD P11,ICS 11,Interop,Interop,1
+6072,17b8,D,CONFD P12,ICS 12,Interop,Interop,1
+6073,17b9,D,CONFD P13,ICS 13,Interop,Interop,1
+6074,17ba,D,CONFD P14,ICS 14,Interop,Interop,1
+6075,17bb,D,CONFD P15,ICS 15,Interop,Interop,1
+6076,17bc,D,CONFD P16,ICS 16,Interop,Interop,1
+6055,17a7,D,CONFD ADM C,Administration Central,Fire-Talk,Fire-Talk,1
+6056,17a8,D,CONFD ADM E,Administration East,Fire-Talk,Fire-Talk,1
+6057,17a9,D,CONFD ADM W,Administration West,Fire-Talk,Fire-Talk,1
+6058,17aa,D,CONFD PREV,Prevention,Fire-Talk,Fire-Talk,1
+6059,17ab,D,CONFD INVEST,Invest,Fire-Talk,Fire-Talk,1
+6060,17ac,D,CONFD LOGS,Logistics,Fire-Talk,Fire-Talk,1
+6051,17a3,D,CONFD EMER,Emergency,Emergency Ops,Emergency Ops,1
+1007,3ef,D,CCCO Law 1,Law Interop 1,Interop,Interop,1
+1008,3f0,D,CCCO Law 2,Law Interop 2,Interop,Interop,1
+1009,3f1,D,CCCO Law 3,Law Interop 3,Interop,Interop,1
+1018,3fa,D,CCCO Law 4,Law Interop 4,Interop,Interop,1
+1026,402,D,CCCO Fire 1,Fire Interop 1,Interop,Interop,1
+1035,40b,D,CCCO Fire 2,Fire Interop 2,Interop,Interop,1
+1030,406,D,CCCO EMS 1,EMS Interop 1,Interop,Interop,1
+1037,40d,D,CCCO EMS 2,EMS Interop 2,Interop,Interop,1
+6094,17ce,D,CCCO EMS 3,EMS Interop 3,Interop,Interop,1
+6095,17cf,D,CCCO EMS 4,EMS Interop 4,Interop,Interop,1
+1054,41e,D,CCCO Central EOC,Central EOC,Emergency Ops,Emergency Ops,1
+1055,41f,D,CCCO West EOC,West EOC,Emergency Ops,Emergency Ops,1
+1056,420,D,CCCO East EOC,East EOC,Emergency Ops,Emergency Ops,1
+1019,3fb,D,CCCO West IO,West Interop,Interop,Interop,1
+1020,3fc,D,CCCO Central IO,Central Interop,Interop,Interop,1
+1021,3fd,D,CCCO East IO,East Interop,Interop,Interop,1
+1028,404,D,CCCO PW1,Public Works 1,Public Works,Public Works,1
+7709,1e1d,D,COCO SAR 1,Search and Rescue 1,Multi-Tac,Multi-Tac,1
+7727,1e2f,D,CCCO OES 1,Office of Emergency Services 1,Multi-Tac,Multi-Tac,1
+7728,1.00E+30,D,CCCO AC,Animal Control,Public Works,Public Works,1
+7805,1e7d,D,CCCO Probation 1,Probation 1,Law Tac,Law Tac,1
+7806,1e7e,D,CCCO Probation 2,Probation 2,Law Tac,Law Tac,1
+6077,17bd,D,XCC CC1,County Common,Interop,Interop,1
+6078,17be,D,XCC C1,Command 1,Interop,Interop,1
+6079,17bf,D,XCC PIO,Public Info Officer,Interop,Interop,1
+6080,17c0,D,XCC INT 1,Interop 1,Interop,Interop,1
+6081,17c1,D,XCC INT 2,Interop 2,Interop,Interop,1
+6082,17c2,D,XCC INT 3,Interop 3,Interop,Interop,1
+7726,1e2e,D,CCSO West,Dispatch West,Law Dispatch,Law Dispatch,1
+7712,1.00E+20,D,CCSO Central,Dispatch Central,Law Dispatch,Law Dispatch,1
+7715,1.00E+23,D,CCSO East,Dispatch East,Law Dispatch,Law Dispatch,1
+7724,1e2c,D,CCSO Tac1 W,Tac 1 West,Law Tac,Law Tac,1
+7722,1e2a,D,CCSO Tac2 C,Tac 2 Central,Law Tac,Law Tac,1
+7723,1e2b,D,CCSO Tac3 E,Tac 3 East,Law Tac,Law Tac,1
+7725,1e2d,D,CCSO Training,Training,Law Tac,Law Tac,1
+7713,1.00E+21,D,CCSO MSC,Martinez Superior Court,Law Dispatch,Law Dispatch,1
+7716,1.00E+24,D,CCSO Pit Hosp,Pittsburg Hospital,Law Tac,Law Tac,1
+7717,1.00E+25,D,CCSO Ant Hosp,Antioch Hospital,Law Tac,Law Tac,1
+7718,1.00E+26,D,CCSO Rich Hosp,Richmond Hospital,Law Tac,Law Tac,1
+7705,1.00E+19,D,CCSO Admin,Administration,Law Talk,Law Talk,1
+7706,1e1a,D,CCSO Invest,Investigations,Law Tac,Law Tac,1
+7708,1e1c,D,CCSO Narc,Narcotics,Law Tac,Law Tac,1
+7721,1.00E+29,D,CCSO SWAT,SWAT,Law Tac,Law Tac,1
+8906,22ca,D,Danville SE,Special Events,Multi-Tac,Multi-Tac,1
+10005,2715,D,EBRP PD1,Police Dispatch,Multi-Dispatch,Multi-Dispatch,1
+10007,2717,D,EBRP FD1,Fire Dispatch,Fire Dispatch,Fire Dispatch,1
+10008,2718,D,EBRP 4,Operations Ch 4,Multi-Dispatch,Multi-Dispatch,1
+10011,271b,D,EBRP PD7,"Police ""Direct""",Law Tac,Law Tac,1
+8205,200d,D,El Cerrito PW1,Public Works 1,Public Works,Public Works,1
+8206,200e,D,El Cerrito PW2,Public Works 2,Public Works,Public Works,1
+3155,c53,D,Emeryville PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3156,c54,D,Emeryville PD2,Police Ch 2,Law Tac,Law Tac,1
+3157,c55,D,Emeryville PD3,Police Ch 3,Law Tac,Law Tac,1
+3158,c56,D,Emeryville PD4,Police Ch 4,Law Tac,Law Tac,1
+4155,103b,D,Emeryville PW1,Public Works,Public Works,Public Works,1
+3205,c85,D,Fremont PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3206,c86,D,Fremont PD2,Police Service,Law Tac,Law Tac,1
+3207,c87,D,Fremont PD3,Police Ch 3,Law Tac,Law Tac,1
+3208,c88,D,Fremont PD4,Police Ch 4,Law Tac,Law Tac,1
+3209,c89,D,Fremont PD5,Police SSU,Law Tac,Law Tac,1
+3210,c8a,D,Fremont PD6,Police Explorers,Law Tac,Law Tac,1
+3212,c8c,D,Fremont PD8,Police Investigations,Law Tac,Law Tac,1
+3213,c8d,D,Fremont PD9,Police Ch 9,Law Talk,Law Talk,1
+3215,c8f,D,Fremont PD11,Police Ch 11,Law Tac,Law Tac,1
+3216,c90,D,Fremont PD12,Police City Jail,Corrections,Corrections,1
+4205,106d,D,Fremont PW,Public Works,Public Works,Public Works,1
+4206,106e,D,Fremont PW Str1,Public Works Streets 1,Public Works,Public Works,1
+4207,106f,D,Fremont PW Str2,Public Works Streets 2,Public Works,Public Works,1
+4219,107b,D,Fremont AC,Animal Control,Other,Other,1
+4220,107c,D,Fremont Park,Park Rangers,Other,Other,1
+3255,cb7,D,Hayward PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3256,cb8,D,Hayward PD2,Police Channel 2,Law Tac,Law Tac,1
+3257,cb9,D,Hayward PD3,Police Service,Law Tac,Law Tac,1
+3258,cba,D,Hayward PD4,Police Channel 4,Law Tac,Law Tac,1
+3259,cbb,D,Hayward PD5,Police Supervisor,Law Tac,Law Tac,1
+3260,cbc,D,Hayward PD6,Police WiD,Law Tac,Law Tac,1
+2255,8cf,D,Hayward FD,Fire Dispatch,Fire Dispatch,Fire Dispatch,1
+7255,1c57,D,Her/Pin PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7256,1c58,D,Her/Pin PD2,Police Ch 2,Law Tac,Law Tac,1
+7257,1c59,D,Hercules PD3,Police Administration,Law Tac,Law Tac,1
+7258,1c5a,D,Hercules PD4,Police Investigations,Law Tac,Law Tac,1
+7259,1c5b,D,Hercules PD5,Police Tac 1,Law Tac,Law Tac,1
+7260,1c5c,D,Hercules PD6,Police Tac 2,Law Tac,Law Tac,1
+8255,203f,D,Hercules PW1,Public Works 1,Public Works,Public Works,1
+8256,2040,D,Hercules PW2,Public Works 2,Public Works,Public Works,1
+3305,ce9,D,Livermore PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3306,cea,D,Livermore PD2,Police Ch 2,Law Tac,Law Tac,1
+3307,ceb,D,Livermore PD3,Police Ch 3,Law Tac,Law Tac,1
+3308,cec,D,Livermore PD4,Police Tac 4,Law Tac,Law Tac,1
+3309,ced,D,Livermore PD5,Police Special Events,Law Tac,Law Tac,1
+3310,cee,D,Livermore PD6,Police Ch 6,Law Tac,Law Tac,1
+3311,cef,D,Livermore PD7,Police Investigations 1,Law Tac,Law Tac,1
+3312,cf0,D,Livermore PD8,Police Ch 8,Law Tac,Law Tac,1
+3313,cf1,D,Livermore PD9,Police Ch 9,Law Tac,Law Tac,1
+4306,10d2,D,Livermore PW Swr,Public Works Sewers ,Public Works,Public Works,1
+4311,10d7,D,LivermorePW Str1,Public Works Streets 1,Public Works,Public Works,1
+4312,10d8,D,LivermorePW Str2,Public Works Streets 2,Public Works,Public Works,1
+4313,10d9,D,Livermore PW Wtr,Public Works Water Dept,Public Works,Public Works,1
+4310,10d6,D,LVK Airport,Municipal Airport Ops,Public Works,Public Works,1
+5002,138a,D,LAVTA1,Transit Trunking Ch 1 (Bus to Dispatch),Transportation,Transportation,1
+5003,138b,D,LAVTA2,Transit Trunking Ch 2 (Bus to Dispatch),Transportation,Transportation,1
+5004,138c,D,LAVTA3,Transit Trunking Ch 3 (Dispatch to Bus),Transportation,Transportation,1
+5005,138d,D,LAVTA4,Transit Trunking Ch 4 (Dispatch to Bus),Transportation,Transportation,1
+5006,138e,D,LAVTA5,Transit Trunking Ch 5 (Misc Use),Transportation,Transportation,1
+4317,10dd,D,LARPD Ranger,District Rangers,Public Works,Public Works,1
+7305,1c89,D,Martinez PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7306,1c8a,D,Martinez PD2,Police Ch 2,Law Tac,Law Tac,1
+7307,1c8b,D,Martinez PD3,Police Tac 1,Law Tac,Law Tac,1
+7308,1c8c,D,Martinez PD4,Police Tac 2,Law Tac,Law Tac,1
+7309,1c8d,D,Martinez PD5,Police Tac 3,Law Tac,Law Tac,1
+7310,1c8e,D,Martinez PD6,Police Ch 6,Law Tac,Law Tac,1
+7311,1c8f,D,Martinez PD7,Police Ch 7,Law Tac,Law Tac,1
+3355,d1b,D,Newark PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3356,d1c,D,Newark PD2,Police Ch 2,Law Tac,Law Tac,1
+3357,d1d,D,Newark PD3,Police Ch 3,Law Tac,Law Tac,1
+4355,1103,D,Newark PW1,Public Works 1,Public Works,Public Works,1
+3405,d4d,D,Oakland PD1,Police Patrol 1,Law Dispatch,Law Dispatch,1
+3406,d4e,D,Oakland PD2,Police Patrol 2,Law Dispatch,Law Dispatch,1
+3407,d4f,D,Oakland PD3,Police Patrol 3,Law Dispatch,Law Dispatch,1
+3408,d50,D,Oakland PD4,Police Patrol 4,Law Dispatch,Law Dispatch,1
+3409,d51,D,Oakland PD5,Police Patrol 5,Law Dispatch,Law Dispatch,1
+3410,d52,D,Oakland PD6,Police Service 1,Law Talk,Law Talk,1
+3411,d53,D,Oakland PD7,Police Service 2,Law Talk,Law Talk,1
+3418,d5a,D,Oakland PD Tac 1,Police Tac 1,Law Tac,Law Tac,1
+3419,d5b,D,Oakland PD Tac 2,Police Tac 2,Law Tac,Law Tac,1
+3420,d5c,D,Oakland PD Tac 3,Police Tac 3,Law Tac,Law Tac,1
+3421,d5d,D,Oakland PD Tac 4,Police Tac 4,Law Tac,Law Tac,1
+3422,d5e,D,Oakland PD Tac 5,Police Tac 5,Law Tac,Law Tac,1
+3423,d5f,D,Oakland PD Tac 6,Police Tac 6,Law Tac,Law Tac,1
+3424,d60,D,Oakland PD Tac 7,Police Tac 7,Law Tac,Law Tac,1
+3425,d61,D,Oakland PD Tac 8,Police Tac 8,Law Tac,Law Tac,1
+3426,d62,D,Oakland PD Tac 9,Police Tac 9,Law Tac,Law Tac,1
+3430,d66,D,Oakland PD SRS 1,Police Special Resource Section 1,Law Tac,Law Tac,1
+3431,d67,D,Oakland PD SRS 2,Police Special Resource Section 2,Law Tac,Law Tac,1
+3447,d77,D,Oakland HAPD,Housing Authority Police Dispatch ,Law Dispatch,Law Dispatch,1
+2405,965,D,Oakland FD1,Fire Dispatch,Fire Dispatch,Fire Dispatch,1
+2406,966,D,Oakland FD2,Fire Ch 2,Fire-Tac,Fire-Tac,1
+2407,967,D,Oakland FD3,Fire Ch 3,Fire-Tac,Fire-Tac,1
+2408,968,D,Oakland FD4,Fire Ch 4,Fire-Tac,Fire-Tac,1
+2409,969,D,Oakland FD5,Fire Ch 5,Fire-Tac,Fire-Tac,1
+2410,96a,D,Oakland FD6,Fire Ch 6,Fire-Tac,Fire-Tac,1
+2411,96b,D,Oakland FD7,Fire Ch 7,Fire-Tac,Fire-Tac,1
+2412,96c,D,Oakland FD8,Fire Ch 8,Fire-Tac,Fire-Tac,1
+2413,96d,D,Oakland FD9,Fire Ch 9,Fire-Tac,Fire-Tac,1
+2414,96e,D,Oakland FD10,Fire Ch 10,Fire-Tac,Fire-Tac,1
+2416,970,D,Oakland FD12,Fire Airport Crash Crews,Fire Dispatch,Fire Dispatch,1
+2434,982,D,Oakland FD Siren,Fire Emergency Sirens,Data,Data,1
+4405,1135,D,Oakland PW,Public Works,Public Works,Public Works,1
+4422,1146,D,Oakland Parking2,Parking Enforcement,Law Dispatch,Law Dispatch,1
+4421,1145,D,Oakland Parking1,Parking Enforcement,Public Works,Public Works,1
+5123,1403,D,OCCD PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+5093,1.30E+06,D,OLSD Ops,Operations,Utilities,Utilities,1
+5094,1.30E+07,D,OLSD Ops,Operations,Utilities,Utilities,1
+5095,1.30E+08,D,OLSD Ops,Operations,Utilities,Utilities,1
+5096,1.30E+09,D,OLSD Ops,Operations,Utilities,Utilities,1
+5097,1.30E+10,D,OLSD Ops,Operations,Utilities,Utilities,1
+5565,15bd,D,PP Ops,Operations,EMS-Tac,EMS-Tac,1
+5121,1401,D,PRFTA 1,Operations,Military,Military,1
+3455,d7f,D,Piedmont PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+2455,997,D,Piedmont FD1,Fire Dispatch,Fire Dispatch,Fire Dispatch,1
+8405,20d5,D,Pinole PW1,Public Works 1,Public Works,Public Works,1
+8406,20d6,D,Pinole PW2,Public Works 2,Public Works,Public Works,1
+7405,1ced,D,Pittsburg PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7406,1cee,D,Pittsburg PD2,"Police ""P16""",Law Tac,Law Tac,1
+7455,1d1f,D,PleasantHill PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7456,1d20,D,PleasantHill PD2,Police Ch 2,Law Tac,Law Tac,1
+3505,db1,D,Pleasanton PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3506,db2,D,Pleasanton PD2,Police Tac 2,Law Tac,Law Tac,1
+3507,db3,D,Pleasanton PD3,Police Tac 3,Law Tac,Law Tac,1
+3508,db4,D,Pleasanton PD4,Police Tac 4,Law Tac,Law Tac,1
+3509,db5,D,Pleasanton PD5,Police Events,Law Tac,Law Tac,1
+3510,db6,D,Pleasanton PD6,Police Investigations,Law Tac,Law Tac,1
+3511,db7,D,Pleasanton PD7,Police SEU,Law Tac,Law Tac,1
+4513,11a1,D,Pleasanton Para,Paratransit Service,Transportation,Transportation,1
+7505,1d51,D,Richmond PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7506,1d52,D,Richmond PD2,Police Ch 2,Law Tac,Law Tac,1
+7507,1d53,D,Richmond PD3,Police Administration,Law Tac,Law Tac,1
+7508,1d54,D,Richmond PD4,Police Investigations,Law Tac,Law Tac,1
+7509,1d55,D,Richmond PD5,Police Tac 1,Law Talk,Law Talk,1
+7510,1d56,D,Richmond PD6,Police Tac 2,Law Talk,Law Talk,1
+6300,189c,D,Richmond FD Ann,Fire All Call,Fire Dispatch,Fire Dispatch,1
+6305,18a1,D,Richmond FD1,Fire Dispatch,Fire Dispatch,Fire Dispatch,1
+6306,18a2,D,Richmond FD2,Fire Tac 1,Fire-Tac,Fire-Tac,1
+6307,18a3,D,Richmond FD3,Fire Tac 2,Fire-Tac,Fire-Tac,1
+6308,18a4,D,Richmond FD4,Fire Tac 3,Fire-Tac,Fire-Tac,1
+6309,18a5,D,Richmond FD5,Fire Tac 4,Fire-Tac,Fire-Tac,1
+6310,18a6,D,Richmond FD6,Fire Tac 5,Fire-Tac,Fire-Tac,1
+6311,18a7,D,Richmond FD7,Fire Administration,Fire-Talk,Fire-Talk,1
+6312,18a8,D,Richmond FD8,Fire Prevention,Fire-Talk,Fire-Talk,1
+6313,18a9,D,Richmond FD9,Fire Patch - Richmond Fire/CONFire,Fire Dispatch,Fire Dispatch,1
+6316,18ac,D,Richmond FD12,Fire Emergency,Emergency Ops,Emergency Ops,1
+8555,216b,D,Richmond PW 1,Public Works 1,Public Works,Public Works,1
+8556,216c,D,Richmond PW 2,Public Works 2,Public Works,Public Works,1
+3555,de3,D,San Leandro PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3556,de4,D,San Leandro PD2,Police Ch 2,Law Tac,Law Tac,1
+3557,de5,D,San Leandro PD3,Police Tac 3,Law Tac,Law Tac,1
+3558,de6,D,San Leandro PD4,Police Tac 4,Law Tac,Law Tac,1
+3559,de7,D,San Leandro PD5,Police Tac 5,Law Tac,Law Tac,1
+3560,de8,D,San Leandro PD6,Police Investigations,Law Tac,Law Tac,1
+3561,de9,D,San Leandro PD7,Police Vice,Law Tac,Law Tac,1
+3562,dea,D,San Leandro PD8,Police Traffic,Law Tac,Law Tac,1
+3563,deb,D,San Leandro PD9,Police Admin,Law Tac,Law Tac,1
+3564,dec,D,San Leandro PD10,Police City WiD,Law Tac,Law Tac,1
+4555,11cb,D,San Leandro PW1,Public Works 1,Public Works,Public Works,1
+4556,11cc,D,San Leandro PW2,Public Works 2,Public Works,Public Works,1
+7655,1de7,D,San Pablo PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+8605,219d,D,San Pablo PW1,Public Works 1,Public Works,Public Works,1
+8606,219e,D,San Pablo PW2,Public Works 2,Public Works,Public Works,1
+7556,1d84,D,San Ramon PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7557,1d85,D,San Ramon PD2,Police Ch 2,Law Tac,Law Tac,1
+7558,1d86,D,San Ramon PD3,Police Ch 3,Law Tac,Law Tac,1
+7559,1d87,D,San Ramon PD4,Police Ch 4,Law Tac,Law Tac,1
+7560,1d88,D,San Ramon PD5,Police Ch 5,Law Tac,Law Tac,1
+8658,21d2,D,San Ramon PW,Public Works,Public Works,Public Works,1
+8659,21d3,D,San Ramon PW,Public Works,Public Works,Public Works,1
+8663,21d7,D,San Ramon PW,Public Works,Public Works,Public Works,1
+8666,21da,D,San Ramon PW,Public Works,Public Works,Public Works,1
+6405,1905,D,SRVFPD1,Fire Dispatch,Fire Dispatch,Fire Dispatch,1
+6406,1906,D,SRVFPD2,Fire Ch 2,Fire-Tac,Fire-Tac,1
+6407,1907,D,SRVFPD3,Fire Ch 3,Fire-Tac,Fire-Tac,1
+6408,1908,D,SRVFPD4,Fire Ch 4,Fire-Tac,Fire-Tac,1
+6409,1909,D,SRVFPD5,Fire Ch 5,Fire-Tac,Fire-Tac,1
+6410,190a,D,SRVFPD6,Fire Ch 6,Fire-Tac,Fire-Tac,1
+6411,190b,D,SRVFPD7,Fire Ch 7,Fire-Tac,Fire-Tac,1
+6412,190c,D,SRVFPD8,Fire Ch 8,Fire-Tac,Fire-Tac,1
+6415,190f,D,SRVFPD EM,Fire Emergency,Emergency Ops,Emergency Ops,1
+3605,e15,D,UCB PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3606,e16,D,UCB PD2,Police Ch 2,Law Tac,Law Tac,1
+3607,e17,D,UCB PD3,Police Investigations,Law Tac,Law Tac,1
+3608,e18,D,UCB PD4,Police Enforcement,Law Tac,Law Tac,1
+3609,e19,D,UCB PD5,Police Tac,Law Tac,Law Tac,1
+3610,e1a,D,UCB PD6,Police Supervisors,Law Tac,Law Tac,1
+3611,e1b,D,UCB PD7,Police CSO Ch 1 (BearWALK Escorts),Law Talk,Law Talk,1
+3612,e1c,D,UCB PD8,Police CSO Ch 2,Schools,Schools,1
+3655,e47,D,Union City PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+3656,e48,D,Union City PD2,Police Ch 2,Law Tac,Law Tac,1
+3657,e49,D,Union City PD3,Police Ch 3,Law Tac,Law Tac,1
+3658,e4a,D,Union City PD4,Police Ch 4,Law Tac,Law Tac,1
+3659,e4b,D,Union City PD5,Police Ch 5,Law Tac,Law Tac,1
+3660,e4c,D,Union City PD6,Police Ch 6,Law Tac,Law Tac,1
+4606,11fe,D,Union City PW2,Public Works Main,Public Works,Public Works,1
+4608,1200,D,UC Transit Local,Transit - Local,Transportation,Transportation,1
+4609,1201,D,UC Transit Para,Transit - Paratransit,Transportation,Transportation,1
+4610,1202,D,UC Transit WiD,Transit - WiD,Transportation,Transportation,1
+4611,1203,D,UC Transit Admin,Transit - Administration,Transportation,Transportation,1
+7605,1db5,D,Walnut Creek PD1,Police Dispatch,Law Dispatch,Law Dispatch,1
+7606,1db6,D,Walnut Creek PD2,Police Ch 2,Law Tac,Law Tac,1
+7607,1db7,D,Walnut Creek PD3,Police Ch 3,Law Tac,Law Tac,1
+7608,1db8,D,Walnut Creek PD4,Police Ch 4,Law Tac,Law Tac,1
+7609,1db9,D,Walnut Creek PD5,Police Ch 5,Law Tac,Law Tac,1
+7612,1dbc,D,Walnut Creek PD8,Police Ch 8,Law Tac,Law Tac,1
+65496,ffd8,D,Radio Techs,Radio Testing,Public Works,Public Works,1
+65497,ffd9,D,Radio Techs,Radio Testing,Public Works,Public Works,1
+65502,ffD,D,Radio Techs,Radio Testing,Public Works,Public Works,1
+65530,fffa,D,Radio Techs,Radio Testing,Public Works,Public Works,1
+65531,fffb,D,Radio Techs,Radio Testing,Public Works,Public Works,1
+65533,fffd,D,Radio Techs,Radio Testing,Public Works,Public Works,1
+65534,fffe,D,Radio Techs,Radio Testing,Public Works,Public Works,1
