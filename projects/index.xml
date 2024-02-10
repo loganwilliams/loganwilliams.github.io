@@ -49,7 +49,8 @@
       <pubDate>Sat, 06 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>http://subject.space/projects/east-bay-live/</guid>
-      <description></description>
+      <description>East Bay Live was an experimental timeline-based police, fire, and EMS scanner application.
+While many radios still operate on a paradigm of channels, in reality, the modern &amp;ldquo;trunked&amp;rdquo; radio systems used by police and other organizations use only a small number of real frequency channels to support dozens of virtual channels. This allows a software-defined radio to listen to every &amp;ldquo;channel&amp;rdquo; simultaneously, and suggests alternative paradigms for police monitoring, open source research and accountability.</description>
     </item>
     
     <item>
