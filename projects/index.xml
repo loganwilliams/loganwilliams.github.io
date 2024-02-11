@@ -44,6 +44,15 @@
     </item>
     
     <item>
+      <title>Bellingcat: Coronavirus Relief Interactive</title>
+      <link>http://subject.space/projects/ppp-aid/</link>
+      <pubDate>Sat, 12 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://subject.space/projects/ppp-aid/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Stamen: 12 Sunsets</title>
       <link>http://subject.space/projects/stamen-12-sunsets/</link>
       <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
@@ -284,15 +293,6 @@ Your browser does not support the video tag. Amplified atmospheric light bending
       
       <guid>http://subject.space/projects/san-francisco-language-maps/</guid>
       <description>San Francisco is one of the most multilingual places that I have ever lived. I was curious about who spoke what, and where, so I made some maps in the style of The Racial Dot Map to try to show this data. I also wanted to avoid the rendering issues that The Racial Dot Map has, where certain classes of dots are always drawn on top of other classes of dots - in these maps, the rendering order of each dot is randomized.</description>
-    </item>
-    
-    <item>
-      <title>Boundary Conditions</title>
-      <link>http://subject.space/projects/boundary-conditions/</link>
-      <pubDate>Wed, 01 Oct 2014 00:00:00 +0000</pubDate>
-      
-      <guid>http://subject.space/projects/boundary-conditions/</guid>
-      <description></description>
     </item>
     
     <item>
