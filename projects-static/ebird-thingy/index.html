@@ -12,7 +12,7 @@
       src="https://plausible.io/js/script.js"
     ></script>
 
-    <title>Life List Extents</title>
+    <title>Life List Extents — eBird thingy</title>
 
     <!-- meta open graph tags -->
     <meta
@@ -89,6 +89,10 @@
         font-size: 18px;
         font-weight: normal;
         border: 1px solid #444;
+      }
+      
+      .variable h2.active {
+        border: 1px solid #999;
       }
 
       ul {
@@ -222,7 +226,7 @@
 
     <div id="app" style="display: none">
       <div class="variable">
-        <h2 id="seen">How many birds have you seen?</h2>
+        <h2 id="seen" class="active">How many birds have you seen?</h2>
         <h2 id="recognized">How many birds would you recognize?</h2>
         <h2 id="remaining">How many birds yet to see?</h2>
         <h2 id="ratio">Percentage recognized</h2>
@@ -578,6 +582,12 @@
           run_now
         ) {
           document.getElementById(id).onclick = function () {
+            // set active
+            document.querySelectorAll(".variable h2").forEach((h) => {
+              h.classList.remove("active");
+            });
+            document.getElementById(id).classList.add("active");
+
             imageOverlay.setUrl("data:image/png;base64, " + image);
             document.getElementById("labels").innerHTML = "";
             // create new labels from 0 to max
