@@ -35,7 +35,11 @@
     <meta property="og:url" content="https://subject.space/birds" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <script defer data-domain="subject.space" src="https://plausible.io/js/script.js"></script>
+    <script
+      defer
+      data-domain="subject.space"
+      src="https://plausible.io/js/script.js"
+    ></script>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
@@ -141,7 +145,7 @@
       }
 
       li:hover {
-        border: 1px solid #ccc;
+        border: 1px solid #aaa;
       }
 
       li.seen {
@@ -1192,6 +1196,35 @@
           return;
         }
 
+        function onclick(b) {
+          if (b.index + 1 == material.uniforms.u_mode.value) {
+            console.log("closing");
+            document.getElementById("three").style.display = "block";
+            document.getElementById("overlay").src = "";
+            document.getElementById("overlay").style.display = "none";
+            material.uniforms.u_mode.value = mode;
+            render();
+            return;
+          }
+
+          document.getElementById("three").style.display = "block";
+          document.getElementById("overlay").style.display = "none";
+
+          material.uniforms.u_mode.value = b.index + 1;
+          render();
+
+          document.getElementById(
+            "overlay"
+          ).src = `./equalearth_by_code/${b.code}.png`;
+
+          document
+            .getElementById("overlay")
+            .addEventListener("load", function () {
+              document.getElementById("overlay").style.display = "block";
+              document.getElementById("three").style.display = "none";
+            });
+        }
+
         // API call with the rounded pixel position
         fetch(`https://ebird.subject.space/birds?y=${scaledY}&x=${scaledX}`)
           .then((response) => response.json())
@@ -1220,24 +1253,11 @@
                 li.classList.add("rrecognize");
               }
 
-              li.onmouseenter = function () {
-                document.getElementById("three").style.display = "block";
-                document.getElementById("overlay").style.display = "none";
-
-                material.uniforms.u_mode.value = b.index + 1;
-                render();
-
-                document.getElementById(
-                  "overlay"
-                ).src = `./equalearth_by_code/${b.code}.png`;
-
-                document
-                  .getElementById("overlay")
-                  .addEventListener("load", function () {
-                    document.getElementById("overlay").style.display = "block";
-                    document.getElementById("three").style.display = "none";
-                  });
-              };
+              if (!isMobile) {
+                li.onmouseenter = () => onclick(b);
+              } else {
+                li.onclick = () => onclick(b);
+              }
 
               document.getElementById("birds").appendChild(li);
             });
