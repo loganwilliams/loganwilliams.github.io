@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Where is the Bird's House?</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1100px" />
+
+    <link type="text/css" rel="stylesheet" href="main.css" />
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://greggman.github.io/webgl-memory/webgl-memory.js"
+      crossorigin
+    ></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- open graph card tags -->
+    <meta property="og:title" content="Where is the Bird's House?" />
+    <meta
+      property="og:description"
+      content="View range data for over 11,000 bird species, and explore your lifelist, ecosystem boundaries and unexpected connections across the globe."
+    />
+    <meta property="og:image" content="preview.jpg" />
+    <meta property="og:url" content="https://subject.space/birds" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script defer data-domain="subject.space" src="https://plausible.io/js/script.js"></script>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+    <script src="iso.js"></script>
+    <script src="codes.js"></script>
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      .container {
+        position: relative;
+        overflow: hidden;
+      }
+
+      #three {
+        position: absolute;
+        top: 0em;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        height: 512px;
+        width: 512px;
+        transform: scale(2, 0.975);
+        transform-origin: top left;
+        z-index: 1;
+        mix-blend-mode: multiply;
+        cursor: crosshair;
+        filter: saturate(80%);
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+        width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        font-family: Arial, Helvetica, sans-serif;
+        font-family: "Times New Roman", Times, serif;
+        color: black;
+        background-color: rgb(255, 254, 249);
+        position: relative;
+      }
+
+      #inset {
+        width: 1024px;
+        height: 500px;
+        /* background: url(bg2.png); */
+        background-size: contain;
+        z-index: 0;
+        filter: brightness(102%);
+      }
+
+      .buttons {
+        z-index: 10;
+        position: absolute;
+        top: 1em;
+        left: 1em;
+      }
+
+      .buttons button,
+      .buttons .custom-file-upload {
+        display: block;
+        margin-bottom: 1em;
+        font-family: inherit;
+        font-size: 19.2px;
+        background-color: white;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        box-shadow: 2px 2px 3px #aaa;
+        padding: 1px 6px;
+      }
+
+      .buttons button:hover,
+      .buttons .custom-file-upload:hover {
+        border: 1px solid #888;
+        box-shadow: 3px 3px 3px #aaa;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        height: 377px;
+        overflow-x: scroll;
+        cursor: pointer;
+      }
+
+      li {
+        /* width: 30%; */
+        margin-right: 0.25em;
+        margin-bottom: 0.125em;
+        padding: 0.125em 0.25em;
+        border-radius: 0.125em;
+        max-width: 50%;
+        box-sizing: border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+      }
+
+      li:hover {
+        border: 1px solid #ccc;
+      }
+
+      li.seen {
+        background-color: rgb(102, 209, 118);
+        background-color: rgba(21, 117, 234, 0.2);
+      }
+
+      li.recognize {
+        /* background-color: rgb(58, 150, 118); */
+        background-color: rgba(21, 117, 234, 0.4);
+      }
+
+      li.rrecognize {
+        background-color: rgba(21, 117, 234, 0.7);
+        color: white;
+      }
+
+      #extra {
+        position: relative;
+        padding: 0.5em;
+        display: block;
+        background: white;
+        filter: url(#blur3);
+        padding-top: 11.5em;
+        z-index: 0;
+        width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px;
+        transition: 1s;
+        overflow: hidden;
+        margin-top: -24em;
+        height: 0px;
+        margin-bottom: 14em;
+      }
+
+      .clipping {
+        /* margin-top: -3em; */
+        position: relative;
+      }
+
+      #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+      }
+
+      h1 {
+        font-family: "Spectral", serif;
+        font-weight: 300;
+        font-style: italic;
+        letter-spacing: 0.03em;
+        font-size: 3em;
+        margin-bottom: -0.25em;
+      }
+
+      h2 {
+        font-family: "Spectral", serif;
+        font-weight: 300;
+        letter-spacing: 0.03em;
+        margin-bottom: 0.25em;
+        margin-left: 0.15em;
+        text-align: center;
+      }
+
+      p {
+        /* increase character spacing */
+        font-size: 120%;
+        margin-left: 0.25em;
+        margin-right: 0.25em;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      #scale .row {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      #scale img {
+        width: 100%;
+        height: 15px;
+        filter: saturate(80%);
+        border: 1px solid #444;
+      }
+
+      #scale {
+        margin-top: 0em;
+        margin-bottom: 0.5em;
+        width: 606px;
+        margin-left: auto;
+        margin-right: auto;
+        /* background-color: white; */
+        padding: 8px;
+        /* box-shadow: 0px 2px 3px black; */
+        z-index: 5;
+        position: relative;
+        user-select: none;
+      }
+
+      .ring-svg {
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      path {
+        /* clip-path: polygon(3% 0, 7% 1%, 11% 0%, 16% 2%, 20% 0, 23% 2%, 28% 2%, 32% 1%, 35% 1%, 39% 3%, 41% 1%, 45% 0%, 47% 2%, 50% 2%, 53% 0, 58% 2%, 60% 2%, 63% 1%, 65% 0%, 67% 2%, 69% 2%, 73% 1%, 76% 1%, 79% 0, 82% 1%, 85% 0, 87% 1%, 89% 0, 92% 1%, 96% 0, 98% 3%, 99% 3%, 99% 6%, 100% 11%, 98% 15%, 100% 21%, 99% 28%, 100% 32%, 99% 35%, 99% 40%, 100% 43%, 99% 48%, 100% 53%, 100% 57%, 99% 60%, 100% 64%, 100% 68%, 99% 72%, 100% 75%, 100% 79%, 99% 83%, 100% 86%, 100% 90%, 99% 94%, 99% 98%, 95% 99%, 92% 99%, 89% 100%, 86% 99%, 83% 100%, 77% 99%, 72% 100%, 66% 98%, 62% 100%, 59% 99%, 54% 99%, 49% 100%, 46% 98%, 43% 100%, 40% 98%, 38% 100%, 35% 99%, 31% 100%, 28% 99%, 25% 99%, 22% 100%, 19% 99%, 16% 100%, 13% 99%, 10% 99%, 7% 100%, 4% 99%, 2% 97%, 1% 97%, 0% 94%, 1% 89%, 0% 84%, 1% 81%, 0 76%, 0 71%, 1% 66%, 0% 64%, 0% 61%, 0% 59%, 1% 54%, 0% 49%, 1% 45%, 0% 40%, 1% 37%, 0% 34%, 1% 29%, 0% 23%, 2% 20%, 1% 17%, 1% 13%, 0 10%, 1% 6%, 1% 3%);  */
+      }
+
+      tspan {
+        letter-spacing: 1.5px;
+        fill: #444;
+        font-family: "Spectral", serif;
+      }
+
+      svg {
+        transition: 1s;
+        transform: rotate(0deg);
+        width: 800px;
+        height: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #sectorPath_0 {
+        filter: url(#squiggle) url(#shadow2);
+      }
+
+      .container {
+        filter: url(#shadow1);
+      }
+
+      .controls {
+        position: absolute;
+        width: 100%;
+        top: -11.5em;
+        display: flex;
+        justify-content: center;
+        pointer-events: none;
+      }
+
+      .app {
+        position: relative;
+        margin-top: 5.5em;
+        z-index: 3;
+      }
+
+      #ring {
+        transform: translateY(0px);
+        pointer-events: none;
+      }
+
+      #ring:hover {
+        transform: translateY(-10px);
+        transition: 0.5s;
+      }
+
+      #ring:hover #sectorPath_0 {
+        filter: url(#squiggle) url(#shadow3);
+      }
+
+      #ringrotate path.arrow {
+        stroke: #aaa;
+        fill: #aaa;
+      }
+
+      #ringrotate g:hover path.arrow {
+        stroke: #444;
+        fill: #444;
+      }
+
+      #ring:hover tspan {
+        text-decoration: underline;
+      }
+
+      #ring:hover #ringdown path,
+      #ring:hover #ringup path {
+        fill: #444;
+        stroke: #444;
+      }
+
+      #ring #ringdown path,
+      #ring #ringup path {
+        fill: #aaa;
+        stroke: #aaa;
+      }
+
+      #ring * {
+        pointer-events: visible;
+        user-select: none;
+      }
+
+      #normalize {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      #scale .row div {
+        width: 33%;
+      }
+
+      #scale .row div:nth-child(2) {
+        text-align: center;
+      }
+
+      #scale .row div:nth-child(3) {
+        text-align: right;
+      }
+
+      #inset img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+      }
+
+      #birdcontrols {
+        display: flex;
+        justify-content: center;
+        font-size: 2.5em;
+        margin-top: -0.5em;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      #controlleft,
+      #controlright {
+        cursor: pointer;
+        margin-right: 1em;
+        margin-left: 1em;
+        opacity: 0.4;
+      }
+
+      #controlleft:hover,
+      #controlright:hover {
+        /* text-shadow: 0px 0px 3px black; */
+        opacity: 0.8;
+      }
+
+      .mobilewarning {
+        display: none;
+      }
+
+      @media (max-width: 1100px) {
+        .mobilewarning {
+          display: block;
+          font-weight: bold;
+        }
+      }
+
+      a {
+        color: black;
+      }
+
+      @media (max-device-width: 480px) {
+        h1 {
+          font-size: 5em;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Where is the Bird's House?</h1>
+    <p>
+      Mouse over the map to view range data for over 11,000 bird species.
+      Explore biome dependence, ecosystem boundaries and unexpected connections
+      across the globe.
+    </p>
+
+    <p>
+      Click on the map to see the species that are being mapped and view
+      individual ranges. All data is from eBird hotspot observations.
+    </p>
+
+    <p>
+      Bring your eBird data, and see the ranges of your life list species. Find
+      where on the planet you would identify the most familiar birds, and where
+      you have the most to see.
+    </p>
+
+    <p class="mobilewarning">
+      This map requires a lot of WebGL memory and might not work great on a
+      mobile device. Best viewed on a desktop.
+    </p>
+
+    <div class="app">
+      <div class="controls">
+        <svg
+          id="ring"
+          class="ring-svg"
+          width="100%"
+          height="100%"
+          viewBox="0 0 1000 1000"
+          style="transition: 0.5s"
+        >
+          <defs>
+            <filter id="squiggle">
+              <feTurbulence
+                type="fractalNoise"
+                id="turbulence"
+                baseFrequency=".05"
+                numOctaves="4"
+              />
+              <feDisplacementMap
+                id="displacement"
+                in="SourceGraphic"
+                scale="10"
+              />
+            </filter>
+            <filter id="shadow1">
+              <feDropShadow
+                dx="0"
+                dy="0"
+                stdDeviation="2"
+                flood-color="black"
+                flood-opacity="0.3"
+              />
+            </filter>
+            <filter id="shadow2">
+              <feDropShadow
+                dx="0"
+                dy="0"
+                stdDeviation="3"
+                flood-color="black"
+                flood-opacity="0.3"
+              />
+            </filter>
+            <filter id="shadow3">
+              <feDropShadow
+                dx="0"
+                dy="0"
+                stdDeviation="4"
+                flood-color="black"
+                flood-opacity="0.3"
+              />
+            </filter>
+            <marker
+              id="head"
+              orient="auto"
+              markerWidth="3"
+              markerHeight="4"
+              refX="0.1"
+              refY="2"
+            >
+              <path d="M0,0 V4 L2,2 Z" class="arrowhead" fill="context-fill" />
+            </marker>
+            <marker
+              id="arrow"
+              markerWidth="10"
+              markerHeight="10"
+              refX="5"
+              refY="5"
+              orient="auto"
+              markerUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 0 0 L 10 5 L 0 10 z"
+                class="arrowhead"
+                fill="context-fill"
+              />
+            </marker>
+          </defs>
+
+          <g class="sector-g" transform="translate(500,500)">
+            <path
+              id="sectorPath_0"
+              d="M 0 0 m 350 0 a 350 350 0 1 1 -700 0 a 350 350 0 1 1 700 0"
+              fill="rgb(243 238 213)"
+              transform="rotate(45)"
+              stroke-dasharray="29"
+              stroke="rgb(243 238 213)"
+              stroke-width="20"
+            />
+
+            <text class="segment-label" x="0" y="0" id="ringlabels">
+              <textPath
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xlink:href="#sectorPath_0"
+                text-anchor="middle"
+                startOffset="87.5%"
+              >
+                <tspan class="gear" dy="32px" x="0px">
+                  How many birds you've seen
+                </tspan>
+              </textPath>
+
+              <textPath
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xlink:href="#sectorPath_0"
+                text-anchor="middle"
+                startOffset="62.5%"
+              >
+                <tspan class="gear" dy="32px" x="0px" id="addlabel">
+                  Add eBird data
+                </tspan>
+              </textPath>
+
+              <textPath
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xlink:href="#sectorPath_0"
+                text-anchor="middle"
+                startOffset="37.5%"
+              >
+                <tspan class="gear" dy="32px" x="0px">Birds yet to see</tspan>
+              </textPath>
+
+              <textPath
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xlink:href="#sectorPath_0"
+                text-anchor="middle"
+                startOffset="12.5%"
+              >
+                <tspan class="gear" dy="32px" x="0px">
+                  How many birds you've
+                </tspan>
+                <tspan dy="30px" x="0px">seen multiple times</tspan>
+              </textPath>
+            </text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="container">
+        <div class="clipping">
+          <canvas id="three"></canvas>
+          <div id="inset">
+            <img style="margin-top: 3px" src="bgmap_inverted.png" />
+          </div>
+          <img id="overlay" />
+        </div>
+
+        <div class="buttons" style="display: none">
+          <label class="custom-file-upload" id="upload" style="opacity: 0">
+            <input id="file" type="file" style="visibility: hidden" />
+            Add eBird data
+          </label>
+          <button id="screenshot" type="button">Save image</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="scale">
+      <div class="row">
+        <img src="gnuplot2_inverted.png" />
+      </div>
+      <div class="row" id="scalerow">
+        <div class="label">
+          0 birds <span id="normalize">(normalized?)</span>
+        </div>
+        <div class="label">50</div>
+        <div class="label">100 birds</div>
+      </div>
+    </div>
+
+    <div id="extra">
+      <h2 id="location">Birds near lat, lng</h2>
+      <ul id="birds"></ul>
+      <div id="birdcontrols">
+        <div id="controlleft">←</div>
+        <div id="controlright">→</div>
+      </div>
+    </div>
+
+    <h1>Information</h1>
+    <p>
+      To add your eBird data, first
+      <a href="https://ebird.org/downloadMyData"
+        >download your data from eBird</a
+      >
+      as a CSV file. Then click "Add eBird data" and choose that CSV file. Your
+      data stays on your computer and is not sent anywhere.
+    </p>
+    <p>
+      All data is sourced from <a href="https://ebird.org/">eBird</a>, in the
+      silliest possible way. Unfortunately,
+      <a
+        href="https://exclav.es/2023/03/22/inaturalist-observations-locals-and-tourists/"
+        >like many citizen science projects</a
+      >, eBird data has geographic biases and not all regions are equally
+      represented.
+    </p>
+    <p>Project by <a href="https://subject.space">Logan Williams</a></p>
+
+    <script id="vertexShader" type="x-shader/x-vertex">
+      varying vec2 vUv;
+
+      void main() {
+          vUv = uv;
+
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    </script>
+
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        precision mediump float;
+        precision mediump sampler2DArray;
+        precision mediump sampler2D;
+
+        varying vec2 vUv;
+
+        uniform sampler2DArray u_data;
+        uniform sampler2DArray u_data_first;
+        uniform sampler2DArray u_data_last;
+
+        uniform sampler2D u_maxdata;
+        uniform sampler2D u_cmdata;
+        uniform sampler2D u_seenbirds;
+        uniform sampler2D u_recognizedbirds;
+        uniform int u_seenbirdscount;
+        uniform vec2 mouse;
+
+        uniform vec3 u_size;
+
+        uniform lowp int u_mode;
+        uniform lowp int u_normalize;
+        uniform lowp int u_cursor;
+
+        vec2 convert_to_lng_lat(vec2 uv) {
+          float lat = (2.0 * atan(exp((1.0 - 2.0 * uv.y) * 3.1415926535897932384626433832795)) - 3.1415926535897932384626433832795 / 2.0) * 180.0 / 3.1415926535897932384626433832795;
+          float lon = uv.x * 360.0 - 180.0;
+          return vec2(lon, lat);
+        }
+
+        vec2 convert_to_uv(vec2 lng_lat) {
+          float x = (lng_lat.x + 180.0) / 360.0;
+          float y = 1.0 - (log(tan(3.1415926535897932384626433832795 / 4.0 + radians(lng_lat.y) / 2.0)) / 3.1415926535897932384626433832795 + 1.0) / 2.0;
+          return vec2(x, y);
+        }
+
+        vec2 invert_lambert(vec2 uv) {
+          // Convert the mouse position to lat, lng (Lambert Equal Area inverse)
+
+          float lng = uv.x * 360.0 - 180.0;
+          float lat = asin(-(2.0 * uv.y - 1.0)) * 180.0 / 3.1415926535897932384626433832795;
+          return vec2(lng, lat);
+        }
+
+        vec2 invert_mollweide(vec2 uv) {
+          // Convert the mouse position to lat, lng (Mollweide inverse)
+
+          float x = uv.x * 2.8284271247 * 2.0 - 2.8284271247;
+          float y = (1.0 - uv.y) * 1.4142135624 * 2.0 - 1.4142135624;
+
+          float theta = asin(y / sqrt(2.0));
+          float phi = asin((2.0 * theta + sin(2.0 * theta)) / 3.1415926535897932384626433832795);
+
+          float lat = phi / 3.1415926535897932384626433832795 * 180.0;
+          float lng = 3.1415926535897932384626433832795 * x / (2.0 * sqrt(2.0) * cos(theta)) * (180.0 / 3.1415926535897932384626433832795);
+
+          return vec2(lng, lat);
+        }
+
+        // Constants for the Equal Earth inverse projection
+      const float A1 = 1.340264;
+      const float A2 = -0.081106;
+      const float A3 = 0.000893;
+      const float A4 = 0.003796;
+      const float M = sqrt(3.0) / 2.0;
+      const float PI = 3.1415926535897932384626433832795;
+
+      vec2 equalEarthInverse(vec2 xy) {
+          // Scale from 0-1 to actual projection coordinates
+          // These are hand-tweaked magic numbers, I don't like them
+          xy = xy * 2.0 - 1.0;
+          float x = xy.x * M * 0.995 * PI;
+          float y = -0.42 * xy.y * PI;
+
+          // Calculate theta using Newton's method
+          float theta = y;
+          float delta;
+          for(int i = 0; i < 12; i++) {
+              float theta2 = theta * theta;
+              float theta4 = theta2 * theta2;
+              float theta6 = theta4 * theta2;
+
+              float delta = (theta * (A1 + A2 * theta2 + A3 * theta6 + A4 * theta4 * theta4) - y) / (A1 + 3.0 * A2 * theta2 + 7.0 * A3 * theta6 + 9.0 * A4 * theta4 * theta4);
+
+              theta = theta - delta;
+
+              if (abs(delta) < 1e-6) break;
+          }
+
+          // Calculate longitude and latitude
+          float theta2 = theta * theta;
+          float theta4 = theta2 * theta2;
+          float theta6 = theta4 * theta2;
+
+          float beta = asin(2.0 * sin(theta) / sqrt(3.0));
+          float lambda = x * sqrt(3.0)* (A1 + 3.0 * A2 * theta2 + 7.0 * A3 * theta6 + 9.0 * A4 * theta4 * theta4) / (2.0 * cos(theta));
+
+          // Convert to degrees and normalize
+          float lon = degrees(lambda);
+          float lat = degrees(beta);
+
+          // Normalize longitude to [-180, 180]
+          lon = mod(lon + 180.0, 360.0) - 180.0;
+
+          return vec2(lon, lat);
+      }
+
+      int get_raw(int i, vec2 xy) {
+          return int(255.0 * texture(u_data, vec3(xy.x, xy.y, i)).r);
+      }
+
+
+        void main() {
+            float count = 0.0;
+            vec4 color0;
+
+            int i, ii;
+            int packed_size = int(u_size.z);
+            lowp int raw, raw_w;
+            lowp int shifted;
+            float extracted, extracted_w;
+
+            vec2 inv = equalEarthInverse(vUv);
+
+            // Early return with transparent color if bounds exceed the Equal Earth projection
+            if (((inv.x < 0.0) && (vUv.x > 0.5)) || ((inv.x > 0.0) && (vUv.x < 0.5))) {
+              gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+              return;
+            }
+
+            vec2 uv = convert_to_uv(inv);
+            vec2 ms = convert_to_uv(equalEarthInverse(mouse));
+
+            if (u_mode > 0) {
+                int layer = (u_mode - 1) / 8;
+                int ii = (u_mode - 1) - layer * 8;
+
+                // raw = int(255.0 * texture(u_data, vec3(1.0 - uv.y, uv.x, layer)).r);
+                raw = get_raw(layer, vec2(1.0 - uv.y, uv.x));
+                shifted = (raw >> ii) & 0x01;
+
+                if (shifted == 0) {
+                    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+                    return;
+                }
+
+                gl_FragColor = vec4(float(shifted) * 0.9, float(shifted) * 0.58, float(shifted) * 0.9, 1.0);
+                return;
+            }
+
+            // Loop over each layer of the packed data. We want to color each pixel based on the number of species
+            // (packed bits) that are present at that pixel and also at the mouse position. We do this with a weighted
+            // sum of the unpacked values.
+            for (i=0; i<packed_size; i += 1) {
+                // Read the data from the texture for this u,v position and convert to int (it should be uint8)
+                // raw = int(255.0 * texture(u_data, vec3(1.0 - uv.y, uv.x, i)).r);
+                raw = get_raw(i, vec2(1.0 - uv.y, uv.x));
+
+                if (u_mode < -2) {
+                    // Read the weight from the recognized birds texture
+                    raw_w = int(255.0 * texelFetch(u_recognizedbirds, ivec2(i, 0), 0).r);
+                } else if (u_mode < -1) {
+                    // Read the weight from the seen birds texture
+                    raw_w = 0xFF - int(255.0 * texelFetch(u_seenbirds, ivec2(i, 0), 0).r);
+                } else if (u_mode < 0) {
+                    // Read the weight from the seen birds texture
+                    raw_w = int(255.0 * texelFetch(u_seenbirds, ivec2(i, 0), 0).r);
+                } else {
+                    // Read the data from the texture for the mouse uniform position and convert to int
+                    // raw_w = int(255.0 * texture(u_data, vec3(ms.y, ms.x, i)).r);
+                    raw_w = get_raw(i, vec2(ms.y, ms.x));
+                }
+
+                // Each byte contains 8 packed species, so we accumulate each one
+                for (ii=0; ii<8; ii += 1) {
+                    // Extract the relevant bits
+                    extracted = float((raw >> ii) & 1);
+                    extracted_w = float((raw_w >> ii) & 1);
+
+                    // Accumulate the color. Only if a species is present at the u,v, position and at
+                    // the mouse position will it be accumulated
+                    count += extracted * extracted_w;
+                }
+            }
+
+            // float max = min(100.0, 1391.0 * texture2D(u_maxdata, vec2(vUv.x, vUv.y)).r);
+            vec4 maxvec;
+
+            if (u_normalize > 0) {
+                maxvec = texture2D(u_maxdata, vec2(uv.x, uv.y));
+            } else {
+                maxvec = texture2D(u_maxdata, vec2(ms.x, 1.0 - ms.y));
+            }
+
+            int maxr = int(255.0 * maxvec.r);
+            int maxg = int(255.0 * maxvec.g);
+            float maxcountraw = float((maxr << 8) + maxg);
+
+            float maxcount = max(10.0, maxcountraw);
+
+            if (u_mode < 0 && u_normalize == 0) {
+                // Since we can't compute the real maximum, we take the total birds seen times a factor
+
+                if (u_mode < -2) {
+                    maxcount = maxcountraw = float(u_seenbirdscount) * 0.5;
+                } else {
+                    maxcount = maxcountraw = float(u_seenbirdscount) * 0.35;
+                }
+            }
+
+            float ratio = count * (1.0 / maxcount);
+
+            // Lookup in colormap
+            color0 = texture2D(u_cmdata, vec2(pow(ratio, 0.7), 0.5));
+            color0.a = max(0.0, min(1.0, maxcountraw / 5.0));
+
+            if (ratio < 0.001 || maxcountraw < 1.0) {
+              color0 = vec4(0.0, 0.0, 0.0, 0.0);
+            }
+
+            // Highlight the mouse position
+            if (u_cursor > 0) {
+                if (abs(vUv.x - mouse.x) < 0.003 && abs(vUv.y - (1.0 - mouse.y)) < 0.006) {
+                    if (abs(vUv.x - mouse.x) < 0.001 && abs(vUv.y - (1.0 - mouse.y)) < 0.002) {
+                    } else {
+                        color0 = vec4(0.8, 0.3, 0.8, 1.0);
+                    }
+                }
+            }
+
+            // Display the color
+            gl_FragColor = color0;
+            return;
+        }
+    </script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": " https://threejs.org/build/three.module.js",
+          "three/addons/": "https://threejs.org/examples/jsm/"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { NRRDLoader } from "three/addons/loaders/NRRDLoader.js";
+
+      var ext;
+
+      let renderer, scene, camera, controls, material, volconfig, cmtextures;
+      let hoverToggle = false;
+
+      // scene
+      var WIDTH = 512,
+        HEIGHT = 512;
+
+      // camera
+      var VIEW_ANGLE = 28.82,
+        ASPECT = WIDTH / HEIGHT,
+        NEAR = 1,
+        FAR = 10000;
+
+      var seenbirds;
+      var currentbirddata;
+
+      var mode = 0;
+
+      var isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+
+      if (isMobile) {
+        d3.selectAll(".gear").attr("dy", "16px");
+      }
+
+      document
+        .getElementById("file")
+        .addEventListener("change", readFile, false);
+
+      // No longer generated by D3 but code is still here
+      // drawBGMap();
+
+      init();
+
+      setScale(false);
+      initControls();
+      document.getElementById("ring").addEventListener("click", triggerUpload);
+
+      function init() {
+        scene = new THREE.Scene();
+        scene.alpha = true;
+        scene.background = null;
+
+        console.log("Creating renderer");
+
+        // Create renderer
+        renderer = new THREE.WebGLRenderer({
+          canvas: document.getElementById("three"),
+          preserveDrawingBuffer: false,
+          alpha: true,
+          precision: "mediump",
+          depthBuffer: false,
+        });
+        renderer.setSize(WIDTH, HEIGHT);
+
+        console.log(renderer.capabilities);
+
+        document
+          .getElementById("three")
+          .addEventListener("webglcontextlost", () => {
+            window.location.reload();
+          });
+
+        console.log("created renderer");
+
+        // ext = renderer.getContext().getExtension("GMAN_webgl_memory");
+
+        camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+        camera.position.x = 0;
+        camera.position.y = 0;
+        camera.position.z = 500;
+        camera.lookAt(scene.position); // (0, 0, 0)
+
+        cmtextures = {
+          viridis: new THREE.TextureLoader().load(
+            "gnuplot2_inverted.png",
+            () => {
+              material.uniforms["u_cmdata"].value = cmtextures["viridis"];
+              render();
+            }
+          ),
+        };
+
+        if (isMobile) {
+          cmtextures.max = new THREE.TextureLoader().load(
+            "maxes3packed_by_code_threshold240_lores.png",
+            (texture) => {
+              texture.minFilter = texture.magFilter = THREE.NearestFilter;
+              material.uniforms["u_maxdata"].value = texture;
+              render();
+            }
+          );
+        } else {
+          cmtextures.max = new THREE.TextureLoader().load(
+            "maxes3packed_by_code_threshold240.png",
+            (texture) => {
+              texture.minFilter = texture.magFilter = THREE.NearestFilter;
+              material.uniforms["u_maxdata"].value = texture;
+              render();
+            }
+          );
+        }
+
+        // Shader uniforms. u_data contains the texture, u_size the dimensions of the volume.
+        const uniforms = {
+          u_data: { value: null },
+          u_size: {
+            type: "v3",
+            value: new THREE.Vector3(256, 512, 1394),
+          },
+          mouse: {
+            type: "v2",
+            value: new THREE.Vector2(),
+          },
+          u_cmdata: { value: null },
+          u_maxdata: { value: null },
+          u_mode: { type: "int", value: 0 },
+          u_seenbirds: { value: null },
+          u_recognizedbirds: { value: null },
+          u_seenbirdscount: { type: "int", value: 0 },
+          u_normalize: { type: "int", value: 0 },
+          u_cursor: { type: "int", value: 0 },
+        };
+
+        // Create a ThreeJS materialw ith this shader.
+        material = new THREE.ShaderMaterial({
+          uniforms: uniforms,
+          vertexShader: $("#vertexShader").text(),
+          fragmentShader: $("#fragmentShader").text(),
+          transparent: true,
+          depthTest: false,
+        });
+
+        // Apply the texture to a plane
+        var plane = new THREE.Mesh(new THREE.PlaneGeometry(256, 256), material);
+        plane.position.x = 0;
+        plane.position.y = 0;
+        plane.position.z = 1;
+        plane.doubleSided = true;
+        scene.add(plane);
+
+        function textureCallback(name, sizename) {
+          return function createTexture(volume) {
+            // Texture to hold the volume. We have scalars, so we put our data in the red channel.
+            // Also see https://www.khronos.org/registry/webgl/specs/latest/2.0/#TEXTURE_TYPES_FORMATS_FROM_DOM_ELEMENTS_TABLE
+            const texture = new THREE.DataArrayTexture(
+              volume.data,
+              volume.xLength,
+              volume.yLength,
+              volume.zLength
+            );
+
+            console.log(
+              "Loaded texture size",
+              volume.xLength,
+              volume.yLength,
+              volume.zLength
+            );
+
+            texture.format = THREE.RedFormat;
+            texture.type = THREE.UnsignedByteType;
+            texture.internalFormat = "R8";
+            texture.minFilter = texture.magFilter = THREE.NearestFilter;
+            texture.unpackAlignment = 1;
+            texture.needsUpdate = true;
+
+            material.uniforms[name].value = texture;
+
+            if (sizename) {
+              material.uniforms[sizename].value = new THREE.Vector3(
+                volume.xLength,
+                volume.yLength,
+                volume.zLength
+              );
+            }
+
+            render();
+          };
+        }
+
+        console.log(isMobile);
+
+        if (isMobile) {
+          // Load the data ...
+          new NRRDLoader().load(
+            "mid_res_240.nrrd",
+            textureCallback("u_data", "u_size")
+          );
+        } else {
+          new NRRDLoader().load(
+            "full_data_240.nrrd",
+            textureCallback("u_data", "u_size")
+          );
+        }
+
+        // Add hover and click event listeners
+        document
+          .getElementById("three")
+          .addEventListener("mousemove", updateMousePosition);
+        document.getElementById("three").addEventListener("click", onClick);
+
+        // Add code for saving screenshot
+        const elem = document.querySelector("#screenshot");
+        elem.addEventListener("click", () => {
+          var canvas = document.getElementById("three");
+          render();
+          canvas.toBlob((blob) => {
+            saveBlob(
+              blob,
+              `screencapture-${canvas.width}x${canvas.height}.png`
+            );
+          });
+        });
+
+        const saveBlob = (function () {
+          const a = document.createElement("a");
+          document.body.appendChild(a);
+          a.style.display = "none";
+          return function saveData(blob, fileName) {
+            const url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = fileName;
+            a.click();
+          };
+        })();
+      }
+
+      // On mouse move function, update the shader uniform mouse position
+      function updateMousePosition(event) {
+        if (hoverToggle) return;
+
+        const width = event.srcElement.getBoundingClientRect().width;
+        const height = event.srcElement.getBoundingClientRect().height;
+
+        // Get the mouse X and Y coordinates from the event object
+        const mouseX = event.layerX / width;
+        const mouseY = event.layerY / height;
+
+        material.uniforms.mouse.value.set(mouseX, mouseY);
+        render();
+
+        // // This is helpful for debugging memory consumption
+        // if (ext) {
+        //   // memory info
+        //   const info = ext.getMemoryInfo();
+        //   console.log(info);
+        // }
+      }
+
+      // Get list of birds at a location from API on click
+      function onClick(event) {
+        const width = event.srcElement.getBoundingClientRect().width;
+        const height = event.srcElement.getBoundingClientRect().height;
+
+        // Get the mouse X and Y coordinates from the event object
+        const mouseX = event.layerX / width;
+        const mouseY = event.layerY / height;
+
+        const lnglat = equalEarthInverse([mouseX, mouseY]);
+
+        const lat = lnglat[1];
+        const lon = lnglat[0];
+
+        const scaled = convertToUV(lnglat);
+
+        const scaledX = Math.round(scaled[0] * 512);
+        const scaledY = Math.round(scaled[1] * 512);
+
+        if (mode == 0) {
+          hoverToggle = !hoverToggle;
+        } else {
+          hoverToggle = true;
+        }
+
+        material.uniforms.u_cursor.value = 1;
+        material.uniforms.mouse.value.set(mouseX, mouseY);
+        render();
+
+        if (!hoverToggle && mode == 0 && !isMobile) {
+          // closing birds list
+          document.getElementById("birds").innerHTML = "";
+          document.getElementById("extra").style.height = "0em";
+          document.getElementById("extra").style.marginTop = "-24em";
+          document.getElementById("extra").style.marginBottom = "11em";
+          document.getElementById("three").style.display = "block";
+          document.getElementById("overlay").src = "";
+          document.getElementById("overlay").style.display = "none";
+          material.uniforms.u_cursor.value = 0;
+
+          currentbirddata = null;
+          updateScaleFromMode();
+
+          return;
+        }
+
+        // API call with the rounded pixel position
+        fetch(`https://ebird.subject.space/birds?y=${scaledY}&x=${scaledX}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            // clear the list
+            document.getElementById("birds").innerHTML = "";
+
+            currentbirddata = data.birds;
+            updateScaleFromMode();
+
+            data.birds.forEach((b) => {
+              // add a list item for each bird
+              const li = document.createElement("li");
+              li.textContent = b.name;
+
+              if (seenbirds && seenbirds[b.sciname] > 0) {
+                li.classList.add("seen");
+              }
+
+              if (seenbirds && seenbirds[b.sciname] > 1) {
+                li.classList.add("recognize");
+              }
+
+              if (seenbirds && seenbirds[b.sciname] > 3) {
+                li.classList.add("rrecognize");
+              }
+
+              li.onmouseenter = function () {
+                document.getElementById("three").style.display = "block";
+                document.getElementById("overlay").style.display = "none";
+
+                material.uniforms.u_mode.value = b.index + 1;
+                render();
+
+                document.getElementById(
+                  "overlay"
+                ).src = `./equalearth_by_code/${b.code}.png`;
+
+                document
+                  .getElementById("overlay")
+                  .addEventListener("load", function () {
+                    document.getElementById("overlay").style.display = "block";
+                    document.getElementById("three").style.display = "none";
+                  });
+              };
+
+              document.getElementById("birds").appendChild(li);
+            });
+
+            document.getElementById("birds").onmouseleave = function () {
+              document.getElementById("three").style.display = "block";
+              document.getElementById("overlay").src = "";
+              document.getElementById("overlay").style.display = "none";
+              material.uniforms.u_mode.value = mode;
+              render();
+            };
+
+            document.getElementById("location").textContent = `${
+              data.birds.length
+            } birds at ${Math.round(lat * 10) / 10}, ${
+              Math.round(lon * 10) / 10
+            } (near ${
+              data.place.admin1 != ""
+                ? data.place.admin1 + ", " + ISO3166[data.place.cc]
+                : ISO3166[data.place.cc]
+            })`;
+            document.getElementById("extra").style.marginTop = "-13em";
+            document.getElementById("extra").style.marginBottom = "2em";
+            document.getElementById("extra").style.height = "460px";
+          });
+      }
+
+      // Render THREEjs scene
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+      // Uses D3 to draw the world background map
+      function drawBGMap() {
+        // render the map using Equal Earth projection
+
+        fetch("https://unpkg.com/world-atlas@2.0.2/countries-110m.json")
+          .then((d) => d.json())
+          .then((topo) => {
+            console.log(topo);
+
+            const land = topojson.feature(topo, topo.objects.countries);
+            const width = 1024;
+            const height = 512;
+
+            const projection = d3
+              .geoEqualEarth()
+              .scale(189)
+              .translate([width / 2, height / 2 - 6]);
+
+            const context = d3
+              .select("#inset")
+              .append("canvas")
+              .attr("width", width)
+              .attr("height", height)
+              .node()
+              .getContext("2d");
+
+            const path = d3.geoPath(projection, context);
+            context.save();
+
+            const outline = { type: "Sphere" };
+
+            const graticule = d3.geoGraticule10();
+
+            context.beginPath(),
+              path(outline),
+              (context.strokeStyle = "#444"),
+              (context.lineWidth = 1.0);
+            context.stroke();
+
+            context.beginPath(),
+              path(outline),
+              (context.fillStyle = "#111"),
+              context.fill();
+
+            context.restore();
+
+            context.beginPath(),
+              path(land),
+              (context.fillStyle = "#000"),
+              context.fill();
+
+            context.beginPath(),
+              path(land),
+              (context.strokeStyle = "#444"),
+              context.stroke();
+          });
+      }
+
+      // convert to lat/lng (degrees) from normalized coordinates between 0 and 1
+      // matches the WebGL function defined in the shader
+      function equalEarthInverse(uv) {
+        const A1 = 1.340264;
+        const A2 = -0.081106;
+        const A3 = 0.000893;
+        const A4 = 0.003796;
+        const M = Math.sqrt(3) / 2;
+        const PI = Math.PI;
+
+        let x = (uv[0] * 2 - 1) * M * 1.0 * PI;
+        let y = -0.42 * (uv[1] * 2 - 1) * PI;
+
+        let theta = y;
+        let delta;
+
+        for (let i = 0; i < 12; i++) {
+          let theta2 = theta * theta;
+          let theta4 = theta2 * theta2;
+          let theta6 = theta4 * theta2;
+
+          delta =
+            (theta * (A1 + A2 * theta2 + A3 * theta6 + A4 * theta4 * theta4) -
+              y) /
+            (A1 + 3 * A2 * theta2 + 7 * A3 * theta6 + 9 * A4 * theta4 * theta4);
+
+          theta -= delta;
+
+          if (Math.abs(delta) < 1e-6) break;
+        }
+
+        console.log(theta, delta);
+
+        let theta2 = theta * theta;
+        let theta4 = theta2 * theta2;
+        let theta6 = theta4 * theta2;
+
+        let beta = Math.asin((2 * Math.sin(theta)) / Math.sqrt(3));
+        let lambda =
+          (x *
+            Math.sqrt(3) *
+            (A1 +
+              3 * A2 * theta2 +
+              7 * A3 * theta6 +
+              9 * A4 * theta4 * theta4)) /
+          (2 * Math.cos(theta));
+
+        let lon = (lambda * 180) / PI;
+        let lat = (beta * 180) / PI;
+
+        lon = ((lon + 180) % 360) - 180;
+
+        return [lon, lat];
+      }
+
+      // convert lat/lng to webmercator in scaled coordinats [0-1]
+      // matches the WebGL function defined in the shader
+      function convertToUV(lnglat) {
+        let x = (lnglat[0] + 180) / 360;
+        let y =
+          1 -
+          (Math.log(Math.tan(Math.PI / 4 + (lnglat[1] * Math.PI) / 180 / 2)) /
+            Math.PI +
+            1) /
+            2;
+
+        return [x, y];
+      }
+
+      // Load an eBird dataset file (triggered on "Add eBird data" form submission)
+      function readFile(evt) {
+        var files = evt.target.files;
+        var file = files[0];
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          let header = false;
+          seenbirds = [];
+          event.target.result.split("\n").forEach((l, j) => {
+            let bird = {};
+            if (!header) {
+              header = l.split(",");
+            }
+            l.split(",").forEach((p, i) => {
+              bird[header[i]] = p;
+            });
+            seenbirds[j] = bird;
+          });
+
+          seenbirds = d3.rollup(
+            seenbirds,
+            (v) => v.length,
+            (d) => d["Scientific Name"]
+          );
+
+          const mapToObject = (map) => Object.fromEntries(map.entries());
+          seenbirds = mapToObject(seenbirds);
+          delete seenbirds["Scientific Name"];
+          delete seenbirds[undefined];
+
+          // TODO hardcoded species length
+          const packedSize = Math.ceil(11145 / 8);
+
+          const data = new Uint8Array(packedSize);
+          const recognizedData = new Uint8Array(packedSize);
+
+          Object.keys(codes).forEach((k) => {
+            const index = Math.floor(codes[k] / 8);
+            const bit = codes[k] % 8;
+
+            if (seenbirds[k] > 0) {
+              data[index] |= 1 << bit;
+            }
+
+            if (seenbirds[k] > 1) {
+              recognizedData[index] |= 1 << bit;
+            }
+          });
+
+          const seentexture = new THREE.DataTexture(data, packedSize, 1);
+          seentexture.format = THREE.RedFormat;
+          seentexture.type = THREE.UnsignedByteType;
+          seentexture.internalFormat = "R8";
+          seentexture.minFilter = seentexture.magFilter = THREE.NearestFilter;
+          seentexture.needsUpdate = true;
+
+          const recognizedtexture = new THREE.DataTexture(
+            recognizedData,
+            packedSize,
+            1
+          );
+          recognizedtexture.format = THREE.RedFormat;
+          recognizedtexture.type = THREE.UnsignedByteType;
+          recognizedtexture.internalFormat = "R8";
+          recognizedtexture.minFilter = recognizedtexture.magFilter =
+            THREE.NearestFilter;
+          recognizedtexture.needsUpdate = true;
+
+          material.uniforms["u_seenbirds"].value = seentexture;
+          material.uniforms["u_recognizedbirds"].value = recognizedtexture;
+          material.uniforms.u_seenbirdscount.value =
+            Object.keys(seenbirds).length;
+          material.uniforms.u_mode.value = -1;
+          mode = -1;
+
+          render();
+
+          document
+            .getElementById("ring")
+            .removeEventListener("click", triggerUpload);
+          document.getElementById("addlabel").textContent =
+            "Birds near location";
+
+          document.getElementById("ring").style.transition = "1s";
+
+          updateScaleFromMode();
+
+          document.getElementById("ringdown").style.opacity = 0.0;
+
+          initRotateControls();
+          spinWheel(1);
+          d3.selectAll("tspan").style("text-decoration", "none");
+        };
+
+        reader.readAsText(file);
+      }
+
+      function triggerUpload() {
+        console.log("clicked");
+        document.getElementById("upload").click();
+      }
+
+      var rotate = 0;
+
+      function spinWheel(dir) {
+        var wrapped = -rotate;
+
+        while (wrapped <= -360) {
+          wrapped += 360;
+        }
+
+        while (wrapped > 0) {
+          wrapped -= 360;
+        }
+
+        d3.selectAll(".angle" + wrapped)
+          .transition()
+          .duration(1000)
+          .style("opacity", 0);
+
+        if (dir > 0) {
+          rotate -= 90;
+        } else {
+          rotate += 90;
+        }
+
+        wrapped = -rotate;
+
+        while (wrapped <= -360) {
+          wrapped += 360;
+        }
+
+        while (wrapped > 0) {
+          wrapped -= 360;
+        }
+
+        d3.selectAll(".angle" + wrapped).style("opacity", 1);
+
+        document.getElementById("ring").style.transform =
+          "rotate(" + rotate + "deg)";
+
+        var rotatecomparison = rotate;
+        while (rotatecomparison > 0) {
+          rotatecomparison -= 360;
+        }
+
+        if (rotatecomparison % -360 == -270) {
+          material.uniforms.u_mode.value = -2;
+          mode = -2;
+
+          material.uniforms.u_seenbirdscount.value = 900;
+          // Object.keys(seenbirds).length * 1.2;
+
+          render();
+        }
+
+        if (rotatecomparison % -360 == -180) {
+          material.uniforms.u_mode.value = -3;
+          mode = -3;
+
+          material.uniforms.u_seenbirdscount.value = Object.keys(
+            seenbirds
+          ).filter((v) => seenbirds[v] > 1).length;
+
+          render();
+        }
+
+        if (rotatecomparison % -360 == -90) {
+          material.uniforms.u_mode.value = -1;
+          mode = -1;
+
+          material.uniforms.u_seenbirdscount.value =
+            Object.keys(seenbirds).length;
+
+          render();
+        }
+
+        if (rotatecomparison % -360 == 0) {
+          material.uniforms.u_mode.value = 0;
+          mode = 0;
+          render();
+        }
+
+        updateScaleFromMode();
+      }
+
+      function updateScaleFromMode() {
+        if (material.uniforms.u_normalize.value == 0) {
+          if (mode == 0) {
+            if (currentbirddata) {
+              setScale(currentbirddata.length, " birds", false);
+            } else {
+              setScale(false);
+            }
+          } else if (mode == -1) {
+            setScale(Object.keys(seenbirds).length, " birds", false);
+          } else if (mode == -2) {
+            setScale(900, " birds", false);
+          } else if (mode == -3) {
+            setScale(
+              Object.keys(seenbirds).filter((v) => seenbirds[v] > 1).length,
+              " birds",
+              false
+            );
+          }
+        } else {
+          setScale(100, "%", true);
+        }
+
+        render();
+      }
+
+      function initControls() {
+        document.getElementById("normalize").onclick = function () {
+          material.uniforms.u_normalize.value =
+            !material.uniforms.u_normalize.value;
+          updateScaleFromMode();
+        };
+      }
+
+      function setScale(val, unit, normalized) {
+        document.getElementById("scalerow").innerHTML = "";
+
+        if (val) {
+          for (let i = 0; i < 3; i++) {
+            const div = document.createElement("div");
+            div.classList.add("label");
+
+            if (i != 1 || unit.length == 1) {
+              div.textContent = Math.round(val * (i / 2.0)) + unit;
+            } else {
+              div.textContent = Math.round(val * (i / 2.0));
+            }
+
+            if (i == 0) {
+              if (!normalized) {
+                div.innerHTML +=
+                  '&nbsp;<span id="normalize">(normalized?)</span>';
+              } else {
+                div.innerHTML +=
+                  '&nbsp;<span id="normalize">(absolute values?)</span>';
+              }
+            }
+            document.getElementById("scalerow").appendChild(div);
+            initControls();
+          }
+        } else {
+          const div = document.createElement("div");
+          div.classList.add("label");
+
+          if (!normalized) {
+            div.innerHTML +=
+              '0 birds <span id="normalize">(normalized?)</span>';
+          } else {
+            div.innerHTML += '<span id="normalize">(absolute values?)</span>';
+          }
+
+          document.getElementById("scalerow").appendChild(div);
+
+          document
+            .getElementById("scalerow")
+            .appendChild(document.createElement("div"));
+
+          const div2 = document.createElement("div");
+          div2.innerHTML = "Many birds";
+          document.getElementById("scalerow").appendChild(div2);
+
+          initControls();
+        }
+      }
+
+      initBirdlistControls();
+
+      function initBirdlistControls() {
+        document.getElementById("controlleft").onclick = function () {
+          const birds = document.getElementById("birds");
+          birds.scrollTo({ left: birds.scrollLeft - 650, behavior: "smooth" });
+        };
+
+        document.getElementById("controlright").onclick = function () {
+          const birds = document.getElementById("birds");
+          birds.scrollTo({ left: birds.scrollLeft + 650, behavior: "smooth" });
+        };
+      }
+
+      var controlsg = d3
+        .select("#ring")
+        .append("g")
+        .attr("transform", "translate(500, 500)");
+
+      controlsg
+        .append("g")
+        .attr("id", "ringdown")
+        .append("path")
+        .attr(
+          "d",
+          d3.lineRadial()([
+            [0, 300],
+            [0, 275],
+          ])
+        )
+        .attr("stroke-width", "3")
+        .attr("marker-end", "url(#arrow)")
+        .attr("markerWidth", "2");
+
+      function initRotateControls() {
+        var ringrotateg = controlsg.append("g").attr("id", "ringrotate");
+
+        for (var startAngle = 0; startAngle > -360; startAngle -= 90) {
+          var group1 = ringrotateg.append("g");
+          var group2 = ringrotateg.append("g");
+
+          group1
+            .append("path")
+            .attr("class", "arrow angle" + startAngle)
+            .attr(
+              "d",
+              d3.lineRadial()(
+                d3
+                  .range(startAngle - 39, startAngle - 15, 1)
+                  .map((d) => [(d * Math.PI) / 180, 380])
+                  .concat(
+                    d3
+                      .range(startAngle - 15, startAngle - 40, -1)
+                      .map((d) => [(d * Math.PI) / 180, 380])
+                  )
+              )
+            )
+            .attr("stroke-width", "3")
+            .attr("marker-end", "url(#arrow)")
+            .attr("markerWidth", "2")
+            .style("opacity", startAngle == 0 ? 1 : 0);
+
+          group2
+            .append("path")
+            .attr("class", "arrow angle" + startAngle)
+            .attr(
+              "d",
+              d3.lineRadial()(
+                d3
+                  .range(startAngle + 39, startAngle + 15, -1)
+                  .map((d) => [(d * Math.PI) / 180, 380])
+                  .concat(
+                    d3
+                      .range(startAngle + 15, startAngle + 40, 1)
+                      .map((d) => [(d * Math.PI) / 180, 380])
+                  )
+              )
+            )
+            .attr("stroke-width", "3")
+            .attr("marker-end", "url(#arrow)")
+            .attr("markerWidth", "2")
+            .style("opacity", startAngle == 0 ? 1 : 0);
+
+          // Draw a transparent D3 arc click target around each arrow
+
+          group2
+            .append("path")
+            .attr(
+              "d",
+              d3.arc()({
+                innerRadius: 0,
+                outerRadius: 400,
+                startAngle: (startAngle * Math.PI) / 180,
+                endAngle: ((startAngle + 45) * Math.PI) / 180,
+              })
+            )
+            .attr("fill", "rgba(0.5,0.5,0.5,0.001)")
+            .attr("stroke", "transparent")
+            .on("click", () => spinWheel(1));
+
+          group1
+            .append("path")
+            .attr(
+              "d",
+              d3.arc()({
+                innerRadius: 0,
+                outerRadius: 400,
+                startAngle: (startAngle * Math.PI) / 180,
+                endAngle: ((startAngle - 45) * Math.PI) / 180,
+              })
+            )
+            .attr("fill", "rgba(0.5,0.5,0.5,0.001)")
+            .attr("stroke", "transparent")
+            .on("click", () => spinWheel(-1));
+        }
+      }
+    </script>
+  </body>
+</html>
