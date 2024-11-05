@@ -1215,6 +1215,27 @@
           return;
         }
 
+        url.searchParams.set("la", lat);
+        url.searchParams.set("lo", lon);
+        window.history.pushState({}, "", url);
+
+        loadBirdsAtPoint(lat, lon);
+      }
+
+      // Render THREEjs scene
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+      function loadBirdsAtPoint(lat, lon) {
+        const lnglat = [lon, lat];
+        const scaled = convertToUV(lnglat);
+
+        const scaledX = Math.round(scaled[0] * 512);
+        const scaledY = Math.round(scaled[1] * 512);
+
+        console.log(scaledX, scaledY);
+
         function onbirdclick(b) {
           if (b.index + 1 == material.uniforms.u_mode.value) {
             console.log("closing");
@@ -1243,27 +1264,6 @@
               document.getElementById("three").style.display = "none";
             });
         }
-
-        url.searchParams.set("la", lat);
-        url.searchParams.set("lo", lon);
-        window.history.pushState({}, "", url);
-
-        loadBirdsAtPoint(lat, lon);
-      }
-
-      // Render THREEjs scene
-      function render() {
-        renderer.render(scene, camera);
-      }
-
-      function loadBirdsAtPoint(lat, lon) {
-        const lnglat = [lon, lat];
-        const scaled = convertToUV(lnglat);
-
-        const scaledX = Math.round(scaled[0] * 512);
-        const scaledY = Math.round(scaled[1] * 512);
-
-        console.log(scaledX, scaledY);
 
         // API call with the rounded pixel position
         fetch(`https://ebird.subject.space/birds?y=${scaledY}&x=${scaledX}`)
@@ -1723,7 +1723,7 @@
 
           url.searchParams.set("n", material.uniforms.u_normalize.value);
           history.pushState(null, "", url);
-          
+
           updateScaleFromMode();
         };
       }
