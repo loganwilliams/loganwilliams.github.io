@@ -31,7 +31,10 @@
       content="View range data for over 11,000 bird species, and explore your lifelist, ecosystem boundaries and unexpected connections across the globe."
     />
     <meta property="og:image" content="preview.jpg" />
-    <meta property="og:url" content="https://subject.space/projects-static/ebird/" />
+    <meta
+      property="og:url"
+      content="https://subject.space/projects-static/ebird/"
+    />
     <meta name="twitter:card" content="summary_large_image" />
 
     <script
@@ -44,6 +47,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
     <script src="iso.js"></script>
     <script src="codes.js"></script>
+    <script src="https://unpkg.com/fflate@0.8.2"></script>
 
     <style>
       html {
@@ -617,6 +621,7 @@
       </div>
     </div>
 
+    <div id="empty"></div>
     <h1>Information</h1>
     <p>
       To add your eBird data, first
@@ -663,6 +668,7 @@
         uniform sampler2D u_seenbirds;
         uniform sampler2D u_recognizedbirds;
         uniform int u_seenbirdscount;
+        uniform int u_recognizedbirdscount;
         uniform vec2 mouse;
 
         uniform vec3 u_size;
@@ -851,9 +857,11 @@
                 // Since we can't compute the real maximum, we take the total birds seen times a factor
 
                 if (u_mode < -2) {
-                    maxcount = maxcountraw = float(u_seenbirdscount) * 0.5;
+                    maxcount = maxcountraw = float(u_recognizedbirdscount) * 0.6;
+                } else if (u_mode < -1) {
+                    maxcount = maxcountraw = 900.0;
                 } else {
-                    maxcount = maxcountraw = float(u_seenbirdscount) * 0.35;
+                    maxcount = maxcountraw = float(u_seenbirdscount) * 0.5;
                 }
             }
 
@@ -901,6 +909,8 @@
       let renderer, scene, camera, controls, material, volconfig, cmtextures;
       let hoverToggle = false;
 
+      const url = new URL(window.location);
+
       // scene
       var WIDTH = 512,
         HEIGHT = 512;
@@ -911,10 +921,15 @@
         NEAR = 1,
         FAR = 10000;
 
-      var seenbirds;
+      var seenbirds = {};
       var currentbirddata;
 
       var mode = 0;
+
+      if (url.searchParams.get("m")) {
+        console.log("Setting mode to", url.searchParams.get("m"));
+        mode = +url.searchParams.get("m");
+      }
 
       var isMobile =
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -1020,6 +1035,7 @@
           u_seenbirds: { value: null },
           u_recognizedbirds: { value: null },
           u_seenbirdscount: { type: "int", value: 0 },
+          u_recognizedbirdscount: { type: "int", value: 0 },
           u_normalize: { type: "int", value: 0 },
           u_cursor: { type: "int", value: 0 },
         };
@@ -1163,11 +1179,6 @@
         const lat = lnglat[1];
         const lon = lnglat[0];
 
-        const scaled = convertToUV(lnglat);
-
-        const scaledX = Math.round(scaled[0] * 512);
-        const scaledY = Math.round(scaled[1] * 512);
-
         if (mode == 0) {
           hoverToggle = !hoverToggle;
         } else {
@@ -1177,6 +1188,9 @@
         material.uniforms.u_cursor.value = 1;
         material.uniforms.mouse.value.set(mouseX, mouseY);
         render();
+
+        url.searchParams.set("mx", mouseX);
+        url.searchParams.set("my", mouseY);
 
         if (!hoverToggle && mode == 0 && !isMobile) {
           // closing birds list
@@ -1192,10 +1206,16 @@
           currentbirddata = null;
           updateScaleFromMode();
 
+          url.searchParams.delete("la");
+          url.searchParams.delete("lo");
+          url.searchParams.delete("mx");
+          url.searchParams.delete("my");
+          window.history.pushState({}, "", url);
+
           return;
         }
 
-        function onclick(b) {
+        function onbirdclick(b) {
           if (b.index + 1 == material.uniforms.u_mode.value) {
             console.log("closing");
             document.getElementById("three").style.display = "block";
@@ -1224,6 +1244,27 @@
             });
         }
 
+        url.searchParams.set("la", lat);
+        url.searchParams.set("lo", lon);
+        window.history.pushState({}, "", url);
+
+        loadBirdsAtPoint(lat, lon);
+      }
+
+      // Render THREEjs scene
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+      function loadBirdsAtPoint(lat, lon) {
+        const lnglat = [lon, lat];
+        const scaled = convertToUV(lnglat);
+
+        const scaledX = Math.round(scaled[0] * 512);
+        const scaledY = Math.round(scaled[1] * 512);
+
+        console.log(scaledX, scaledY);
+
         // API call with the rounded pixel position
         fetch(`https://ebird.subject.space/birds?y=${scaledY}&x=${scaledX}`)
           .then((response) => response.json())
@@ -1248,14 +1289,14 @@
                 li.classList.add("recognize");
               }
 
-              if (seenbirds && seenbirds[b.sciname] > 3) {
-                li.classList.add("rrecognize");
-              }
+              // if (seenbirds && seenbirds[b.sciname] > 3) {
+              //   li.classList.add("rrecognize");
+              // }
 
               if (!isMobile) {
-                li.onmouseenter = () => onclick(b);
+                li.onmouseenter = () => onbirdclick(b);
               } else {
-                li.onclick = () => onclick(b);
+                li.onclick = () => onbirdclick(b);
               }
 
               document.getElementById("birds").appendChild(li);
@@ -1282,11 +1323,6 @@
             document.getElementById("extra").style.marginBottom = "2em";
             document.getElementById("extra").style.height = "460px";
           });
-      }
-
-      // Render THREEjs scene
-      function render() {
-        renderer.render(scene, camera);
       }
 
       // Uses D3 to draw the world background map
@@ -1416,6 +1452,74 @@
         return [x, y];
       }
 
+      function _arrayBufferToBase64(bytes) {
+        var binary = "";
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
+      }
+
+      function loadBirdList(data, recognizedData, count, recognizedCount) {
+        const packedSize = Math.ceil(11145 / 8);
+
+        const dataCompressed = _arrayBufferToBase64(fflate.zlibSync(data));
+        const recognizedDataCompressed = _arrayBufferToBase64(
+          fflate.zlibSync(recognizedData)
+        );
+
+        url.searchParams.set("s", dataCompressed);
+        url.searchParams.set("r", recognizedDataCompressed);
+        url.searchParams.set("ss", count);
+        url.searchParams.set("rs", recognizedCount);
+        history.pushState(null, "", url);
+
+        const seentexture = new THREE.DataTexture(data, packedSize, 1);
+        seentexture.format = THREE.RedFormat;
+        seentexture.type = THREE.UnsignedByteType;
+        seentexture.internalFormat = "R8";
+        seentexture.minFilter = seentexture.magFilter = THREE.NearestFilter;
+        seentexture.needsUpdate = true;
+
+        const recognizedtexture = new THREE.DataTexture(
+          recognizedData,
+          packedSize,
+          1
+        );
+        recognizedtexture.format = THREE.RedFormat;
+        recognizedtexture.type = THREE.UnsignedByteType;
+        recognizedtexture.internalFormat = "R8";
+        recognizedtexture.minFilter = recognizedtexture.magFilter =
+          THREE.NearestFilter;
+        recognizedtexture.needsUpdate = true;
+
+        material.uniforms["u_seenbirds"].value = seentexture;
+        material.uniforms["u_recognizedbirds"].value = recognizedtexture;
+        material.uniforms.u_seenbirdscount.value = count;
+        material.uniforms.u_recognizedbirdscount.value = recognizedCount;
+
+        console.log(count, recognizedCount);
+
+        console.log("render");
+
+        render();
+
+        document
+          .getElementById("ring")
+          .removeEventListener("click", triggerUpload);
+        document.getElementById("addlabel").textContent = "Birds near location";
+
+        document.getElementById("ring").style.transition = "1s";
+
+        updateScaleFromMode();
+
+        document.getElementById("ringdown").style.opacity = 0.0;
+
+        initRotateControls();
+        d3.selectAll("tspan").style("text-decoration", "none");
+      }
+
       // Load an eBird dataset file (triggered on "Add eBird data" form submission)
       function readFile(evt) {
         var files = evt.target.files;
@@ -1451,6 +1555,8 @@
 
           const data = new Uint8Array(packedSize);
           const recognizedData = new Uint8Array(packedSize);
+          let count = 0;
+          let recognizedCount = 0;
 
           Object.keys(codes).forEach((k) => {
             const index = Math.floor(codes[k] / 8);
@@ -1458,56 +1564,24 @@
 
             if (seenbirds[k] > 0) {
               data[index] |= 1 << bit;
+              count++;
             }
 
             if (seenbirds[k] > 1) {
               recognizedData[index] |= 1 << bit;
+              recognizedCount++;
             }
           });
 
-          const seentexture = new THREE.DataTexture(data, packedSize, 1);
-          seentexture.format = THREE.RedFormat;
-          seentexture.type = THREE.UnsignedByteType;
-          seentexture.internalFormat = "R8";
-          seentexture.minFilter = seentexture.magFilter = THREE.NearestFilter;
-          seentexture.needsUpdate = true;
+          loadBirdList(data, recognizedData, count, recognizedCount);
 
-          const recognizedtexture = new THREE.DataTexture(
-            recognizedData,
-            packedSize,
-            1
-          );
-          recognizedtexture.format = THREE.RedFormat;
-          recognizedtexture.type = THREE.UnsignedByteType;
-          recognizedtexture.internalFormat = "R8";
-          recognizedtexture.minFilter = recognizedtexture.magFilter =
-            THREE.NearestFilter;
-          recognizedtexture.needsUpdate = true;
-
-          material.uniforms["u_seenbirds"].value = seentexture;
-          material.uniforms["u_recognizedbirds"].value = recognizedtexture;
-          material.uniforms.u_seenbirdscount.value =
-            Object.keys(seenbirds).length;
           material.uniforms.u_mode.value = -1;
           mode = -1;
 
+          url.searchParams.set("m", -1);
+          history.pushState(null, "", url);
+
           render();
-
-          document
-            .getElementById("ring")
-            .removeEventListener("click", triggerUpload);
-          document.getElementById("addlabel").textContent =
-            "Birds near location";
-
-          document.getElementById("ring").style.transition = "1s";
-
-          updateScaleFromMode();
-
-          document.getElementById("ringdown").style.opacity = 0.0;
-
-          initRotateControls();
-          spinWheel(1);
-          d3.selectAll("tspan").style("text-decoration", "none");
         };
 
         reader.readAsText(file);
@@ -1565,8 +1639,10 @@
         if (rotatecomparison % -360 == -270) {
           material.uniforms.u_mode.value = -2;
           mode = -2;
+          url.searchParams.set("m", -2);
+          history.pushState(null, "", url);
 
-          material.uniforms.u_seenbirdscount.value = 900;
+          // material.uniforms.u_seenbirdscount.value = 900;
           // Object.keys(seenbirds).length * 1.2;
 
           render();
@@ -1575,10 +1651,12 @@
         if (rotatecomparison % -360 == -180) {
           material.uniforms.u_mode.value = -3;
           mode = -3;
+          url.searchParams.set("m", -3);
+          history.pushState(null, "", url);
 
-          material.uniforms.u_seenbirdscount.value = Object.keys(
-            seenbirds
-          ).filter((v) => seenbirds[v] > 1).length;
+          // material.uniforms.u_seenbirdscount.value = Object.keys(
+          //   seenbirds
+          // ).filter((v) => seenbirds[v] > 1).length;
 
           render();
         }
@@ -1586,9 +1664,11 @@
         if (rotatecomparison % -360 == -90) {
           material.uniforms.u_mode.value = -1;
           mode = -1;
+          url.searchParams.set("m", -1);
+          history.pushState(null, "", url);
 
-          material.uniforms.u_seenbirdscount.value =
-            Object.keys(seenbirds).length;
+          // material.uniforms.u_seenbirdscount.value =
+          // Object.keys(seenbirds).length;
 
           render();
         }
@@ -1596,6 +1676,9 @@
         if (rotatecomparison % -360 == 0) {
           material.uniforms.u_mode.value = 0;
           mode = 0;
+          url.searchParams.set("m", 0);
+          history.pushState(null, "", url);
+
           render();
         }
 
@@ -1611,12 +1694,16 @@
               setScale(false);
             }
           } else if (mode == -1) {
-            setScale(Object.keys(seenbirds).length, " birds", false);
+            setScale(
+              material.uniforms.u_seenbirdscount.value * 0.5,
+              " birds",
+              false
+            );
           } else if (mode == -2) {
             setScale(900, " birds", false);
           } else if (mode == -3) {
             setScale(
-              Object.keys(seenbirds).filter((v) => seenbirds[v] > 1).length,
+              material.uniforms.u_recognizedbirdscount.value * 0.6,
               " birds",
               false
             );
@@ -1802,6 +1889,87 @@
             .attr("stroke", "transparent")
             .on("click", () => spinWheel(-1));
         }
+      }
+
+      if (url.searchParams.get("s") && url.searchParams.get("r")) {
+        const data = fflate.unzlibSync(
+          Uint8Array.from(atob(url.searchParams.get("s")), (c) =>
+            c.charCodeAt(0)
+          )
+        );
+
+        const recognizedData = fflate.unzlibSync(
+          Uint8Array.from(atob(url.searchParams.get("r")), (c) =>
+            c.charCodeAt(0)
+          )
+        );
+
+        Object.keys(codes).forEach((k) => {
+          const index = Math.floor(codes[k] / 8);
+          const bit = codes[k] % 8;
+
+          if ((data[index] >> bit) & 1) {
+            seenbirds[k] = 1;
+          }
+
+          if ((recognizedData[index] >> bit) & 1) {
+            seenbirds[k] = 2;
+          }
+        });
+
+        loadBirdList(
+          data,
+          recognizedData,
+          +url.searchParams.get("ss"),
+          +url.searchParams.get("rs")
+        );
+
+        document.getElementById("empty").innerHTML =
+          '<p><em><a href="https://subject.space/projects-static/ebird/">reset data</a></em></p>';
+      }
+
+      if (url.searchParams.get("la") && url.searchParams.get("lo")) {
+        const lat = +url.searchParams.get("la");
+        const lon = +url.searchParams.get("lo");
+
+        loadBirdsAtPoint(lat, lon);
+      }
+
+      if (url.searchParams.get("m")) {
+        if (url.searchParams.get("m") == -1) {
+          material.uniforms.u_mode.value = -1;
+          mode = -1;
+          spinWheel(1);
+          updateScaleFromMode();
+        } else if (url.searchParams.get("m") == -3) {
+          material.uniforms.u_mode.value = +url.searchParams.get("m");
+          mode = +url.searchParams.get("m");
+          spinWheel(1);
+          spinWheel(1);
+          updateScaleFromMode();
+        } else if (url.searchParams.get("m") == -2) {
+          material.uniforms.u_mode.value = +url.searchParams.get("m");
+          mode = +url.searchParams.get("m");
+          spinWheel(1);
+          spinWheel(1);
+          spinWheel(1);
+          updateScaleFromMode();
+        } else {
+          material.uniforms.u_mode.value = +url.searchParams.get("m");
+          mode = +url.searchParams.get("m");
+          updateScaleFromMode();
+        }
+      }
+
+      if (url.searchParams.get("mx") && url.searchParams.get("my")) {
+        const mx = +url.searchParams.get("mx");
+        const my = +url.searchParams.get("my");
+
+        hoverToggle = true;
+
+        material.uniforms.u_cursor.value = 1;
+        material.uniforms.mouse.value.set(mx, my);
+        render();
       }
     </script>
   </body>
