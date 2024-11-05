@@ -1036,7 +1036,7 @@
           u_recognizedbirds: { value: null },
           u_seenbirdscount: { type: "int", value: 0 },
           u_recognizedbirdscount: { type: "int", value: 0 },
-          u_normalize: { type: "int", value: 0 },
+          u_normalize: { type: "int", value: +url.searchParams.get("n") || 0 },
           u_cursor: { type: "int", value: 0 },
         };
 
@@ -1720,6 +1720,10 @@
         document.getElementById("normalize").onclick = function () {
           material.uniforms.u_normalize.value =
             !material.uniforms.u_normalize.value;
+
+          url.searchParams.set("n", material.uniforms.u_normalize.value);
+          history.pushState(null, "", url);
+          
           updateScaleFromMode();
         };
       }
