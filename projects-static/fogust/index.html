@@ -287,7 +287,7 @@ document.getElementById(currentMonth).classList.add("active");
 
 var map = new L.Map("map", {center: [37.7, -122.6], zoom: 10, minZoom: 8, maxZoom: 12})
 // .addLayer(new L.TileLayer("https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png", {attribution: `Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.`}));
-  .addLayer(new L.TileLayer("https://api.mapbox.com/styles/v1/loganw/cjg5xfrd80oyh2rl9dv7cvunt/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibG9nYW53IiwiYSI6IlQzWHJqc3cifQ.KY3j-syHXeYmI69JmLqGqQ")).addLayer(new L.TileLayer('http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png', {attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`}));
+  .addLayer(new L.TileLayer("https://api.mapbox.com/styles/v1/loganw/cjg5xfrd80oyh2rl9dv7cvunt/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibG9nYW53IiwiYSI6ImNtOWp3anRpODBoMm4ya3B4cmd2YXZhZXoifQ.UmXGKlYhxCQzMfNZRpXafA")).addLayer(new L.TileLayer('http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png', {attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`}));
 
 
 var canvas = d3.select(map.getPanes().overlayPane).append("canvas").attr("id", "fog").attr("class", "leaflet-zoom-hide").attr("width", 1000).attr("height", 1000);
