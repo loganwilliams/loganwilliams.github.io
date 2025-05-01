@@ -181,7 +181,7 @@
         box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px;
         transition: 1s;
         overflow: hidden;
-        margin-top: -24em;
+        margin-top: -26em;
         height: 0px;
         margin-bottom: 14em;
       }
@@ -238,7 +238,7 @@
         width: 100%;
         height: 15px;
         filter: saturate(80%);
-        border: 1px solid #444;
+        border: 1px solid #aaa;
       }
 
       #scale {
@@ -416,6 +416,49 @@
           font-size: 5em;
         }
       }
+
+      #slider {
+        width: 610px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        z-index: 10;
+        margin-top: -8px;
+        margin-bottom: 12px;
+        opacity: 0;
+        transition: opacity 1s;
+      }
+
+      #slider input[type="range"] {
+        -webkit-appearance: none;
+        width: 608px;
+        height: 10px;
+        background: #ddd;
+        border-radius: 5px;
+        outline: none;
+        opacity: 0.7;
+        transition: opacity 0.5s;
+      }
+
+      #slider .sliderscale {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      #slider #datesliderlabel {
+        position: absolute;
+        width: 180px;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 2s;
+        top: 18px;
+        background-color: white;
+      }
+
+      #slider:active #datesliderlabel {
+        opacity: 1;
+        transition: opacity 0.2s;
+      }
     </style>
   </head>
 
@@ -435,7 +478,8 @@
     <p>
       Bring your eBird data, and see the ranges of your life list species. Find
       where on the planet you would identify the most familiar birds, and where
-      you have the most to see.
+      you have the most to see. Scroll through time to see how you've explored
+      avian biodiversity.
     </p>
 
     <p class="mobilewarning">
@@ -610,6 +654,23 @@
         <div class="label">50</div>
         <div class="label">100 birds</div>
       </div>
+    </div>
+
+    <div id="slider">
+      <input
+        type="range"
+        id="dateslider"
+        name="dateslider"
+        min="0"
+        max="500"
+        value="500"
+        step="10"
+      />
+      <div class="sliderscale">
+        <div id="dateslidermin"></div>
+        <div id="dateslidermax"></div>
+      </div>
+      <div id="datesliderlabel">2023-10-01</div>
     </div>
 
     <div id="extra">
@@ -868,7 +929,7 @@
             float ratio = count * (1.0 / maxcount);
 
             // Lookup in colormap
-            color0 = texture2D(u_cmdata, vec2(pow(ratio, 0.7), 0.5));
+            color0 = texelFetch(u_cmdata, ivec2(int(pow(ratio, 0.7) * 1024.0), 8), 0);
             color0.a = max(0.0, min(1.0, maxcountraw / 5.0));
 
             if (ratio < 0.001 || maxcountraw < 1.0) {
@@ -901,6 +962,8 @@
     </script>
 
     <script type="module">
+      // TODO hide the slider if no eBird data is loaded
+
       import * as THREE from "three";
       import { NRRDLoader } from "three/addons/loaders/NRRDLoader.js";
 
@@ -922,7 +985,11 @@
         FAR = 10000;
 
       var seenbirds = {};
+      var minDate;
+      var maxDate;
       var currentbirddata;
+      var currentLat;
+      var currentLon;
 
       var mode = 0;
 
@@ -1097,6 +1164,8 @@
         }
 
         console.log(isMobile);
+        // TODO new NRRD files that have a higher threshold for bird distribution
+        // TODO slider value, break by month?
 
         if (isMobile) {
           // Load the data ...
@@ -1196,7 +1265,7 @@
           // closing birds list
           document.getElementById("birds").innerHTML = "";
           document.getElementById("extra").style.height = "0em";
-          document.getElementById("extra").style.marginTop = "-24em";
+          document.getElementById("extra").style.marginTop = "-26em";
           document.getElementById("extra").style.marginBottom = "11em";
           document.getElementById("three").style.display = "block";
           document.getElementById("overlay").src = "";
@@ -1217,6 +1286,8 @@
 
         url.searchParams.set("la", lat);
         url.searchParams.set("lo", lon);
+        currentLat = lat;
+        currentLon = lon;
         window.history.pushState({}, "", url);
 
         loadBirdsAtPoint(lat, lon);
@@ -1227,6 +1298,37 @@
         renderer.render(scene, camera);
       }
 
+      function onbirdclick(b) {
+        if (b.index + 1 == material.uniforms.u_mode.value) {
+          console.log("closing");
+          document.getElementById("three").style.display = "block";
+          document.getElementById("overlay").src = "";
+          document.getElementById("overlay").style.display = "none";
+          material.uniforms.u_mode.value = mode;
+          render();
+          return;
+        }
+
+        document.getElementById("three").style.display = "block";
+        document.getElementById("overlay").style.display = "none";
+
+        material.uniforms.u_mode.value = b.index + 1;
+        render();
+
+        document.getElementById(
+          "overlay"
+        ).src = `./equalearth_by_code/${b.code}.png`;
+
+        document
+          .getElementById("overlay")
+          .addEventListener("load", function () {
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("three").style.display = "none";
+          });
+      }
+
+      var fetchedData;
+
       function loadBirdsAtPoint(lat, lon) {
         const lnglat = [lon, lat];
         const scaled = convertToUV(lnglat);
@@ -1236,71 +1338,12 @@
 
         console.log(scaledX, scaledY);
 
-        function onbirdclick(b) {
-          if (b.index + 1 == material.uniforms.u_mode.value) {
-            console.log("closing");
-            document.getElementById("three").style.display = "block";
-            document.getElementById("overlay").src = "";
-            document.getElementById("overlay").style.display = "none";
-            material.uniforms.u_mode.value = mode;
-            render();
-            return;
-          }
-
-          document.getElementById("three").style.display = "block";
-          document.getElementById("overlay").style.display = "none";
-
-          material.uniforms.u_mode.value = b.index + 1;
-          render();
-
-          document.getElementById(
-            "overlay"
-          ).src = `./equalearth_by_code/${b.code}.png`;
-
-          document
-            .getElementById("overlay")
-            .addEventListener("load", function () {
-              document.getElementById("overlay").style.display = "block";
-              document.getElementById("three").style.display = "none";
-            });
-        }
-
         // API call with the rounded pixel position
         fetch(`https://ebird.subject.space/birds?y=${scaledY}&x=${scaledX}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
-            // clear the list
-            document.getElementById("birds").innerHTML = "";
-
-            currentbirddata = data.birds;
-            updateScaleFromMode();
-
-            data.birds.forEach((b) => {
-              // add a list item for each bird
-              const li = document.createElement("li");
-              li.textContent = b.name;
-
-              if (seenbirds && seenbirds[b.sciname] > 0) {
-                li.classList.add("seen");
-              }
-
-              if (seenbirds && seenbirds[b.sciname] > 1) {
-                li.classList.add("recognize");
-              }
-
-              // if (seenbirds && seenbirds[b.sciname] > 3) {
-              //   li.classList.add("rrecognize");
-              // }
-
-              if (!isMobile) {
-                li.onmouseenter = () => onbirdclick(b);
-              } else {
-                li.onclick = () => onbirdclick(b);
-              }
-
-              document.getElementById("birds").appendChild(li);
-            });
+            fetchedData = data;
+            let seen_count = updateBirdList(data, seenbirds, dateLim);
 
             document.getElementById("birds").onmouseleave = function () {
               document.getElementById("three").style.display = "block";
@@ -1310,19 +1353,87 @@
               render();
             };
 
-            document.getElementById("location").textContent = `${
-              data.birds.length
-            } birds at ${Math.round(lat * 10) / 10}, ${
-              Math.round(lon * 10) / 10
-            } (near ${
-              data.place.admin1 != ""
-                ? data.place.admin1 + ", " + ISO3166[data.place.cc]
-                : ISO3166[data.place.cc]
-            })`;
             document.getElementById("extra").style.marginTop = "-13em";
             document.getElementById("extra").style.marginBottom = "2em";
             document.getElementById("extra").style.height = "460px";
           });
+      }
+
+      function updateBirdList(data, seenbirds, dateLim) {
+        // clear the list
+        document.getElementById("birds").innerHTML = "";
+
+        currentbirddata = data.birds;
+        updateScaleFromMode();
+        let seen_count = 0;
+
+        data.birds.forEach((b) => {
+          // add a list item for each bird
+          const li = document.createElement("li");
+          li.textContent = b.name;
+
+          if (
+            seenbirds &&
+            seenbirds[b.sciname] &&
+            seenbirds[b.sciname].num > 0 &&
+            seenbirds[b.sciname].first <= dateLim
+          ) {
+            li.classList.add("seen");
+            if (mode == -1 || mode == -2) {
+              seen_count++;
+            }
+          }
+
+          if (
+            seenbirds &&
+            seenbirds[b.sciname] &&
+            seenbirds[b.sciname].num > 1 &&
+            seenbirds[b.sciname].second <= dateLim
+          ) {
+            li.classList.add("recognize");
+            if (mode == -3) {
+              seen_count++;
+            }
+          }
+
+          if (!isMobile) {
+            li.onmouseenter = () => onbirdclick(b);
+          } else {
+            li.onclick = () => onbirdclick(b);
+          }
+
+          document.getElementById("birds").appendChild(li);
+        });
+
+        if (mode == -2) {
+          seen_count = data.birds.length - seen_count;
+        }
+
+        let output = "";
+
+        if (mode == 0) {
+          output = `${data.birds.length} birds`;
+        } else {
+          if (material.uniforms.u_normalize.value > 0) {
+            output = `${((100 * seen_count) / data.birds.length).toFixed(
+              1
+            )}% of birds`;
+          } else {
+            output = `${seen_count} / ${data.birds.length} birds`;
+          }
+        }
+
+        if (data.birds.length == 0) {
+          output = "No data";
+        }
+
+        document.getElementById("location").textContent = `${output} at ${
+          Math.round(currentLat * 10) / 10
+        }, ${Math.round(currentLon * 10) / 10} (near ${
+          data.place.admin1 != ""
+            ? data.place.admin1 + ", " + ISO3166[data.place.cc]
+            : ISO3166[data.place.cc]
+        })`;
       }
 
       // Uses D3 to draw the world background map
@@ -1332,8 +1443,6 @@
         fetch("https://unpkg.com/world-atlas@2.0.2/countries-110m.json")
           .then((d) => d.json())
           .then((topo) => {
-            console.log(topo);
-
             const land = topojson.feature(topo, topo.objects.countries);
             const width = 1024;
             const height = 512;
@@ -1414,8 +1523,6 @@
           if (Math.abs(delta) < 1e-6) break;
         }
 
-        console.log(theta, delta);
-
         let theta2 = theta * theta;
         let theta4 = theta2 * theta2;
         let theta6 = theta4 * theta2;
@@ -1464,17 +1571,6 @@
       function loadBirdList(data, recognizedData, count, recognizedCount) {
         const packedSize = Math.ceil(11145 / 8);
 
-        const dataCompressed = _arrayBufferToBase64(fflate.zlibSync(data));
-        const recognizedDataCompressed = _arrayBufferToBase64(
-          fflate.zlibSync(recognizedData)
-        );
-
-        url.searchParams.set("s", dataCompressed);
-        url.searchParams.set("r", recognizedDataCompressed);
-        url.searchParams.set("ss", count);
-        url.searchParams.set("rs", recognizedCount);
-        history.pushState(null, "", url);
-
         const seentexture = new THREE.DataTexture(data, packedSize, 1);
         seentexture.format = THREE.RedFormat;
         seentexture.type = THREE.UnsignedByteType;
@@ -1499,16 +1595,13 @@
         material.uniforms.u_seenbirdscount.value = count;
         material.uniforms.u_recognizedbirdscount.value = recognizedCount;
 
-        console.log(count, recognizedCount);
-
-        console.log("render");
-
         render();
 
         document
           .getElementById("ring")
           .removeEventListener("click", triggerUpload);
-        document.getElementById("addlabel").textContent = "Birds near location";
+        document.getElementById("addlabel").textContent =
+          "Range of location's birds";
 
         document.getElementById("ring").style.transition = "1s";
 
@@ -1533,63 +1626,197 @@
             if (!header) {
               header = l.split(",");
             }
+            // handle escaped commas in quotes
+            if (l.indexOf('"') > -1) {
+              l = l.replace(/"([^"]*)"/g, (m, p1) => p1.replace(/,/g, " "));
+            }
             l.split(",").forEach((p, i) => {
               bird[header[i]] = p;
             });
-            seenbirds[j] = bird;
+            if (
+              bird.hasOwnProperty("Scientific Name") &&
+              bird["Scientific Name"] != "Scientific Name"
+            ) {
+              bird["Scientific Name"] = bird["Scientific Name"]
+                .split(" ")
+                .slice(0, 2)
+                .join(" ");
+              seenbirds[j - 1] = bird;
+            }
           });
 
           seenbirds = d3.rollup(
             seenbirds,
-            (v) => v.length,
+            (v) => ({
+              num: v.length,
+              first: v.map((d) => d["Date"]).sort()[0],
+              second: v.length > 1 ? v.map((d) => d["Date"]).sort()[1] : false,
+            }),
             (d) => d["Scientific Name"]
           );
+
+          minDate = d3.min(
+            Array.from(seenbirds.values())
+              .map((d) => d.first)
+              .filter((v) => v.slice(0, 4) != "1900")
+          );
+          maxDate = d3.max(Array.from(seenbirds.values()).map((d) => d.first));
+          dateLim = maxDate;
 
           const mapToObject = (map) => Object.fromEntries(map.entries());
           seenbirds = mapToObject(seenbirds);
           delete seenbirds["Scientific Name"];
           delete seenbirds[undefined];
 
-          // TODO hardcoded species length
-          const packedSize = Math.ceil(11145 / 8);
-
-          const data = new Uint8Array(packedSize);
-          const recognizedData = new Uint8Array(packedSize);
-          let count = 0;
-          let recognizedCount = 0;
-
-          Object.keys(codes).forEach((k) => {
-            const index = Math.floor(codes[k] / 8);
-            const bit = codes[k] % 8;
-
-            if (seenbirds[k] > 0) {
-              data[index] |= 1 << bit;
-              count++;
-            }
-
-            if (seenbirds[k] > 1) {
-              recognizedData[index] |= 1 << bit;
-              recognizedCount++;
-            }
-          });
-
-          loadBirdList(data, recognizedData, count, recognizedCount);
-
           material.uniforms.u_mode.value = -1;
           mode = -1;
+          packAndUpdateList();
 
           url.searchParams.set("m", -1);
           history.pushState(null, "", url);
-
-          render();
           spinWheel(1);
+
+          // compress seenbirds to see if it can be stored in URL parameter
+          let seenbirdslist = [];
+
+          Object.keys(codes).forEach((k) => {
+            if (!seenbirds[k]) {
+              seenbirdslist[codes[k]] = 0;
+              return;
+            }
+            if (seenbirds[k].second) {
+              seenbirdslist[codes[k]] = [
+                seenbirds[k].num,
+                seenbirds[k].first,
+                seenbirds[k].second,
+              ];
+            } else {
+              seenbirdslist[codes[k]] = [seenbirds[k].num, seenbirds[k].first];
+            }
+          });
+
+          const seenbirdslistCompressed = _arrayBufferToBase64(
+            fflate.zlibSync(
+              new TextEncoder().encode(JSON.stringify(seenbirdslist))
+            )
+          );
+
+          url.searchParams.set("s", seenbirdslistCompressed);
+          history.pushState(null, "", url);
+
+          setupDateSlider(seenbirds);
+          document.getElementById("slider").style.opacity = "1";
         };
 
         reader.readAsText(file);
       }
 
+      var dateLim;
+
+      function setupDateSlider(seenbirds) {
+        const minDate = d3.min(
+          Array.from(Object.values(seenbirds))
+            .map((d) => d.first)
+            .filter((v) => v.slice(0, 4) != "1900")
+        );
+        const maxDate = d3.max(
+          Array.from(Object.values(seenbirds)).map((d) => d.first)
+        );
+
+        if (!dateLim) {
+          dateLim = maxDate;
+        } else {
+          const datePercent = (new Date(dateLim) - new Date(minDate)) / (new Date(maxDate) - new Date(minDate));
+          const sliderValue = Math.round(datePercent * 500);
+          console.log(
+            "Setting slider value to",
+            sliderValue,
+            datePercent,
+            dateLim
+          );
+          document.getElementById("dateslider").value = sliderValue;
+          document.getElementById("datesliderlabel").textContent = 'Life list as of ' + dateLim;
+          document.getElementById(
+            "datesliderlabel"
+          ).style.left = `calc(${datePercent * 100}% - 90px)`;
+        }
+        
+        document.getElementById("dateslidermin").textContent = minDate;
+        document.getElementById("dateslidermax").textContent = maxDate;
+
+        document.getElementById("dateslider").addEventListener(
+          "input",
+          function (e) {
+            const val = e.target.value / 500; // value between 0 and 1
+
+            // interpolate between minDate and maxDate
+            const minDateD = new Date(minDate);
+            const maxDateD = new Date(maxDate);
+            const interpolatedDate = new Date(
+              minDateD.getTime() +
+                val * (maxDateD.getTime() - minDateD.getTime())
+            );
+            const dateString = interpolatedDate.toISOString().slice(0, 10);
+
+            document.getElementById("datesliderlabel").textContent = 'Life list as of ' + dateLim;
+            document.getElementById("datesliderlabel").style.left = `calc(${
+              val * 100
+            }% - 90px)`;
+
+            packAndUpdateList(dateString);
+            dateLim = dateString;
+
+            url.searchParams.set("d", dateString);
+            history.pushState(null, "", url);
+          },
+          false
+        );
+      }
+
+      function packAndUpdateList(dateLim) {
+        // TODO hardcoded species length
+        const packedSize = Math.ceil(11145 / 8);
+
+        const data = new Uint8Array(packedSize);
+        const recognizedData = new Uint8Array(packedSize);
+        let count = 0;
+        let recognizedCount = 0;
+
+        Object.keys(codes).forEach((k) => {
+          const index = Math.floor(codes[k] / 8);
+          const bit = codes[k] % 8;
+
+          if (seenbirds[k] && seenbirds[k].num > 0) {
+            if (
+              !dateLim ||
+              (dateLim && seenbirds[k] && seenbirds[k].first <= dateLim)
+            ) {
+              data[index] |= 1 << bit;
+            }
+            count++;
+          }
+
+          if (seenbirds[k] && seenbirds[k].num > 1) {
+            if (
+              !dateLim ||
+              (dateLim && seenbirds[k] && seenbirds[k].second <= dateLim)
+            ) {
+              recognizedData[index] |= 1 << bit;
+            }
+            recognizedCount++;
+          }
+        });
+
+        loadBirdList(data, recognizedData, count, recognizedCount);
+
+        if (fetchedData) {
+          updateBirdList(fetchedData, seenbirds, dateLim);
+        }
+
+        render();
+      }
+
       function triggerUpload() {
-        console.log("clicked");
         document.getElementById("upload").click();
       }
 
@@ -1684,6 +1911,7 @@
         }
 
         updateScaleFromMode();
+        packAndUpdateList(dateLim);
       }
 
       function updateScaleFromMode() {
@@ -1725,6 +1953,7 @@
           history.pushState(null, "", url);
 
           updateScaleFromMode();
+          packAndUpdateList(dateLim);
         };
       }
 
@@ -1896,46 +2125,54 @@
         }
       }
 
-      if (url.searchParams.get("s") && url.searchParams.get("r")) {
-        const data = fflate.unzlibSync(
-          Uint8Array.from(atob(url.searchParams.get("s")), (c) =>
-            c.charCodeAt(0)
-          )
+      if (url.searchParams.get("s")) {
+        // decompress seenbirds
+        let seenbirdslist = Uint8Array.from(
+          atob(url.searchParams.get("s")),
+          (c) => c.charCodeAt(0)
         );
 
-        const recognizedData = fflate.unzlibSync(
-          Uint8Array.from(atob(url.searchParams.get("r")), (c) =>
-            c.charCodeAt(0)
-          )
+        seenbirdslist = fflate.unzlibSync(seenbirdslist);
+
+        // convert to strnig
+        seenbirdslist = String.fromCharCode.apply(
+          null,
+          new Uint8Array(seenbirdslist)
         );
+
+        seenbirdslist = JSON.parse(seenbirdslist);
 
         Object.keys(codes).forEach((k) => {
-          const index = Math.floor(codes[k] / 8);
-          const bit = codes[k] % 8;
-
-          if ((data[index] >> bit) & 1) {
-            seenbirds[k] = 1;
-          }
-
-          if ((recognizedData[index] >> bit) & 1) {
-            seenbirds[k] = 2;
+          if (seenbirdslist[codes[k]]) {
+            seenbirds[k] = {
+              num: seenbirdslist[codes[k]][0],
+              first: seenbirdslist[codes[k]][1],
+              second: seenbirdslist[codes[k]][2] ?? false,
+            };
           }
         });
 
-        loadBirdList(
-          data,
-          recognizedData,
-          +url.searchParams.get("ss"),
-          +url.searchParams.get("rs")
-        );
+        packAndUpdateList();
+        setupDateSlider(seenbirds);
 
         document.getElementById("empty").innerHTML =
           '<p><em><a href="https://subject.space/projects-static/ebird/">reset data</a></em></p>';
+
+        document.getElementById("slider").style.opacity = "1";
+      }
+
+      if (url.searchParams.get("d")) {
+        dateLim = url.searchParams.get("d");
+
+        packAndUpdateList(dateLim);
+        setupDateSlider(seenbirds);
       }
 
       if (url.searchParams.get("la") && url.searchParams.get("lo")) {
         const lat = +url.searchParams.get("la");
         const lon = +url.searchParams.get("lo");
+        currentLat = lat;
+        currentLon = lon;
 
         loadBirdsAtPoint(lat, lon);
       }
