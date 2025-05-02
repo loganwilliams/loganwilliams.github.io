@@ -426,7 +426,8 @@
         margin-top: -8px;
         margin-bottom: 12px;
         opacity: 0;
-        transition: opacity 1s;
+        transition: opacity 1s, max-height 1s;
+        max-height: 16px;
       }
 
       #slider input[type="range"] {
@@ -755,8 +756,8 @@
         step="10"
       />
       <div class="sliderscale">
-        <div id="dateslidermin"></div>
-        <div id="dateslidermax"></div>
+        <div id="dateslidermin">loading</div>
+        <div id="dateslidermax">loading</div>
       </div>
       <div id="datesliderlabel">2023-10-01</div>
     </div>
@@ -1341,14 +1342,22 @@
         document.getElementById("birds").innerHTML = "";
         document.getElementById("extra").style.height = "0em";
         document.getElementById("extra").style.marginTop = "-26em";
-        document.getElementById("extra").style.marginBottom = "11em";
-        document.getElementById("three").style.display = "block";
+        document.getElementById("extra").style.marginBottom = "14em";
+        document.getElementById("three").style.opacity = "1";
         document.getElementById("overlay").src = "";
         document.getElementById("overlay").style.display = "none";
         document.getElementById("thumbnail").style.display = "none";
         material.uniforms.u_cursor.value = 0;
 
         currentbirddata = null;
+
+        if (material.uniforms.u_mode.value > 0 && isMobile) {
+          material.uniforms.u_mode.value = mode;
+          document.getElementById("three").style.opacity = "1";
+          document.getElementById("overlay").src = "";
+          document.getElementById("overlay").style.display = "none";
+        }
+
         updateScaleFromMode();
 
         url.searchParams.delete("la");
@@ -1368,6 +1377,16 @@
 
       // Get list of birds at a location from API on click
       function onClick(event) {
+        if (material.uniforms.u_mode.value > 0 && isMobile) {
+          console.log("closing");
+          document.getElementById("three").style.opacity = "1";
+          document.getElementById("overlay").src = "";
+          document.getElementById("overlay").style.display = "none";
+          document.getElementById("thumbnail").style.display = "none";
+          material.uniforms.u_mode.value = mode;
+          render();
+        }
+
         const width = event.srcElement.getBoundingClientRect().width;
         const height = event.srcElement.getBoundingClientRect().height;
 
@@ -1399,8 +1418,8 @@
           document.getElementById("birds").innerHTML = "";
           document.getElementById("extra").style.height = "0em";
           document.getElementById("extra").style.marginTop = "-26em";
-          document.getElementById("extra").style.marginBottom = "11em";
-          document.getElementById("three").style.display = "block";
+          document.getElementById("extra").style.marginBottom = "14em";
+          document.getElementById("three").style.opacity = "1";
           document.getElementById("overlay").src = "";
           document.getElementById("overlay").style.display = "none";
           material.uniforms.u_cursor.value = 0;
@@ -1434,7 +1453,7 @@
       function onbirdclick(b) {
         if (b.index + 1 == material.uniforms.u_mode.value) {
           console.log("closing");
-          document.getElementById("three").style.display = "block";
+          document.getElementById("three").style.opacity = "1";
           document.getElementById("overlay").src = "";
           document.getElementById("overlay").style.display = "none";
           material.uniforms.u_mode.value = mode;
@@ -1442,7 +1461,7 @@
           return;
         }
 
-        document.getElementById("three").style.display = "block";
+        document.getElementById("three").style.opacity = "1";
         document.getElementById("overlay").style.display = "none";
 
         material.uniforms.u_mode.value = b.index + 1;
@@ -1456,7 +1475,7 @@
           .getElementById("overlay")
           .addEventListener("load", function () {
             document.getElementById("overlay").style.display = "block";
-            document.getElementById("three").style.display = "none";
+            document.getElementById("three").style.opacity = "0";
           });
 
         if (thumbnails[b.sciname]) {
@@ -1497,7 +1516,7 @@
 
             if (!isMobile) {
               document.getElementById("birds").onmouseleave = function () {
-                document.getElementById("three").style.display = "block";
+                document.getElementById("three").style.opacity = "1";
                 document.getElementById("overlay").src = "";
                 document.getElementById("overlay").style.display = "none";
                 document.getElementById("thumbnail").style.display = "none";
@@ -1870,6 +1889,8 @@
 
           setupDateSlider(seenbirds);
           document.getElementById("slider").style.opacity = "1";
+          document.getElementById("slider").style.maxHeight = "50px";
+          document.getElementById("thumbnail").style.bottom = "-84px";
         };
 
         reader.readAsText(file);
@@ -2038,6 +2059,10 @@
           url.searchParams.set("m", -2);
           history.pushState(null, "", url);
 
+          document.getElementById("slider").style.opacity = "1";
+          document.getElementById("slider").style.maxHeight = "50px";
+          document.getElementById("thumbnail").style.bottom = "-84px";
+
           // material.uniforms.u_seenbirdscount.value = 900;
           // Object.keys(seenbirds).length * 1.2;
 
@@ -2049,6 +2074,10 @@
           mode = -3;
           url.searchParams.set("m", -3);
           history.pushState(null, "", url);
+
+          document.getElementById("slider").style.opacity = "1";
+          document.getElementById("slider").style.maxHeight = "50px";
+          document.getElementById("thumbnail").style.bottom = "-84px";
 
           // material.uniforms.u_seenbirdscount.value = Object.keys(
           //   seenbirds
@@ -2063,6 +2092,10 @@
           url.searchParams.set("m", -1);
           history.pushState(null, "", url);
 
+          document.getElementById("slider").style.opacity = "1";
+          document.getElementById("slider").style.maxHeight = "50px";
+          document.getElementById("thumbnail").style.bottom = "-84px";
+
           // material.uniforms.u_seenbirdscount.value =
           // Object.keys(seenbirds).length;
 
@@ -2074,6 +2107,10 @@
           mode = 0;
           url.searchParams.set("m", 0);
           history.pushState(null, "", url);
+
+          document.getElementById("slider").style.opacity = "0";
+          document.getElementById("slider").style.maxHeight = "16px";
+          document.getElementById("thumbnail").style.bottom = "-64px";
 
           render();
         }
@@ -2121,7 +2158,7 @@
           history.pushState(null, "", url);
 
           updateScaleFromMode();
-          packAndUpdateList(dateLim);
+          // packAndUpdateList(dateLim);
         };
       }
 
@@ -2327,6 +2364,8 @@
           '<p><em><a href="https://subject.space/projects-static/ebird/">reset data</a></em></p>';
 
         document.getElementById("slider").style.opacity = "1";
+        document.getElementById("slider").style.maxHeight = "100px";
+        document.getElementById("thumbnail").style.bottom = "-84px";
       }
 
       if (url.searchParams.get("d")) {
