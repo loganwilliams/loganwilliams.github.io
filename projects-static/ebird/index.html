@@ -1345,6 +1345,7 @@
         document.getElementById("three").style.display = "block";
         document.getElementById("overlay").src = "";
         document.getElementById("overlay").style.display = "none";
+        document.getElementById("thumbnail").style.display = "none";
         material.uniforms.u_cursor.value = 0;
 
         currentbirddata = null;
@@ -1494,14 +1495,16 @@
             fetchedData = data;
             let seen_count = updateBirdList(data, seenbirds, dateLim);
 
-            document.getElementById("birds").onmouseleave = function () {
-              document.getElementById("three").style.display = "block";
-              document.getElementById("overlay").src = "";
-              document.getElementById("overlay").style.display = "none";
-              document.getElementById("thumbnail").style.display = "none";
-              material.uniforms.u_mode.value = mode;
-              render();
-            };
+            if (!isMobile) {
+              document.getElementById("birds").onmouseleave = function () {
+                document.getElementById("three").style.display = "block";
+                document.getElementById("overlay").src = "";
+                document.getElementById("overlay").style.display = "none";
+                document.getElementById("thumbnail").style.display = "none";
+                material.uniforms.u_mode.value = mode;
+                render();
+              };
+            }
 
             document.getElementById("extra").style.marginTop = "-13em";
             document.getElementById("extra").style.marginBottom = "2em";
