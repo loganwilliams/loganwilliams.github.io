@@ -459,6 +459,85 @@
         opacity: 1;
         transition: opacity 0.2s;
       }
+
+      #thumbnail {
+        display: none;
+        position: absolute;
+        bottom: -64px;
+        left: -34px;
+        z-index: 10;
+        width: 220px;
+        justify-content: center;
+      }
+
+      #thumbnail img {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        display: block;
+      }
+
+      #thumbnail_img {
+        max-width: 100%;
+        max-height: 200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #thumbnail_attr {
+        position: absolute;
+        bottom: 7px;
+        font-size: 14px;
+        color: black;
+        text-align: left;
+        text-wrap: nowrap;
+        overflow: hidden;
+        font-style: italic;
+        max-width: calc(100% - 17px);
+      }
+
+      #thumbnailcard {
+        background-color: #fff;
+        padding: 0.5em;
+        padding-bottom: 28px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px;
+        position: relative;
+        max-width: 220px;
+      }
+
+      .attrwrapper {
+        display: flex;
+        justify-content: center;
+        padding-left: 12px;
+        padding-right: 12px;
+        max-width: 100%;
+      }
+
+      #noimages {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        opacity: 0.4;
+        right: 44px;
+        bottom: 11px;
+      }
+
+      #noimages:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
+
+      #close {
+        position: absolute;
+        bottom: 0px;
+        right: 12px;
+        font-size: 2.5em;
+        opacity: 0.4;
+      }
+
+      #close:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
     </style>
   </head>
 
@@ -641,6 +720,15 @@
           <button id="screenshot" type="button">Save image</button>
         </div>
       </div>
+
+      <div id="thumbnail">
+        <div id="thumbnailcard">
+          <img id="thumbnail_img" src="thumbnail.png" />
+          <div class="attrwrapper">
+            <span id="thumbnail_attr"></span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="scale">
@@ -680,7 +768,15 @@
         <div id="controlleft">←</div>
         <div id="controlright">→</div>
       </div>
+      <img id="noimages" src="icons8-no-image-48.png" />
+      <div id="close">&times;</div>
     </div>
+
+    <!-- 
+    <div id="thumbnail">
+      <img id="thumbnail_img" src="thumbnail.png" />
+      <div id="thumbnail_attr"></div>
+    </div> -->
 
     <div id="empty"></div>
     <h1>Information</h1>
@@ -721,8 +817,6 @@
         varying vec2 vUv;
 
         uniform sampler2DArray u_data;
-        uniform sampler2DArray u_data_first;
-        uniform sampler2DArray u_data_last;
 
         uniform sampler2D u_maxdata;
         uniform sampler2D u_cmdata;
@@ -962,8 +1056,6 @@
     </script>
 
     <script type="module">
-      // TODO hide the slider if no eBird data is loaded
-
       import * as THREE from "three";
       import { NRRDLoader } from "three/addons/loaders/NRRDLoader.js";
 
@@ -990,6 +1082,8 @@
       var currentbirddata;
       var currentLat;
       var currentLon;
+
+      var noimages = false;
 
       var mode = 0;
 
@@ -1019,6 +1113,13 @@
       setScale(false);
       initControls();
       document.getElementById("ring").addEventListener("click", triggerUpload);
+
+      var thumbnails = {};
+      fetch("./thumbnails.json")
+        .then((response) => response.json())
+        .then((data) => {
+          thumbnails = data;
+        });
 
       function init() {
         scene = new THREE.Scene();
@@ -1067,7 +1168,7 @@
 
         if (isMobile) {
           cmtextures.max = new THREE.TextureLoader().load(
-            "maxes3packed_by_code_threshold240_lores.png",
+            "maxes3packed_by_code_threshold240_lores2.png",
             (texture) => {
               texture.minFilter = texture.magFilter = THREE.NearestFilter;
               material.uniforms["u_maxdata"].value = texture;
@@ -1163,10 +1264,6 @@
           };
         }
 
-        console.log(isMobile);
-        // TODO new NRRD files that have a higher threshold for bird distribution
-        // TODO slider value, break by month?
-
         if (isMobile) {
           // Load the data ...
           new NRRDLoader().load(
@@ -1234,6 +1331,40 @@
         // }
       }
 
+      function closeBirdsList() {
+        if (mode == 0) {
+          hoverToggle = !hoverToggle;
+        } else {
+          hoverToggle = true;
+        }
+
+        document.getElementById("birds").innerHTML = "";
+        document.getElementById("extra").style.height = "0em";
+        document.getElementById("extra").style.marginTop = "-26em";
+        document.getElementById("extra").style.marginBottom = "11em";
+        document.getElementById("three").style.display = "block";
+        document.getElementById("overlay").src = "";
+        document.getElementById("overlay").style.display = "none";
+        material.uniforms.u_cursor.value = 0;
+
+        currentbirddata = null;
+        updateScaleFromMode();
+
+        url.searchParams.delete("la");
+        url.searchParams.delete("lo");
+        url.searchParams.delete("mx");
+        url.searchParams.delete("my");
+        window.history.pushState({}, "", url);
+
+        render();
+
+        return;
+      }
+
+      document.getElementById("close").onclick = function () {
+        closeBirdsList();
+      };
+
       // Get list of birds at a location from API on click
       function onClick(event) {
         const width = event.srcElement.getBoundingClientRect().width;
@@ -1262,6 +1393,7 @@
         url.searchParams.set("my", mouseY);
 
         if (!hoverToggle && mode == 0 && !isMobile) {
+          console.log("closing birds list");
           // closing birds list
           document.getElementById("birds").innerHTML = "";
           document.getElementById("extra").style.height = "0em";
@@ -1325,6 +1457,23 @@
             document.getElementById("overlay").style.display = "block";
             document.getElementById("three").style.display = "none";
           });
+
+        if (thumbnails[b.sciname]) {
+          document.getElementById("thumbnail_img").src =
+            thumbnails[b.sciname].u;
+          document.getElementById("thumbnail_attr").innerHTML =
+            thumbnails[b.sciname].a;
+
+          // set fixed position to match cursor
+          if (!noimages) {
+            document.getElementById("thumbnail").style.display = "flex";
+          }
+
+          document.getElementById("thumbnailcard").style.transform =
+            "rotate(" + (Math.random() * 5 - 2.5) + "deg)";
+        } else {
+          document.getElementById("thumbnail").style.display = "none";
+        }
       }
 
       var fetchedData;
@@ -1349,6 +1498,7 @@
               document.getElementById("three").style.display = "block";
               document.getElementById("overlay").src = "";
               document.getElementById("overlay").style.display = "none";
+              document.getElementById("thumbnail").style.display = "none";
               material.uniforms.u_mode.value = mode;
               render();
             };
@@ -1435,6 +1585,17 @@
             : ISO3166[data.place.cc]
         })`;
       }
+
+      document.getElementById("noimages").onclick = function () {
+        noimages = !noimages;
+        if (noimages) {
+          document.getElementById("thumbnail").style.display = "none";
+          document.getElementById("noimages").src = "./icons8-image-48.png";
+        } else {
+          document.getElementById("thumbnail").style.display = "flex";
+          document.getElementById("noimages").src = "./icons8-no-image-48.png";
+        }
+      };
 
       // Uses D3 to draw the world background map
       function drawBGMap() {
@@ -1726,7 +1887,9 @@
         if (!dateLim) {
           dateLim = maxDate;
         } else {
-          const datePercent = (new Date(dateLim) - new Date(minDate)) / (new Date(maxDate) - new Date(minDate));
+          const datePercent =
+            (new Date(dateLim) - new Date(minDate)) /
+            (new Date(maxDate) - new Date(minDate));
           const sliderValue = Math.round(datePercent * 500);
           console.log(
             "Setting slider value to",
@@ -1735,12 +1898,13 @@
             dateLim
           );
           document.getElementById("dateslider").value = sliderValue;
-          document.getElementById("datesliderlabel").textContent = 'Life list as of ' + dateLim;
-          document.getElementById(
-            "datesliderlabel"
-          ).style.left = `calc(${datePercent * 100}% - 90px)`;
+          document.getElementById("datesliderlabel").textContent =
+            "Life list as of " + dateLim;
+          document.getElementById("datesliderlabel").style.left = `calc(${
+            datePercent * 100
+          }% - 90px)`;
         }
-        
+
         document.getElementById("dateslidermin").textContent = minDate;
         document.getElementById("dateslidermax").textContent = maxDate;
 
@@ -1758,7 +1922,8 @@
             );
             const dateString = interpolatedDate.toISOString().slice(0, 10);
 
-            document.getElementById("datesliderlabel").textContent = 'Life list as of ' + dateLim;
+            document.getElementById("datesliderlabel").textContent =
+              "Life list as of " + dateLim;
             document.getElementById("datesliderlabel").style.left = `calc(${
               val * 100
             }% - 90px)`;
