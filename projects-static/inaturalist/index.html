@@ -1,465 +1,711 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>"Locals" and "Tourists" on iNaturalist</title>
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <meta property="og:title" content="iNaturalist 'Locals' and 'Tourists'" />
-    <meta property="og:url" content="" />
-    <meta
-      property="og:description"
-      content="A global map of 'locals' and 'tourists' on iNaturalist based on observation history in the vicinity of each observation."
-    />
-    <meta
-      property="og:image"
-      content="https://subject.space/projects-static/inaturalist/header.jpg"
-    />
-    <meta
-      property="og:url"
-      content="https://subject.space/projects-static/inaturalist/"
-    />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@obtusatum" />
-    <meta name="twitter:title" content="iNaturalist 'Locals' and 'Tourists'" />
-    <meta
-      name="twitter:description"
-      content="A global map of 'locals' and 'tourists' on iNaturalist based on observation history in the vicinity of each observation."
-    />
-    <meta
-      name="twitter:image"
-      content="https://subject.space/projects-static/inaturalist/header.jpg"
-    />
 
-    <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
-    <script src="https://unpkg.com/pmtiles@2.5.0/dist/index.js"></script>
+<head>
+  <meta charset="utf-8" />
+  <title>"Locals" and "Tourists" on iNaturalist</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta property="og:title" content="iNaturalist 'Locals' and 'Tourists'" />
+  <meta property="og:url" content="" />
+  <meta property="og:description"
+    content="A global map of 'locals' and 'tourists' on iNaturalist based on observation history in the vicinity of each observation." />
+  <meta property="og:image" content="https://subject.space/projects-static/inaturalist/header.jpg" />
+  <meta property="og:url" content="https://subject.space/projects-static/inaturalist/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@obtusatum" />
+  <meta name="twitter:title" content="iNaturalist 'Locals' and 'Tourists'" />
+  <meta name="twitter:description"
+    content="A global map of 'locals' and 'tourists' on iNaturalist based on observation history in the vicinity of each observation." />
+  <meta name="twitter:image" content="https://subject.space/projects-static/inaturalist/header.jpg" />
 
-    <script defer data-domain="subject.space" src="https://plausible.io/js/script.js"></script>
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <script src="https://unpkg.com/pmtiles@2.5.0/dist/index.js"></script>
 
-    <link
-      href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: "Helvetica", Arial, sans-serif;
-      }
+  <script defer data-domain="subject.space" src="https://plausible.io/js/script.js"></script>
 
+  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica", Arial, sans-serif;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 200px;
+      right: 0;
+    }
+
+    #menu {
+      /* width: 100%; */
+      width: calc(200px - 2em);
+      height: calc(100% - 2em);
+      position: absolute;
+      top: 0;
+      background-color: black;
+      color: white;
+      display: flex;
+      font-size: 14px;
+      flex-direction: column;
+      padding: 1em;
+      overflow: scroll;
+    }
+
+    @media (max-width: 500px) {
       #map {
-        position: absolute;
         top: 0;
-        bottom: 0;
-        left: 200px;
+        bottom: 212px;
         right: 0;
+        width: 100%;
+        left: 0;
       }
 
       #menu {
-        /* width: 100%; */
-        width: calc(200px - 2em);
-        height: calc(100% - 2em);
-        position: absolute;
-        top: 0;
-        background-color: black;
-        color: white;
-        display: flex;
-        font-size: 14px;
-        flex-direction: column;
-        padding: 1em;
-        overflow: scroll;
+        width: calc(100% - 2em);
+        height: calc(212px - 2em);
+        bottom: 0;
+        top: revert;
       }
+    }
 
-      @media (max-width: 500px) {
-        #map {
-          top: 0;
-          bottom: 212px;
-          right: 0;
-          width: 100%;
-          left: 0;
-        }
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+    }
 
-        #menu {
-          width: calc(100% - 2em);
-          height: calc(212px - 2em);
-          bottom: 0;
-          top: revert;
-        }
-      }
+    .options div {
+      padding: 0.25em 0.5em;
+      border: 1px solid #444;
+      border-radius: 2px;
+      margin: 0.1em 0.25em;
+      cursor: pointer;
+    }
 
-      .options {
-        display: flex;
-        flex-wrap: wrap;
-      }
+    .options div.active {
+      font-weight: bold;
+    }
 
-      .options div {
-        padding: 0.25em 0.5em;
-        border: 1px solid #444;
-        border-radius: 2px;
-        margin: 0.1em 0.25em;
-        cursor: pointer;
-      }
+    .option:hover {
+      cursor: pointer;
+      background: #444;
+    }
 
-      .options div.active {
-        font-weight: bold;
-      }
+    .tourist_label {
+      color: #ff9900;
+    }
 
-      .option:hover {
-        cursor: pointer;
-        background: #444;
-      }
+    .tourist_symbol {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      background-color: #ff9900;
+    }
 
-      .tourist_label {
-        color: #ff9900;
-      }
+    .local_label {
+      color: #b778ff;
+    }
 
-      .tourist_symbol {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 4px;
-        background-color: #ff9900;
-      }
+    .local_symbol {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      background-color: #b778ff;
+    }
 
-      .local_label {
-        color: #b778ff;
-      }
+    .cluster_label {
+      /* color: #b778ff; */
+    }
 
-      .local_symbol {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 4px;
-        background-color: #b778ff;
-      }
+    .cluster_symbol {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border-radius: 12px;
+      background-color: #b778ff;
+      margin-right: 0.5em;
+    }
 
-      .cluster_label {
-        /* color: #b778ff; */
-      }
+    .symbol.cluster {
+      width: 180px;
+      display: flex;
+      align-items: center;
+    }
 
-      .cluster_symbol {
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        border-radius: 12px;
-        background-color: #b778ff;
-        margin-right: 0.5em;
-      }
+    h2 {
+      font-size: 1em;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
 
-      .symbol.cluster {
-        width: 180px;
-        display: flex;
-        align-items: center;
-      }
+    h1 {
+      font-size: 1em;
+      margin-top: 0;
+      margin-bottom: 0.25em;
+    }
 
-      h2 {
-        font-size: 1em;
-        margin-top: 1em;
-        margin-bottom: 0.5em;
-      }
+    h3 {
+      font-weight: normal;
+      font-style: italic;
+      font-size: 1em;
+      margin-top: 0;
+      margin-bottom: 1em;
+    }
 
-      h1 {
-        font-size: 1em;
-        margin-top: 0;
-        margin-bottom: 0.25em;
-      }
+    a {
+      color: white;
+    }
 
-      h3 {
-        font-weight: normal;
-        font-style: italic;
-        font-size: 1em;
-        margin-top: 0;
-        margin-bottom: 1em;
-      }
+    .legend {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5em;
+    }
 
-      a {
-        color: white;
-      }
+    .symbol {
+      width: 70px;
+      flex-shrink: 0;
+    }
 
-      .legend {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0.5em;
-      }
+    p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
 
-      .symbol {
-        width: 70px;
-        flex-shrink: 0;
-      }
+    input:disabled::before {
+      content: "Zoom in to adjust";
+      /* width: 0px; */
+      position: absolute;
+      top: -1.25em;
+      display: block;
+    }
 
-      p {
-        margin-top: 0.25em;
-        margin-bottom: 0.25em;
-      }
+    input:disabled {
+      position: relative;
+      margin-top: 1.25em;
+    }
 
-      input:disabled::before {
-        content: "Zoom in to adjust";
-        /* width: 0px; */
-        position: absolute;
-        top: -1.25em;
-        display: block;
-      }
+    .toggle {
+      display: flex;
+    }
 
-      input:disabled {
-        position: relative;
-        margin-top: 1.25em;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="menu">
-      <h1>"Locals" and "Tourists" on iNaturalist</h1>
-      <h3>by <a href="https://subject.space">Logan Williams</a></h3>
-      <p>
-        <a
-          href="https://exclav.es/2023/03/22/inaturalist-observations-locals-and-tourists/"
-          >Read the blog post</a
-        >
-        for more information. Inspired by Erica Fischer's wonderful
-        <a
-          href="https://www.flickr.com/photos/walkingsf/albums/72157624209158632/"
-          >Locals and Tourists</a
-        >
-        (2010).
-      </p>
+    .toggle div {
+      border: none;
+    }
 
-      <h2>Legend</h2>
+    .toggle div.active {
+      background-color: #444;
+      color: white;
+    }
+  </style>
+</head>
 
-      <div class="legend">
-        <div class="symbol">
-          <span class="tourist_symbol"></span>&nbsp;<span class="tourist_label"
-            >tourists</span
-          >
+<body>
+  <div id="menu">
+    <h1>"Locals" and "Tourists" on iNaturalist</h1>
+    <h3>by <a href="https://subject.space">Logan Williams</a></h3>
+    <p>
+      <a href="https://exclav.es/2023/03/22/inaturalist-observations-locals-and-tourists/">Read the blog post</a>
+      for more information. Inspired by Erica Fischer's wonderful
+      <a href="https://www.flickr.com/photos/walkingsf/albums/72157624209158632/">Locals and Tourists</a>
+      (2010).
+    </p>
+
+    <h2>Data</h2>
+
+    <div class="options">
+      <div class="toggle">
+        <div id="year-2023">
+          2023
         </div>
-        <div class="value">
-          &lt;= <span id="threshold1">90</span> days of local activity
+        <div id="year-2025" class="active">
+          2025
         </div>
       </div>
-
-      <div class="legend">
-        <div class="symbol">
-          <span class="local_symbol"></span>&nbsp;<span class="local_label"
-            >locals</span
-          >
-        </div>
-        <div class="value">
-          &gt; <span id="threshold2">90</span> days of local activity
-        </div>
-      </div>
-
-      <div class="legend">
-        <div class="symbol cluster">
-          <span class="cluster_symbol"></span>&nbsp;<span class="cluster_label"
-            >observation cluster</span
-          >
-        </div>
-      </div>
-
-      <h2>Filter observations</h2>
-      <div class="options">
-        <div id="all" class="active">Show All</div>
-
-        <div id="plants">Plants</div>
-        <!-- Kingdom = Plantae -->
-
-        <div id="fungi">Fungi</div>
-        <!-- Kingdom = Fungi -->
-
-        <div id="animals">Animals</div>
-        <!-- Kingdom = Animalia, phylum = Chordata, class = Mammalia -->
-
-        <div id="birds">Birds</div>
-        <!-- Kingdom = Animalia, phylum = Chordata, class = Aves -->
-
-        <div id="mammals">Mammals</div>
-        <!-- Kingdom = Animalia, phylum = Chordata, class = Mammalia -->
-
-        <div id="herps">Herps</div>
-        <!-- Kingdom = Animalia, phylum = Chordata, class = Reptilia OR class = Amphibia -->
-
-        <div id="arthro">Arthropods</div>
-        <!-- Kingdom = Animalia, phylum = Arthropoda -->
-
-        <div id="other">Other</div>
-        <!-- Kingdom != Animalia, Fungi, or Plantae -->
-      </div>
-
-      <h2>Tourist threshold</h2>
-
-      <!-- Add a slider for adjusting the tourist threshold? -->
-      <input
-        type="range"
-        min="0"
-        max="365"
-        value="90"
-        class="slider"
-        id="tourist"
-        disabled
-      />
     </div>
-    <div id="map"></div>
-    <script>
-      let protocol = new pmtiles.Protocol();
-      maplibregl.addProtocol("pmtiles", protocol.tile);
 
-      var searchParams = new URLSearchParams(window.location.search);
+    <h2>Legend</h2>
 
-      var center = [-88.13734351262877, 35.137451890638886];
-      var zoom = 4;
+    <div class="legend">
+      <div class="symbol">
+        <span class="tourist_symbol"></span>&nbsp;<span class="tourist_label">tourists</span>
+      </div>
+      <div class="value">
+        &lt;= <span id="threshold1">90</span> days of local activity
+      </div>
+    </div>
 
-      if (searchParams.get("lat") && searchParams.get("lng")) {
-        center = [searchParams.get("lng"), searchParams.get("lat")];
-      }
+    <div class="legend">
+      <div class="symbol">
+        <span class="local_symbol"></span>&nbsp;<span class="local_label">locals</span>
+      </div>
+      <div class="value">
+        &gt; <span id="threshold2">90</span> days of local activity
+      </div>
+    </div>
 
-      if (searchParams.get("z")) {
-        zoom = searchParams.get("z");
-      }
+    <div class="legend">
+      <div class="symbol cluster">
+        <span class="cluster_symbol"></span>&nbsp;<span class="cluster_label">observation cluster</span>
+      </div>
+    </div>
 
-      var map = new maplibregl.Map({
-        container: "map",
-        style:
-          "https://api.maptiler.com/maps/basic-v2-dark/style.json?key=BO0rAf7nscZz6lLkzwOL",
-        center,
-        zoom,
+    <h2>Filter observations</h2>
+    <div class="options">
+      <div id="all" class="active">Show All</div>
+
+      <div id="plants">Plants</div>
+      <!-- Kingdom = Plantae -->
+
+      <div id="fungi">Fungi</div>
+      <!-- Kingdom = Fungi -->
+
+      <div id="animals">Animals</div>
+      <!-- Kingdom = Animalia, phylum = Chordata, class = Mammalia -->
+
+      <div id="birds">Birds</div>
+      <!-- Kingdom = Animalia, phylum = Chordata, class = Aves -->
+
+      <div id="mammals">Mammals</div>
+      <!-- Kingdom = Animalia, phylum = Chordata, class = Mammalia -->
+
+      <div id="herps">Herps</div>
+      <!-- Kingdom = Animalia, phylum = Chordata, class = Reptilia OR class = Amphibia -->
+
+      <div id="arthro">Arthropods</div>
+      <!-- Kingdom = Animalia, phylum = Arthropoda -->
+
+      <div id="other">Other</div>
+      <!-- Kingdom != Animalia, Fungi, or Plantae -->
+    </div>
+
+    <h2>Tourist threshold</h2>
+
+    <!-- Add a slider for adjusting the tourist threshold? -->
+    <input type="range" min="0" max="365" value="90" class="slider" id="tourist" disabled />
+  </div>
+  <div id="map"></div>
+  <script>
+    let protocol = new pmtiles.Protocol();
+    maplibregl.addProtocol("pmtiles", protocol.tile);
+
+    var searchParams = new URLSearchParams(window.location.search);
+
+    var center = [-88.13734351262877, 35.137451890638886];
+    var zoom = 4;
+
+    if (searchParams.get("lat") && searchParams.get("lng")) {
+      center = [searchParams.get("lng"), searchParams.get("lat")];
+    }
+
+    if (searchParams.get("z")) {
+      zoom = searchParams.get("z");
+    }
+
+    var map = new maplibregl.Map({
+      container: "map",
+      style:
+        "https://api.maptiler.com/maps/basic-v2-dark/style.json?key=BO0rAf7nscZz6lLkzwOL",
+      center,
+      zoom,
+    });
+
+    var mode = "all";
+    var value = 90;
+
+    map.addControl(
+      new maplibregl.NavigationControl({
+        showZoom: true,
+        showCompass: true,
+      })
+    );
+
+    map.on("load", function () {
+      map.on("zoom", function () {
+        var zoom = map.getZoom();
+        if (zoom < 8) {
+          document.getElementById("tourist").disabled = true;
+        } else {
+          document.getElementById("tourist").disabled = false;
+        }
       });
 
-      var mode = "all";
-      var value = 90;
+      map.on("move", function () {
+        var pos = map.getCenter();
+        var zoom = map.getZoom();
 
-      map.addControl(
-        new maplibregl.NavigationControl({
-          showZoom: true,
-          showCompass: true,
-        })
-      );
+        var searchParams = new URLSearchParams(window.location.search);
+        searchParams.set("lat", pos.lat);
+        searchParams.set("lng", pos.lng);
+        searchParams.set("z", zoom);
 
-      map.on("load", function () {
-        map.on("zoom", function () {
-          var zoom = map.getZoom();
-          if (zoom < 8) {
-            document.getElementById("tourist").disabled = true;
-          } else {
-            document.getElementById("tourist").disabled = false;
-          }
+        var newRelativePathQuery =
+          window.location.pathname + "?" + searchParams.toString();
+        history.replaceState(null, "", newRelativePathQuery);
+      });
+
+      map.addSource("observation_source", {
+        type: "vector",
+        url: "pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/observations_new_aug2025.pmtiles",
+      });
+
+      map.addSource("observation_source_2023", {
+        type: "vector",
+        url: "pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/observations_new.pmtiles",
+      });
+
+      // "#ffb34f",
+      // "#7541b0",
+
+      const SINGLE_PAINT = {
+        "circle-color": [
+          "case",
+          ["<", ["get", "date_range_cell"], 3 * 30 * 24 * 60 * 60],
+          "#ff9900",
+          // "#F5E926",
+          "#7541b0",
+          // "#8050f2"
+        ],
+        "circle-opacity": [
+          "interpolate",
+          ["exponential", 1],
+          ["zoom"],
+          12,
+          0.6,
+          18,
+          0.9,
+        ],
+        "circle-radius": [
+          "interpolate",
+          ["exponential", 2],
+          ["zoom"],
+          4,
+          1,
+          10,
+          2.25,
+          18,
+          20,
+        ],
+        "circle-stroke-color": "white",
+        "circle-stroke-width": [
+          "interpolate",
+          ["exponential", 2],
+          ["zoom"],
+          11.5,
+          0,
+          16,
+          1,
+        ],
+      };
+
+      const NA_PAINT = {
+        "circle-color": "#777",
+        "circle-opacity": [
+          "interpolate",
+          ["exponential", 1],
+          ["zoom"],
+          12,
+          0.6,
+          18,
+          0.9,
+        ],
+        "circle-radius": [
+          "interpolate",
+          ["exponential", 2],
+          ["zoom"],
+          4,
+          1,
+          10,
+          2.25,
+          18,
+          20,
+        ],
+        "circle-stroke-color": "white",
+        "circle-stroke-width": [
+          "interpolate",
+          ["exponential", 2],
+          ["zoom"],
+          12,
+          0,
+          16,
+          1,
+        ],
+      };
+
+      const CLUSTER_PAINT = {
+        "circle-color": [
+          "interpolate",
+          ["linear"],
+          ["get", "tourist"],
+          0,
+          // "#433A83",
+          // "#7541b0",
+          "#6241b0",
+          // 0.25,
+          // "#c23691",
+          0.75,
+          // "#F5E926"
+          "#ff9900",
+          1.0,
+          "#ffcc33",
+        ],
+        "circle-opacity": [
+          "interpolate",
+          ["exponential", 1.5],
+          ["zoom"],
+          3,
+          0.2,
+          8,
+          0.5,
+        ],
+        "circle-radius": [
+          "interpolate",
+          ["exponential", 2],
+          ["zoom"],
+          2,
+          ["*", ["get", "sqrt_point_count"], 0.1*0.65],
+          6,
+          ["*", ["get", "sqrt_point_count"], 0.64*0.65],
+        ],
+      };
+
+      function get_filters(filters, mode) {
+        if (mode == "plants") {
+          filters.push(["==", "kingdom", "Plantae"]);
+        } else if (mode == "fungi") {
+          filters.push(["==", "kingdom", "Fungi"]);
+        } else if (mode == "animals") {
+          filters.push(["==", "kingdom", "Animalia"]);
+        } else if (mode == "birds") {
+          filters.push(["==", "kingdom", "Animalia"]);
+          filters.push(["==", "class", "Aves"]);
+        } else if (mode == "mammals") {
+          filters.push(["==", "kingdom", "Animalia"]);
+          filters.push(["==", "class", "Mammalia"]);
+        } else if (mode == "herps") {
+          filters.push(["==", "kingdom", "Animalia"]);
+          filters.push([
+            "any",
+            ["==", "class", "Reptilia"],
+            ["==", "class", "Amphibia"],
+          ]);
+        } else if (mode == "arthro") {
+          filters.push(["==", "kingdom", "Animalia"]);
+          filters.push(["==", "phylum", "Arthropoda"]);
+        } else if (mode == "other") {
+          filters.push(["!=", "kingdom", "Animalia"]);
+          filters.push(["!=", "kingdom", "Plantae"]);
+          filters.push(["!=", "kingdom", "Fungi"]);
+        }
+
+        return filters;
+      }
+
+      function addLayers(year) {
+        if (year == "2023") {
+          map.addLayer({
+            id: "observation_na",
+            type: "circle",
+            source: "observation_source_2023",
+            "source-layer": "h3_new_filtered_uncertainty",
+            paint: NA_PAINT,
+            filter: get_filters([
+              "all",
+              ["<=", "date_range_user", 90 * 24 * 60 * 60],
+            ]),
+          });
+
+          map.addLayer({
+            id: "observation_clusters",
+            type: "circle",
+            source: "observation_source_2023",
+            "source-layer": "h3_new_filtered_uncertainty",
+            paint: CLUSTER_PAINT,
+            filter: ["has", "sqrt_point_count"],
+          });
+
+          map.addLayer({
+            id: "observations",
+            type: "circle",
+            source: "observation_source_2023",
+            "source-layer": "h3_new_filtered_uncertainty",
+            paint: SINGLE_PAINT,
+            filter: get_filters(
+              [
+                "all",
+                [">", "date_range_user", 90 * 24 * 60 * 60],
+                [">=", "date_range_cell", 90 * 24 * 60 * 60],
+                ["none", ["has", "sqrt_point_count"]],
+              ],
+              mode
+            ),
+          });
+
+          map.addLayer({
+            id: "observations_tourist",
+            type: "circle",
+            source: "observation_source_2023",
+            "source-layer": "h3_new_filtered_uncertainty",
+            paint: SINGLE_PAINT,
+            filter: get_filters(
+              [
+                "all",
+                [">", "date_range_user", 90 * 24 * 60 * 60],
+                ["<", "date_range_cell", 90 * 24 * 60 * 60],
+                ["none", ["has", "sqrt_point_count"]],
+              ],
+              mode
+            ),
+          });
+        } else if (year == "2025") {
+          map.addLayer({
+            id: "observation_na",
+            type: "circle",
+            source: "observation_source",
+            "source-layer": "h3_new_filtered_uncertainty_aug2025",
+            paint: NA_PAINT,
+            filter: get_filters([
+              "all",
+              ["<=", "date_range_user", 90 * 24 * 60 * 60],
+            ]),
+          });
+
+          map.addLayer({
+            id: "observation_clusters",
+            type: "circle",
+            source: "observation_source",
+            "source-layer": "h3_new_filtered_uncertainty_aug2025",
+            paint: CLUSTER_PAINT,
+            filter: ["has", "sqrt_point_count"],
+          });
+
+          map.addLayer({
+            id: "observations",
+            type: "circle",
+            source: "observation_source",
+            "source-layer": "h3_new_filtered_uncertainty_aug2025",
+            paint: SINGLE_PAINT,
+            filter: get_filters(
+              [
+                "all",
+                [">", "date_range_user", 90 * 24 * 60 * 60],
+                [">=", "date_range_cell", 90 * 24 * 60 * 60],
+                ["none", ["has", "sqrt_point_count"]],
+              ],
+              mode
+            ),
+          });
+
+          map.addLayer({
+            id: "observations_tourist",
+            type: "circle",
+            source: "observation_source",
+            "source-layer": "h3_new_filtered_uncertainty_aug2025",
+            paint: SINGLE_PAINT,
+            filter: get_filters(
+              [
+                "all",
+                [">", "date_range_user", 90 * 24 * 60 * 60],
+                ["<", "date_range_cell", 90 * 24 * 60 * 60],
+                ["none", ["has", "sqrt_point_count"]],
+              ],
+              mode
+            ),
+          });
+        }
+      }
+
+      addLayers("2025");
+
+      function updateFilters(value, mode) {
+        // var clampedValue = Math.min(90, value);
+        var clampedValue = value;
+
+        // RESET FILTERS
+        map.setFilter(
+          "observations",
+          get_filters(
+            [
+              "all",
+              [">", "date_range_user", clampedValue * 24 * 60 * 60],
+              [">=", "date_range_cell", value * 24 * 60 * 60],
+              ["none", ["has", "sqrt_point_count"]],
+            ],
+            mode
+          )
+        );
+        map.setFilter(
+          "observations_tourist",
+          get_filters(
+            [
+              "all",
+              [">", "date_range_user", clampedValue * 24 * 60 * 60],
+              ["<", "date_range_cell", value * 24 * 60 * 60],
+              ["none", ["has", "sqrt_point_count"]],
+            ],
+            mode
+          )
+        );
+        map.setFilter(
+          "observation_na",
+          get_filters([
+            "all",
+            ["<=", "date_range_user", clampedValue * 24 * 60 * 60],
+          ], mode)
+        );
+
+        map.setFilter("observation_clusters", get_filters(["all", ["has", "sqrt_point_count"]], mode))
+      }
+
+      let options = [
+        "all",
+        "plants",
+        "fungi",
+        "animals",
+        "birds",
+        "mammals",
+        "herps",
+        "arthro",
+        "other",
+      ];
+
+      function setMode(m) {
+        options.forEach((o) => {
+          document.getElementById(o).classList.remove("active");
         });
 
-        map.on("move", function () {
-          var pos = map.getCenter();
-          var zoom = map.getZoom();
+        document.getElementById(m).classList.add("active");
 
-          var searchParams = new URLSearchParams(window.location.search);
-          searchParams.set("lat", pos.lat);
-          searchParams.set("lng", pos.lng);
-          searchParams.set("z", zoom);
+        mode = m;
 
-          var newRelativePathQuery =
-            window.location.pathname + "?" + searchParams.toString();
-          history.replaceState(null, "", newRelativePathQuery);
-        });
+        updateFilters(value, mode);
 
-        map.addSource("observation_source", {
-          type: "vector",
-          url: "pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/observations_new.pmtiles",
-        });
-
-        // "#ffb34f",
-        // "#7541b0",
-
-        const SINGLE_PAINT = {
-          "circle-color": [
-            "case",
-            ["<", ["get", "date_range_cell"], 3 * 30 * 24 * 60 * 60],
-            "#ff9900",
-            // "#F5E926",
-            "#7541b0",
-            // "#8050f2"
-          ],
-          "circle-opacity": [
+        if (m == "fungi") {
+          map.setPaintProperty("observation_clusters", "circle-opacity", [
             "interpolate",
-            ["exponential", 1],
+            ["exponential", 1.5],
             ["zoom"],
-            12,
+            3,
+            0.4,
+            8,
             0.6,
-            18,
-            0.9,
-          ],
-          "circle-radius": [
+          ]);
+        } else if (m == "other") {
+          map.setPaintProperty("observation_clusters", "circle-opacity", [
             "interpolate",
-            ["exponential", 2],
+            ["exponential", 1.5],
             ["zoom"],
-            4,
-            1,
-            10,
-            2.25,
-            18,
-            20,
-          ],
-          "circle-stroke-color": "white",
-          "circle-stroke-width": [
-            "interpolate",
-            ["exponential", 2],
-            ["zoom"],
-            11.5,
-            0,
-            16,
-            1,
-          ],
-        };
-
-        const NA_PAINT = {
-          "circle-color": "#777",
-          "circle-opacity": [
-            "interpolate",
-            ["exponential", 1],
-            ["zoom"],
-            12,
+            3,
             0.6,
-            18,
-            0.9,
-          ],
-          "circle-radius": [
-            "interpolate",
-            ["exponential", 2],
-            ["zoom"],
-            4,
-            1,
-            10,
-            2.25,
-            18,
-            20,
-          ],
-          "circle-stroke-color": "white",
-          "circle-stroke-width": [
-            "interpolate",
-            ["exponential", 2],
-            ["zoom"],
-            12,
-            0,
-            16,
-            1,
-          ],
-        };
-
-        const CLUSTER_PAINT = {
-          "circle-color": [
-            "interpolate",
-            ["linear"],
-            ["get", "tourist"],
-            0,
-            // "#433A83",
-            // "#7541b0",
-            "#6241b0",
-            // 0.25,
-            // "#c23691",
-            0.75,
-            // "#F5E926"
-            "#ff9900",
-            1.0,
-            "#ffcc33",
-          ],
-          "circle-opacity": [
+            8,
+            0.8,
+          ]);
+        } else {
+          map.setPaintProperty("observation_clusters", "circle-opacity", [
             "interpolate",
             ["exponential", 1.5],
             ["zoom"],
@@ -467,277 +713,113 @@
             0.2,
             8,
             0.5,
-          ],
-          "circle-radius": [
-            "interpolate",
-            ["exponential", 2],
-            ["zoom"],
-            2,
-            ["*", ["get", "sqrt_point_count"], 0.1],
-            6,
-            ["*", ["get", "sqrt_point_count"], 0.64],
-          ],
-        };
-
-        function get_filters(filters, mode) {
-          if (mode == "plants") {
-            filters.push(["==", "kingdom", "Plantae"]);
-          } else if (mode == "fungi") {
-            filters.push(["==", "kingdom", "Fungi"]);
-          } else if (mode == "animals") {
-            filters.push(["==", "kingdom", "Animalia"]);
-          } else if (mode == "birds") {
-            filters.push(["==", "kingdom", "Animalia"]);
-            filters.push(["==", "class", "Aves"]);
-          } else if (mode == "mammals") {
-            filters.push(["==", "kingdom", "Animalia"]);
-            filters.push(["==", "class", "Mammalia"]);
-          } else if (mode == "herps") {
-            filters.push(["==", "kingdom", "Animalia"]);
-            filters.push([
-              "any",
-              ["==", "class", "Reptilia"],
-              ["==", "class", "Amphibia"],
-            ]);
-          } else if (mode == "arthro") {
-            filters.push(["==", "kingdom", "Animalia"]);
-            filters.push(["==", "phylum", "Arthropoda"]);
-          } else if (mode == "other") {
-            filters.push(["!=", "kingdom", "Animalia"]);
-            filters.push(["!=", "kingdom", "Plantae"]);
-            filters.push(["!=", "kingdom", "Fungi"]);
-          }
-
-          return filters;
-        }
-
-        map.addLayer({
-          id: "observation_na",
-          type: "circle",
-          source: "observation_source",
-          "source-layer": "h3_new_filtered_uncertainty",
-          paint: NA_PAINT,
-          filter: get_filters([
-            "all",
-            ["<=", "date_range_user", 90 * 24 * 60 * 60],
-          ]),
-        });
-
-        map.addLayer({
-          id: "observation_clusters",
-          type: "circle",
-          source: "observation_source",
-          "source-layer": "h3_new_filtered_uncertainty",
-          paint: CLUSTER_PAINT,
-          filter: ["has", "sqrt_point_count"],
-        });
-
-        map.addLayer({
-          id: "observations",
-          type: "circle",
-          source: "observation_source",
-          "source-layer": "h3_new_filtered_uncertainty",
-          paint: SINGLE_PAINT,
-          filter: get_filters(
-            [
-              "all",
-              [">", "date_range_user", 90 * 24 * 60 * 60],
-              [">=", "date_range_cell", 90 * 24 * 60 * 60],
-              ["none", ["has", "sqrt_point_count"]],
-            ],
-            mode
-          ),
-        });
-
-        map.addLayer({
-          id: "observations_tourist",
-          type: "circle",
-          source: "observation_source",
-          "source-layer": "h3_new_filtered_uncertainty",
-          paint: SINGLE_PAINT,
-          filter: get_filters(
-            [
-              "all",
-              [">", "date_range_user", 90 * 24 * 60 * 60],
-              ["<", "date_range_cell", 90 * 24 * 60 * 60],
-              ["none", ["has", "sqrt_point_count"]],
-            ],
-            mode
-          ),
-        });
-
-        function updateFilters(value, mode) {
-          // var clampedValue = Math.min(90, value);
-          var clampedValue = value;
-
-          // RESET FILTERS
-          map.setFilter(
-            "observations",
-            get_filters(
-              [
-                "all",
-                [">", "date_range_user", clampedValue * 24 * 60 * 60],
-                [">=", "date_range_cell", value * 24 * 60 * 60],
-                ["none", ["has", "sqrt_point_count"]],
-              ],
-              mode
-            )
-          );
-          map.setFilter(
-            "observations_tourist",
-            get_filters(
-              [
-                "all",
-                [">", "date_range_user", clampedValue * 24 * 60 * 60],
-                ["<", "date_range_cell", value * 24 * 60 * 60],
-                ["none", ["has", "sqrt_point_count"]],
-              ],
-              mode
-            )
-          );
-          map.setFilter(
-            "observation_na",
-            get_filters([
-              "all",
-              ["<=", "date_range_user", clampedValue * 24 * 60 * 60],
-            ], mode)
-          );
-
-          map.setFilter("observation_clusters", get_filters(["all", ["has", "sqrt_point_count"]], mode))
-        }
-
-        let options = [
-          "all",
-          "plants",
-          "fungi",
-          "animals",
-          "birds",
-          "mammals",
-          "herps",
-          "arthro",
-          "other",
-        ];
-
-        function setMode(m) {
-          options.forEach((o) => {
-            document.getElementById(o).classList.remove("active");
-          });
-
-          document.getElementById(m).classList.add("active");
-
-          mode = m;
-
-          updateFilters(value, mode);
-
-          if (m == "fungi") {
-            map.setPaintProperty("observation_clusters", "circle-opacity", [
-              "interpolate",
-              ["exponential", 1.5],
-              ["zoom"],
-              3,
-              0.4,
-              8,
-              0.6,
-            ]);
-          } else if (m == "other") {
-            map.setPaintProperty("observation_clusters", "circle-opacity", [
-              "interpolate",
-              ["exponential", 1.5],
-              ["zoom"],
-              3,
-              0.6,
-              8,
-              0.8,
-            ]);
-          } else {
-            map.setPaintProperty("observation_clusters", "circle-opacity", [
-              "interpolate",
-              ["exponential", 1.5],
-              ["zoom"],
-              3,
-              0.2,
-              8,
-              0.5,
-            ]);
-          }
-        }
-
-        document.getElementById("all").onclick = () => setMode("all");
-        document.getElementById("fungi").onclick = () => setMode("fungi");
-        document.getElementById("plants").onclick = () => setMode("plants");
-        document.getElementById("animals").onclick = () => setMode("animals");
-        document.getElementById("birds").onclick = () => setMode("birds");
-        document.getElementById("mammals").onclick = () => setMode("mammals");
-        document.getElementById("herps").onclick = () => setMode("herps");
-        document.getElementById("arthro").onclick = () => setMode("arthro");
-        document.getElementById("other").onclick = () => setMode("other");
-
-        var slider = document.getElementById("tourist");
-        var value = 90;
-
-        slider.onchange = function () {
-          value = this.value;
-
-          document.getElementById("threshold1").innerHTML = this.value;
-          document.getElementById("threshold2").innerHTML = this.value;
-
-          if (value == 0) {
-            value += 1.0 / 365;
-          }
-
-          // ADJSUT DOT PROPERTIES
-          map.setPaintProperty("observations_tourist", "circle-color", [
-            "case",
-            ["<", ["get", "date_range_cell"], value * 24 * 60 * 60],
-            "#ff9900",
-            "#7541b0",
           ]);
+        }
+      }
 
-          map.setPaintProperty("observations", "circle-color", [
-            "case",
-            ["<", ["get", "date_range_cell"], value * 24 * 60 * 60],
-            "#ff9900",
-            "#7541b0",
-          ]);
+      document.getElementById("all").onclick = () => setMode("all");
+      document.getElementById("fungi").onclick = () => setMode("fungi");
+      document.getElementById("plants").onclick = () => setMode("plants");
+      document.getElementById("animals").onclick = () => setMode("animals");
+      document.getElementById("birds").onclick = () => setMode("birds");
+      document.getElementById("mammals").onclick = () => setMode("mammals");
+      document.getElementById("herps").onclick = () => setMode("herps");
+      document.getElementById("arthro").onclick = () => setMode("arthro");
+      document.getElementById("other").onclick = () => setMode("other");
 
-          updateFilters(value, mode);
-        };
+      function setYear(year) {
+        document.getElementById("year-2023").classList.remove("active");
+        document.getElementById("year-2025").classList.remove("active");
 
-        // CODE FOR LINKING TO OBSERVATIONS ON CLICK
+        document.getElementById(year).classList.add("active");
 
-        map.on("click", "observations", function (e) {
-          window.open(e.features[0].properties.occurrenceID, "_blank");
-        });
-        map.on("click", "observations_tourist", function (e) {
-          window.open(e.features[0].properties.occurrenceID, "_blank");
-        });
-        map.on("click", "observation_na", function (e) {
-          window.open(e.features[0].properties.occurrenceID, "_blank");
-        });
+        // remove all layers
+        map.removeLayer("observation_na");
+        map.removeLayer("observation_clusters");
+        map.removeLayer("observations");
+        map.removeLayer("observations_tourist");
 
-        // Change the cursor to a pointer when the mouse is over the places layer.
-        map.on("mouseenter", "observations", function () {
-          map.getCanvas().style.cursor = "pointer";
-        });
-        map.on("mouseenter", "observations_tourist", function () {
-          map.getCanvas().style.cursor = "pointer";
-        });
-        map.on("mouseenter", "observation_na", function () {
-          map.getCanvas().style.cursor = "pointer";
-        });
+        if (year === "year-2023") {
+          console.log("Loading 2023 data...");
 
-        // Change it back to a pointer when it leaves.
-        map.on("mouseleave", "observations", function () {
-          map.getCanvas().style.cursor = "";
-        });
+          addLayers("2023");
+        } else if (year === "year-2025") {
+          console.log("Loading 2025 data...");
 
-        map.on("mouseleave", "observations_tourist", function () {
-          map.getCanvas().style.cursor = "";
-        });
-        map.on("mouseleave", "observation_na", function () {
-          map.getCanvas().style.cursor = "";
-        });
+          addLayers("2025");
+        }
+      }
+
+      document.getElementById("year-2023").onclick = () => setYear("year-2023");
+      document.getElementById("year-2025").onclick = () => setYear("year-2025");
+
+      var slider = document.getElementById("tourist");
+      var value = 90;
+
+      slider.onchange = function () {
+        value = this.value;
+
+        document.getElementById("threshold1").innerHTML = this.value;
+        document.getElementById("threshold2").innerHTML = this.value;
+
+        if (value == 0) {
+          value += 1.0 / 365;
+        }
+
+        // ADJSUT DOT PROPERTIES
+        map.setPaintProperty("observations_tourist", "circle-color", [
+          "case",
+          ["<", ["get", "date_range_cell"], value * 24 * 60 * 60],
+          "#ff9900",
+          "#7541b0",
+        ]);
+
+        map.setPaintProperty("observations", "circle-color", [
+          "case",
+          ["<", ["get", "date_range_cell"], value * 24 * 60 * 60],
+          "#ff9900",
+          "#7541b0",
+        ]);
+
+        updateFilters(value, mode);
+      };
+
+      // CODE FOR LINKING TO OBSERVATIONS ON CLICK
+
+      map.on("click", "observations", function (e) {
+        window.open("https://www.inaturalist.org/observations/" + e.features[0].properties.id, "_blank");
       });
-    </script>
-  </body>
+      map.on("click", "observations_tourist", function (e) {
+        window.open("https://www.inaturalist.org/observations/" + e.features[0].properties.id, "_blank");
+      });
+      map.on("click", "observation_na", function (e) {
+        window.open("https://www.inaturalist.org/observations/" + e.features[0].properties.id, "_blank");
+      });
+
+      // Change the cursor to a pointer when the mouse is over the places layer.
+      map.on("mouseenter", "observations", function () {
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseenter", "observations_tourist", function () {
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseenter", "observation_na", function () {
+        map.getCanvas().style.cursor = "pointer";
+      });
+
+      // Change it back to a pointer when it leaves.
+      map.on("mouseleave", "observations", function () {
+        map.getCanvas().style.cursor = "";
+      });
+
+      map.on("mouseleave", "observations_tourist", function () {
+        map.getCanvas().style.cursor = "";
+      });
+      map.on("mouseleave", "observation_na", function () {
+        map.getCanvas().style.cursor = "";
+      });
+    });
+  </script>
+</body>
+
 </html>
