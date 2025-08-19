@@ -21,6 +21,8 @@
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <script src="https://unpkg.com/pmtiles@2.5.0/dist/index.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+
   <script defer data-domain="subject.space" src="https://plausible.io/js/script.js"></script>
 
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
@@ -68,6 +70,10 @@
         height: calc(212px - 2em);
         bottom: 0;
         top: revert;
+      }
+
+      #stats {
+        display: none;
       }
     }
 
@@ -201,6 +207,76 @@
       background-color: #444;
       color: white;
     }
+
+    #stats {
+      width: 500px;
+      height: 300px;
+      position: absolute;
+      top: 1em;
+      left: 14em;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+      border-radius: 2px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      transition: 0.3s height, 0.3s opacity;
+    }
+
+    #stats .controls {
+      position: absolute;
+      width: 100%;
+    }
+
+    #stats .controls #hide {
+      position: absolute;
+      right: 0.5em;
+      top: 0.5em;
+      border: 1px solid #444;
+      padding: 0.25em 0.5em;
+      border-radius: 2px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    #stats svg {
+      pointer-events: none;
+    }
+
+    #stats .controls h2 {
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    #stats rect {
+      shape-rendering: crispEdges;
+    }
+
+    #stats line {
+      stroke: white;
+    }
+
+    #stats path {
+      stroke: white;
+    }
+
+    #stats text {
+      fill: white;
+    }
+
+    #stats.collapsed,
+    #stats.nodata {
+      height: 40px;
+    }
+
+    #stats.collapsed svg,
+    #stats.nodata svg {
+      opacity: 0;
+    }
+
+    #stats.nodata #hide {
+      display: none;
+    }
   </style>
 </head>
 
@@ -214,19 +290,6 @@
       <a href="https://www.flickr.com/photos/walkingsf/albums/72157624209158632/">Locals and Tourists</a>
       (2010).
     </p>
-
-    <h2>Data</h2>
-
-    <div class="options">
-      <div class="toggle">
-        <div id="year-2023">
-          2023
-        </div>
-        <div id="year-2025" class="active">
-          2025
-        </div>
-      </div>
-    </div>
 
     <h2>Legend</h2>
 
@@ -251,6 +314,19 @@
     <div class="legend">
       <div class="symbol cluster">
         <span class="cluster_symbol"></span>&nbsp;<span class="cluster_label">observation cluster</span>
+      </div>
+    </div>
+
+    <h2>Data</h2>
+
+    <div class="options">
+      <div class="toggle">
+        <div id="year-2023">
+          2023
+        </div>
+        <div id="year-2025" class="active">
+          2025
+        </div>
       </div>
     </div>
 
@@ -289,6 +365,12 @@
     <input type="range" min="0" max="365" value="90" class="slider" id="tourist" disabled />
   </div>
   <div id="map"></div>
+  <div id="stats" class="nodata">
+    <div class="controls">
+      <h2 id="stats-title">Zoom in to show statistics</h2>
+      <div id="hide">Hide ↑</div>
+    </div>
+  </div>
   <script>
     let protocol = new pmtiles.Protocol();
     maplibregl.addProtocol("pmtiles", protocol.tile);
@@ -327,10 +409,11 @@
     map.on("load", function () {
       map.on("zoom", function () {
         var zoom = map.getZoom();
-        if (zoom < 8) {
+        if (zoom < 10) {
           document.getElementById("tourist").disabled = true;
         } else {
           document.getElementById("tourist").disabled = false;
+          updateStats();
         }
       });
 
@@ -346,6 +429,10 @@
         var newRelativePathQuery =
           window.location.pathname + "?" + searchParams.toString();
         history.replaceState(null, "", newRelativePathQuery);
+
+        if (zoom >= 10) {
+          updateStats();
+        }
       });
 
       map.addSource("observation_source", {
@@ -457,19 +544,19 @@
           "interpolate",
           ["exponential", 1.5],
           ["zoom"],
-          3,
-          0.2,
+          2,
+          0.25,
           8,
-          0.5,
+          0.6,
         ],
         "circle-radius": [
           "interpolate",
           ["exponential", 2],
           ["zoom"],
           2,
-          ["*", ["get", "sqrt_point_count"], 0.1*0.65],
+          ["*", ["get", "sqrt_point_count"], 0.1 * 0.65],
           6,
-          ["*", ["get", "sqrt_point_count"], 0.64*0.65],
+          ["max", 2, ["*", ["get", "sqrt_point_count"], 0.64 * 0.65]],
         ],
       };
 
@@ -818,7 +905,192 @@
       map.on("mouseleave", "observation_na", function () {
         map.getCanvas().style.cursor = "";
       });
+
+      const metrics = ["local", "tourist", "na"];
+      const colors = d3.scaleOrdinal()
+        .domain(metrics)
+        .range(["#b778ff", "#ff9900", "#777"]);
+
+      const parseMonth = d3.timeParse("%Y-%m");
+      const formatMonth = d3.timeFormat("%Y-%m");
+
+      // ---- SETUP FUNCTION ----
+      function setupChart(containerId, width = 500, height = 300) {
+        const margin = { top: 40, right: 20, bottom: 30, left: 70 };
+
+        const svg = d3.select(containerId)
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height);
+
+        const x = d3.scaleBand().padding(0);
+        const y = d3.scaleLinear();
+
+        // groups for layering
+        const barsG = svg.append("g");
+        const xAxisG = svg.append("g").attr("transform", `translate(0,${height - margin.bottom})`);
+        const yAxisG = svg.append("g").attr("transform", `translate(${margin.left},0)`);
+
+        // Add Y-axis label
+        yAxisG.append("text")
+          .attr("class", "y-axis-label")
+          .attr("transform", `rotate(-90)`)
+          .attr("x", -height / 2)
+          .attr("y", -45) // distance from axis
+          .attr("fill", "black")
+          .style("text-anchor", "middle")
+          .style("font-size", "12px")
+          .text("Observations per month");
+
+
+        return { svg, width, height, margin, x, y, barsG, xAxisG, yAxisG };
+      }
+
+      let chart = setupChart("#stats");
+
+      // ---- UPDATE FUNCTION ----
+      function updateChart(chart, rawData) {
+        const { width, height, margin, x, y, barsG, xAxisG, yAxisG } = chart;
+
+        // Parse + sort
+        rawData.forEach(d => { d.date = parseMonth(d.month); });
+        rawData.sort((a, b) => d3.ascending(a.date, b.date));
+
+        // Fill missing months
+        const dateExtent = d3.extent(rawData, d => d.date);
+        const months = d3.timeMonth.range(new Date("2015-1"), d3.timeMonth.offset(dateExtent[1], 1));
+        const complete = months.map(m => {
+          const existing = rawData.find(d => +d.date === +m);
+          if (existing) return existing;
+          return { month: formatMonth(m), date: m, local: 0, tourist: 0, na: 0 };
+        });
+
+        // Update scales
+        x.domain(complete.map(d => d.date))
+          .range([margin.left, width - margin.right]);
+        y.domain([0, d3.max(complete, d => metrics.reduce((sum, m) => sum + d[m], 0))])
+          .nice()
+          .range([height - margin.bottom, margin.top]);
+
+        // Stack data
+        const stack = d3.stack().keys(metrics);
+        const stackedData = stack(complete);
+
+        // JOIN
+        const groups = barsG.selectAll("g.layer")
+          .data(stackedData, d => d.key);
+
+        // ENTER + UPDATE groups
+        groups.enter().append("g")
+          .attr("class", "layer")
+          .attr("fill", d => colors(d.key))
+          .merge(groups)
+          .selectAll("rect")
+          .data(d => d, d => d.data.month)
+          .join("rect")
+          .attr("x", d => x(d.data.date))
+          .attr("y", d => y(d[1]))
+          .attr("height", d => y(d[0]) - y(d[1]))
+          .attr("width", x.bandwidth());
+
+        groups.exit().remove();
+
+        // Axes
+        // ---- X Axis (years only) ----
+        // ---- Custom Year Labels + Ticks ----
+        xAxisG.selectAll("*").remove();  // clear old axis
+
+        // Draw baseline
+        xAxisG.append("line")
+          .attr("x1", margin.left)
+          .attr("x2", width - margin.right)
+          .attr("y1", 0)
+          .attr("y2", 0)
+          .attr("stroke", "black");
+
+        // Group months by year
+        const years = d3.groups(complete, d => d.date.getFullYear());
+
+        years.forEach(([year, values]) => {
+          const first = values[0];
+          const last = values[values.length - 1];
+          const center = (x(first.date) + x(last.date) + x.bandwidth()) / 2;
+
+          // Year label
+          xAxisG.append("text")
+            .attr("x", center)
+            .attr("y", 15)
+            .attr("fill", "black")
+            .style("text-anchor", "middle")
+            .style("font-size", "10px")
+            .text(year);
+
+          // Vertical tick at start of year
+          xAxisG.append("line")
+            .attr("x1", x(first.date))
+            .attr("x2", x(first.date))
+            .attr("y1", 0)  // tick above baseline
+            .attr("y2", 5)
+            .attr("stroke", "black");
+        });
+
+        yAxisG.call(d3.axisLeft(y));
+      }
+
+
+      function updateStats() {
+        let features = map.queryRenderedFeatures({ layers: ["observations", "observations_tourist", "observation_na", "observation_clusters"] });
+
+        const formatMonth = d3.timeFormat("%Y-%m");
+
+        let grouped = d3.group(features, d => formatMonth(new Date(d.properties.eventDate)));
+
+        // Map layer.id to category
+        const categoryMap = {
+          observations: "local",
+          observations_tourist: "tourist",
+          observation_na: "na"
+        };
+
+        let totalMissing = 0;
+
+        // Now, count per category in each group
+        const result = Array.from(grouped, ([month, items]) => {
+          const counts = { local: 0, tourist: 0, na: 0 };
+          items.forEach(d => {
+            const category = categoryMap[d.layer.id];
+            if (category) counts[category] += 1;
+            if (d.layer.id === "observation_clusters") totalMissing += d.properties.point_count;
+          });
+          return { month, ...counts };
+        });
+
+        const totalCount = d3.sum(result, d => d.local + d.tourist + d.na) + totalMissing;
+        const ratio = totalMissing / totalCount;
+
+        if (totalMissing == 0) {
+          updateChart(chart, result);
+          document.getElementById("stats-title").innerHTML = "Statistics for current area";
+          document.getElementById("stats").classList.remove("nodata");
+        } else {
+          document.getElementById("stats-title").innerHTML = "Zoom in to show statistics";
+          document.getElementById("stats").classList.add("nodata");
+        }
+      }
+
+      map.on("sourcedata", () => {
+        updateStats();
+      });
+
+      document.getElementById("hide").addEventListener("click", () => {
+        console.log("blicked");
+        // toggle
+        document.getElementById("stats").classList.toggle("collapsed");
+        document.getElementById("hide").innerHTML = document.getElementById("stats").classList.contains("collapsed") ? "Show ↓" : "Hide ↑";
+      });
     });
+
+
   </script>
 </body>
 
