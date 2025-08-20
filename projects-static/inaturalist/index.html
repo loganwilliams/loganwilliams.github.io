@@ -56,6 +56,10 @@
       overflow: scroll;
     }
 
+    .mobileshow {
+      display: none;
+    }
+
     @media (max-width: 500px) {
       #map {
         top: 0;
@@ -74,6 +78,19 @@
 
       #stats {
         display: none;
+      }
+
+      .mobileshow {
+        display: block;
+        color: rgba(197, 197, 197);
+        border: none !important;
+        cursor: default !important;
+      }
+
+      #hide {
+        opacity: 0.5;
+        pointer-events: none;
+        font-size: 13.33px;
       }
     }
 
@@ -264,17 +281,19 @@
       fill: white;
     }
 
-    #stats.collapsed,
     #stats.nodata {
       height: 40px;
     }
 
-    #stats.collapsed svg,
     #stats.nodata svg {
       opacity: 0;
     }
 
     #stats.nodata #hide {
+      display: none;
+    }
+
+    #stats.hidden {
       display: none;
     }
   </style>
@@ -330,6 +349,13 @@
       </div>
     </div>
 
+    <h2>Observations over time</h2>
+
+    <div class="options">
+      <div id="hide">Show stats 📈</div>
+      <div class="mobileshow">Desktop only</div>
+    </div>
+
     <h2>Filter observations</h2>
     <div class="options">
       <div id="all" class="active">Show All</div>
@@ -365,10 +391,9 @@
     <input type="range" min="0" max="365" value="90" class="slider" id="tourist" disabled />
   </div>
   <div id="map"></div>
-  <div id="stats" class="nodata">
+  <div id="stats" class="nodata hidden">
     <div class="controls">
       <h2 id="stats-title">Zoom in to show statistics</h2>
-      <div id="hide">Hide ↑</div>
     </div>
   </div>
   <script>
@@ -406,6 +431,8 @@
       })
     );
 
+    var lastURLUpdate = Date.now();
+
     map.on("load", function () {
       map.on("zoom", function () {
         var zoom = map.getZoom();
@@ -413,7 +440,9 @@
           document.getElementById("tourist").disabled = true;
         } else {
           document.getElementById("tourist").disabled = false;
-          updateStats();
+          if (zoom < 11) {
+            updateStats();
+          }
         }
       });
 
@@ -421,23 +450,26 @@
         var pos = map.getCenter();
         var zoom = map.getZoom();
 
-        var searchParams = new URLSearchParams(window.location.search);
-        searchParams.set("lat", pos.lat);
-        searchParams.set("lng", pos.lng);
-        searchParams.set("z", zoom);
+        if (Date.now() - lastURLUpdate > 100) {
+          lastURLUpdate = Date.now();
+          var searchParams = new URLSearchParams(window.location.search);
+          searchParams.set("lat", pos.lat);
+          searchParams.set("lng", pos.lng);
+          searchParams.set("z", zoom);
 
-        var newRelativePathQuery =
-          window.location.pathname + "?" + searchParams.toString();
-        history.replaceState(null, "", newRelativePathQuery);
+          var newRelativePathQuery =
+            window.location.pathname + "?" + searchParams.toString();
+          history.replaceState(null, "", newRelativePathQuery);
+        }
 
-        if (zoom >= 10) {
+        if (zoom >= 11) {
           updateStats();
         }
       });
 
       map.addSource("observation_source", {
         type: "vector",
-        url: "pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/observations_new_aug2025.pmtiles",
+        url: "pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/observations_new_aug2025_maxzoom11.pmtiles",
       });
 
       map.addSource("observation_source_2023", {
@@ -554,9 +586,9 @@
           ["exponential", 2],
           ["zoom"],
           2,
-          ["*", ["get", "sqrt_point_count"], 0.1 * 0.65],
+          ["*", ["get", "sqrt_point_count"], 0.1 * 0.75],
           6,
-          ["max", 2, ["*", ["get", "sqrt_point_count"], 0.64 * 0.65]],
+          ["max", 2, ["*", ["get", "sqrt_point_count"], 0.64 * 0.75]],
         ],
       };
 
@@ -1039,6 +1071,8 @@
 
 
       function updateStats() {
+        if (document.getElementById("stats").classList.contains("hidden")) return;
+
         let features = map.queryRenderedFeatures({ layers: ["observations", "observations_tourist", "observation_na", "observation_clusters"] });
 
         const formatMonth = d3.timeFormat("%Y-%m");
@@ -1083,10 +1117,12 @@
       });
 
       document.getElementById("hide").addEventListener("click", () => {
-        console.log("blicked");
         // toggle
-        document.getElementById("stats").classList.toggle("collapsed");
-        document.getElementById("hide").innerHTML = document.getElementById("stats").classList.contains("collapsed") ? "Show ↓" : "Hide ↑";
+        document.getElementById("stats").classList.toggle("hidden");
+        document.getElementById("hide").innerHTML = document.getElementById("stats").classList.contains("hidden") ? "Show stats 📈" : "Hide stats 📈";
+        if (!document.getElementById("stats").classList.contains("hidden")) {
+          updateStats();
+        }
       });
     });
 
