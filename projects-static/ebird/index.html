@@ -1015,7 +1015,7 @@
                 if (u_mode < -2) {
                     maxcount = maxcountraw = float(u_recognizedbirdscount) * 0.6;
                 } else if (u_mode < -1) {
-                    maxcount = maxcountraw = 900.0;
+                    maxcount = maxcountraw = (11415.0 - float(u_seenbirdscount)) / 12.0;
                 } else {
                     maxcount = maxcountraw = float(u_seenbirdscount) * 0.5;
                 }
@@ -2134,7 +2134,7 @@
               false
             );
           } else if (mode == -2) {
-            setScale(900, " birds", false);
+            setScale((11415 - material.uniforms.u_seenbirdscount.value) / 12.0, " birds", false);
           } else if (mode == -3) {
             setScale(
               material.uniforms.u_recognizedbirdscount.value * 0.6,
