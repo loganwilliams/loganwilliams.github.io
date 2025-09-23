@@ -471,7 +471,7 @@
 
       map.addSource("observation_source", {
         type: "vector",
-        url: "pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/ebird_sep_2025_metadata2.pmtiles",
+        url: "pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/ebird_sep_2025_ecoregions_offset2.pmtiles",
       });
 
       map.addSource("observation_source_2023", {
@@ -734,7 +734,7 @@
             id: "observation_na",
             type: "circle",
             source: "observation_source",
-            "source-layer": "ebird_tourists",
+            "source-layer": "ebird_tourists_ecoregions_offset",
             paint: NA_PAINT,
             filter: get_filters([
               "all",
@@ -746,7 +746,7 @@
             id: "observation_clusters",
             type: "circle",
             source: "observation_source",
-            "source-layer": "ebird_tourists",
+            "source-layer": "ebird_tourists_ecoregions_offset",
             paint: CLUSTER_PAINT,
             filter: ["has", "sqrt_point_count"],
           });
@@ -755,7 +755,7 @@
             id: "observations",
             type: "circle",
             source: "observation_source",
-            "source-layer": "ebird_tourists",
+            "source-layer": "ebird_tourists_ecoregions_offset",
             paint: SINGLE_PAINT,
             filter: get_filters(
               [
@@ -772,7 +772,7 @@
             id: "observations_tourist",
             type: "circle",
             source: "observation_source",
-            "source-layer": "ebird_tourists",
+            "source-layer": "ebird_tourists_ecoregions_offset",
             paint: SINGLE_PAINT,
             filter: get_filters(
               [
@@ -790,7 +790,7 @@
             id: "observations_guided_tourist",
             type: "circle",
             source: "observation_source",
-            "source-layer": "ebird_tourists",
+            "source-layer": "ebird_tourists_ecoregions_offset",
             paint: SINGLE_PAINT,
             filter: get_filters(
               [
