@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Where is the Bird's House?</title>
+    <title>2^11,145 Different Maps of Birds</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=1100px" />
 
@@ -25,7 +25,7 @@
       rel="stylesheet"
     />
 
-    <meta property="og:title" content="Where is the Bird's House?" />
+    <meta property="og:title" content="2^11,145 Different Maps of Birds" />
     <meta
       property="og:description"
       content="View range data for over 11,000 bird species, and explore your lifelist, ecosystem boundaries and unexpected connections across the globe."
@@ -543,7 +543,7 @@
   </head>
 
   <body>
-    <h1>Where is the Bird's House?</h1>
+    <h1>2<sup>11,145</sup> Different Maps of Birds</h1>
     <p>
       Mouse over the map to view range data for over 11,000 bird species.
       Explore biome dependence, ecosystem boundaries and unexpected connections
@@ -551,12 +551,12 @@
     </p>
 
     <p>
-      Click on the map to see the species that are being mapped and view
+      Click on the map to see the possible species at that point and view
       individual ranges. All data is from eBird hotspot observations.
     </p>
 
     <p>
-      Bring your eBird data, and see the ranges of your life list species. Find
+      Bring your eBird data, and see your life list range maps (unique, maybe, out of 2<sup>11,145</sup> possible maps.) Find
       where on the planet you would identify the most familiar birds, and where
       you have the most to see. Scroll through time to see how you've explored
       avian biodiversity.
@@ -1015,7 +1015,7 @@
                 if (u_mode < -2) {
                     maxcount = maxcountraw = float(u_recognizedbirdscount) * 0.6;
                 } else if (u_mode < -1) {
-                    maxcount = maxcountraw = 900.0;
+                    maxcount = maxcountraw = (11415.0 - float(u_seenbirdscount)) / 12.0;
                 } else {
                     maxcount = maxcountraw = float(u_seenbirdscount) * 0.5;
                 }
@@ -2134,7 +2134,7 @@
               false
             );
           } else if (mode == -2) {
-            setScale(900, " birds", false);
+            setScale((11415 - material.uniforms.u_seenbirdscount.value) / 12.0, " birds", false);
           } else if (mode == -3) {
             setScale(
               material.uniforms.u_recognizedbirdscount.value * 0.6,
