@@ -6778,7 +6778,7 @@ function loadCSVGraph() {
 } // Show loading spinner immediately
 function _loadCSVGraph() {
   _loadCSVGraph = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-    var _renderSidebar, showLoading, hideLoading, updateNodeVisibility, resizeEdgeCanvas, drawNodeEdges, colorsRes, colors, nodesRes, nodesCSV, edgesRes, edgesCSV, nodesData, edgesData, graph, countryToContinent, countriesWithStates, countryCounts, stateCounts, visibleStates, countries, visibleCountries, continentGroups, sortedContinents, currentSort, expandedContinents, expandedCountries, container, zoomInBtn, zoomOutBtn, zoomResetBtn, renderer, camera, edgeCanvas, sigmaCanvases, currentHoveredNode, _t;
+    var _renderSidebar, showLoading, hideLoading, darkenColor, updateNodeVisibility, resizeEdgeCanvas, drawNodeEdges, colorsRes, colors, nodesRes, nodesCSV, edgesRes, edgesCSV, nodesData, edgesData, graph, countryToContinent, countriesWithStates, countryCounts, stateCounts, visibleStates, countries, visibleCountries, continentGroups, sortedContinents, currentSort, expandedContinents, expandedCountries, container, zoomInBtn, zoomOutBtn, zoomResetBtn, renderer, camera, edgeCanvas, sigmaCanvases, currentHoveredNode, _t;
     return _regenerator().w(function (_context) {
       while (1) switch (_context.p = _context.n) {
         case 0:
@@ -7072,7 +7072,27 @@ function _loadCSVGraph() {
               loadingOverlay.classList.remove("visible");
             }
           }; // Hide loading after initial render (longer delay to ensure everything is ready)
-          // Function to update node visibility based on selected countries and states
+          // Helper function to darken a hex color by a factor (0-1)
+          darkenColor = function darkenColor(hex, factor) {
+            // Remove # if present
+            hex = hex.replace('#', '');
+
+            // Parse hex color
+            var r = parseInt(hex.substring(0, 2), 16);
+            var g = parseInt(hex.substring(2, 4), 16);
+            var b = parseInt(hex.substring(4, 6), 16);
+
+            // Darken by multiplying by factor
+            r = Math.round(r * factor);
+            g = Math.round(g * factor);
+            b = Math.round(b * factor);
+
+            // Convert back to hex
+            var toHex = function toHex(val) {
+              return val.toString(16).padStart(2, '0');
+            };
+            return "#".concat(toHex(r)).concat(toHex(g)).concat(toHex(b));
+          }; // Function to update node visibility based on selected countries and states
           updateNodeVisibility = function updateNodeVisibility() {
             showLoading();
             setLoadingText("Updating graph");
@@ -7091,7 +7111,20 @@ function _loadCSVGraph() {
                     } else {
                       isVisible = visibleCountries.has(attributes.country);
                     }
-                    graph.setNodeAttribute(node, "hidden", !isVisible);
+
+                    // Instead of hiding, adjust brightness
+                    if (isVisible) {
+                      // Restore original color (full brightness)
+                      graph.setNodeAttribute(node, "color", attributes.originalColor);
+                      graph.setNodeAttribute(node, "hidden", false);
+                      graph.setNodeAttribute(node, "isVisible", true);
+                    } else {
+                      // Darken to 25% brightness
+                      var fadedColor = darkenColor(attributes.originalColor, 0.18);
+                      graph.setNodeAttribute(node, "color", fadedColor);
+                      graph.setNodeAttribute(node, "hidden", false);
+                      graph.setNodeAttribute(node, "isVisible", false);
+                    }
                   });
                   renderer.refresh();
 
@@ -7316,8 +7349,11 @@ function _loadCSVGraph() {
               size: (parseFloat(node.Size) || 1) / 10,
               label: node.Country + ': ' + node.State,
               color: countryColor,
+              originalColor: countryColor,
+              // Store original color for opacity changes
               country: node.Country,
-              state: node.State
+              state: node.State,
+              isVisible: true // All nodes start visible
             });
           });
 
@@ -7682,7 +7718,9 @@ function _loadCSVGraph() {
         case 11:
           // Instanciate sigma with edges disabled for performance
           renderer = new sigma__WEBPACK_IMPORTED_MODULE_0__["default"](graph, container, {
-            renderEdges: false // Completely disable automatic edge rendering
+            renderEdges: false,
+            // Completely disable automatic edge rendering
+            defaultDrawNodeHover: function defaultDrawNodeHover() {} // Disable default hover rendering
           });
           camera = renderer.getCamera();
           setTimeout(hideLoading, 800);
@@ -7706,6 +7744,7 @@ function _loadCSVGraph() {
 
           // Disable hover labels completely
           renderer.setSetting("enableNodeHoverLabels", false);
+          renderer.setSetting("enableHovering", false);
 
           // Bind zoom manipulation buttons
           zoomInBtn.addEventListener("click", function () {
@@ -7728,6 +7767,11 @@ function _loadCSVGraph() {
           currentHoveredNode = null; // Add hover functionality to show edges only when a node is hovered
           renderer.on("enterNode", function (_ref) {
             var node = _ref.node;
+            // Only allow hover on visible nodes
+            var nodeAttrs = graph.getNodeAttributes(node);
+            if (nodeAttrs.isVisible === false) {
+              return;
+            }
             currentHoveredNode = node;
 
             // Dim the Sigma canvases by 50%
