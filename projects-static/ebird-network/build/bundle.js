@@ -6778,7 +6778,7 @@ function loadCSVGraph() {
 } // Show loading spinner immediately
 function _loadCSVGraph() {
   _loadCSVGraph = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-    var _renderSidebar, showLoading, hideLoading, updateNodeVisibility, resizeEdgeCanvas, drawNodeEdges, colorsRes, colors, nodesRes, nodesCSV, edgesRes, edgesCSV, nodesData, edgesData, graph, countryToContinent, countryCounts, countries, visibleCountries, continentGroups, sortedContinents, currentSort, expandedContinents, container, zoomInBtn, zoomOutBtn, zoomResetBtn, renderer, camera, edgeCanvas, sigmaCanvases, currentHoveredNode, _t;
+    var _renderSidebar, showLoading, hideLoading, updateNodeVisibility, resizeEdgeCanvas, drawNodeEdges, colorsRes, colors, nodesRes, nodesCSV, edgesRes, edgesCSV, nodesData, edgesData, graph, countryToContinent, countriesWithStates, countryCounts, stateCounts, visibleStates, countries, visibleCountries, continentGroups, sortedContinents, currentSort, expandedContinents, expandedCountries, container, zoomInBtn, zoomOutBtn, zoomResetBtn, renderer, camera, edgeCanvas, sigmaCanvases, currentHoveredNode, _t;
     return _regenerator().w(function (_context) {
       while (1) switch (_context.p = _context.n) {
         case 0:
@@ -6827,6 +6827,9 @@ function _loadCSVGraph() {
               }, 0);
               var isExpanded = expandedContinents.has(continent);
               var allChecked = continentCountries.every(function (c) {
+                if (countriesWithStates.has(c) && visibleStates[c]) {
+                  return Array.from(visibleStates[c]).length === Object.keys(stateCounts[c] || {}).length;
+                }
                 return visibleCountries.has(c);
               });
 
@@ -6858,11 +6861,23 @@ function _loadCSVGraph() {
                 e.stopPropagation();
                 if (continentCheckbox.checked) {
                   continentCountries.forEach(function (c) {
-                    return visibleCountries.add(c);
+                    if (countriesWithStates.has(c) && stateCounts[c]) {
+                      Object.keys(stateCounts[c]).forEach(function (s) {
+                        return visibleStates[c].add(s);
+                      });
+                    } else {
+                      visibleCountries.add(c);
+                    }
                   });
                 } else {
                   continentCountries.forEach(function (c) {
-                    return visibleCountries["delete"](c);
+                    if (countriesWithStates.has(c) && stateCounts[c]) {
+                      Object.keys(stateCounts[c]).forEach(function (s) {
+                        return visibleStates[c]["delete"](s);
+                      });
+                    } else {
+                      visibleCountries["delete"](c);
+                    }
                   });
                 }
                 updateNodeVisibility();
@@ -6889,46 +6904,158 @@ function _loadCSVGraph() {
                 continentCountries.forEach(function (country) {
                   var countryColor = colors[country] || '#666';
                   var nodeCount = countryCounts[country];
+                  var hasStates = countriesWithStates.has(country) && stateCounts[country];
+                  var isCountryExpanded = expandedCountries.has(country);
                   var item = document.createElement("div");
                   item.className = "country-item";
                   var checkbox = document.createElement("input");
                   checkbox.type = "checkbox";
                   checkbox.className = "country-checkbox";
-                  checkbox.checked = visibleCountries.has(country);
+                  // For countries with states, check if all states are visible
+                  if (hasStates) {
+                    var allStates = Object.keys(stateCounts[country]);
+                    checkbox.checked = allStates.every(function (s) {
+                      return visibleStates[country].has(s);
+                    });
+                  } else {
+                    checkbox.checked = visibleCountries.has(country);
+                  }
                   checkbox.id = "country-".concat(country);
                   var colorBox = document.createElement("div");
                   colorBox.className = "country-color";
                   colorBox.style.backgroundColor = countryColor;
+
+                  // Add expand icon for countries with states
+                  if (hasStates) {
+                    var _expandIcon = document.createElement("span");
+                    _expandIcon.className = "expand-icon";
+                    _expandIcon.textContent = isCountryExpanded ? "▼" : "▶";
+                    _expandIcon.style.marginRight = "0.3em";
+                    item.appendChild(checkbox);
+                    item.appendChild(colorBox);
+                    item.appendChild(_expandIcon);
+                  } else {
+                    item.appendChild(checkbox);
+                    item.appendChild(colorBox);
+                  }
                   var label = document.createElement("span");
                   label.className = "country-name";
                   label.textContent = country;
                   var count = document.createElement("span");
                   count.className = "country-count";
                   count.textContent = nodeCount.toLocaleString();
-                  item.appendChild(checkbox);
-                  item.appendChild(colorBox);
                   item.appendChild(label);
                   item.appendChild(count);
                   countriesContainer.appendChild(item);
 
                   // Add event listener to toggle country visibility
-                  var toggleCountry = function toggleCountry() {
-                    if (checkbox.checked) {
-                      visibleCountries.add(country);
+                  var toggleCountry = function toggleCountry(e) {
+                    e.stopPropagation();
+                    if (hasStates) {
+                      // For countries with states, toggle all states
+                      var _allStates = Object.keys(stateCounts[country]);
+                      if (checkbox.checked) {
+                        _allStates.forEach(function (state) {
+                          return visibleStates[country].add(state);
+                        });
+                      } else {
+                        _allStates.forEach(function (state) {
+                          return visibleStates[country]["delete"](state);
+                        });
+                      }
                     } else {
-                      visibleCountries["delete"](country);
+                      // For other countries, toggle country visibility
+                      if (checkbox.checked) {
+                        visibleCountries.add(country);
+                      } else {
+                        visibleCountries["delete"](country);
+                      }
                     }
                     updateNodeVisibility();
                     // Update continent checkbox state
                     _renderSidebar();
                   };
                   checkbox.addEventListener("change", toggleCountry);
+
+                  // Handle expansion for countries with states
                   item.addEventListener("click", function (e) {
                     if (e.target !== checkbox) {
-                      checkbox.checked = !checkbox.checked;
-                      toggleCountry();
+                      if (hasStates) {
+                        // Toggle expansion
+                        if (expandedCountries.has(country)) {
+                          expandedCountries["delete"](country);
+                        } else {
+                          expandedCountries.add(country);
+                        }
+                        _renderSidebar();
+                      } else {
+                        checkbox.checked = !checkbox.checked;
+                        toggleCountry(e);
+                      }
                     }
                   });
+
+                  // Render states if country has states and is expanded
+                  if (hasStates && isCountryExpanded) {
+                    var statesContainer = document.createElement("div");
+                    statesContainer.className = "countries-container";
+                    statesContainer.style.marginLeft = "1em";
+
+                    // Sort states
+                    var sortedStates = Object.keys(stateCounts[country]);
+                    if (currentSort === 'alphabetical') {
+                      sortedStates.sort();
+                    } else if (currentSort === 'nodes') {
+                      sortedStates.sort(function (a, b) {
+                        return stateCounts[country][b] - stateCounts[country][a];
+                      });
+                    }
+                    sortedStates.forEach(function (state) {
+                      var stateCount = stateCounts[country][state];
+                      var stateItem = document.createElement("div");
+                      stateItem.className = "country-item";
+                      stateItem.style.paddingLeft = "0.5em";
+                      var stateCheckbox = document.createElement("input");
+                      stateCheckbox.type = "checkbox";
+                      stateCheckbox.className = "country-checkbox";
+                      stateCheckbox.checked = visibleStates[country].has(state);
+                      stateCheckbox.id = "state-".concat(country, "-").concat(state);
+                      var stateColorBox = document.createElement("div");
+                      stateColorBox.className = "country-color";
+                      stateColorBox.style.backgroundColor = countryColor;
+                      var stateLabel = document.createElement("span");
+                      stateLabel.className = "country-name";
+                      stateLabel.textContent = state;
+                      var stateCountSpan = document.createElement("span");
+                      stateCountSpan.className = "country-count";
+                      stateCountSpan.textContent = stateCount.toLocaleString();
+                      stateItem.appendChild(stateCheckbox);
+                      stateItem.appendChild(stateColorBox);
+                      stateItem.appendChild(stateLabel);
+                      stateItem.appendChild(stateCountSpan);
+                      statesContainer.appendChild(stateItem);
+
+                      // Add event listener to toggle state visibility
+                      var toggleState = function toggleState(e) {
+                        e.stopPropagation();
+                        if (stateCheckbox.checked) {
+                          visibleStates[country].add(state);
+                        } else {
+                          visibleStates[country]["delete"](state);
+                        }
+                        updateNodeVisibility();
+                        _renderSidebar();
+                      };
+                      stateCheckbox.addEventListener("change", toggleState);
+                      stateItem.addEventListener("click", function (e) {
+                        if (e.target !== stateCheckbox) {
+                          stateCheckbox.checked = !stateCheckbox.checked;
+                          toggleState(e);
+                        }
+                      });
+                    });
+                    countriesContainer.appendChild(statesContainer);
+                  }
                 });
                 countriesList.appendChild(countriesContainer);
               }
@@ -6945,7 +7072,7 @@ function _loadCSVGraph() {
               loadingOverlay.classList.remove("visible");
             }
           }; // Hide loading after initial render (longer delay to ensure everything is ready)
-          // Function to update node visibility based on selected countries
+          // Function to update node visibility based on selected countries and states
           updateNodeVisibility = function updateNodeVisibility() {
             showLoading();
             setLoadingText("Updating graph");
@@ -6956,7 +7083,14 @@ function _loadCSVGraph() {
               requestAnimationFrame(function () {
                 setTimeout(function () {
                   graph.forEachNode(function (node, attributes) {
-                    var isVisible = visibleCountries.has(attributes.country);
+                    var isVisible;
+
+                    // For nodes in countries with states, check state visibility
+                    if (countriesWithStates.has(attributes.country) && visibleStates[attributes.country]) {
+                      isVisible = visibleStates[attributes.country].has(attributes.state);
+                    } else {
+                      isVisible = visibleCountries.has(attributes.country);
+                    }
                     graph.setNodeAttribute(node, "hidden", !isVisible);
                   });
                   renderer.refresh();
@@ -7182,7 +7316,8 @@ function _loadCSVGraph() {
               size: (parseFloat(node.Size) || 1) / 10,
               label: node.Country + ': ' + node.State,
               color: countryColor,
-              country: node.Country
+              country: node.Country,
+              state: node.State
             });
           });
 
@@ -7440,16 +7575,39 @@ function _loadCSVGraph() {
             "High Seas": "Other",
             "British Indian Ocean Territory": "Asia",
             "United States Minor Outlying Islands": "Oceania"
-          }; // Count nodes per country
+          }; // Countries that have state/province subcategories
+          countriesWithStates = new Set(["United States", "Canada", "India"]); // Count nodes per country and per state (for countries with states)
           countryCounts = {};
+          stateCounts = {}; // Maps country -> state -> count
+          visibleStates = {}; // Maps country -> Set of visible states
           graph.forEachNode(function (node, attributes) {
             var country = attributes.country;
             if (country) {
               countryCounts[country] = (countryCounts[country] || 0) + 1;
+
+              // Track states for countries that have them
+              if (countriesWithStates.has(country)) {
+                var state = attributes.state;
+                if (state) {
+                  if (!stateCounts[country]) {
+                    stateCounts[country] = {};
+                  }
+                  stateCounts[country][state] = (stateCounts[country][state] || 0) + 1;
+                }
+              }
             }
           });
-          countries = Object.keys(countryCounts); // Track which countries are visible
-          visibleCountries = new Set(countries); // Group countries by continent
+          countries = Object.keys(countryCounts); // Initialize visible states for countries with states (all visible by default)
+          countriesWithStates.forEach(function (country) {
+            if (stateCounts[country]) {
+              visibleStates[country] = new Set(Object.keys(stateCounts[country]));
+            }
+          });
+
+          // Track which countries are visible (for countries without state subcategories)
+          visibleCountries = new Set(countries.filter(function (c) {
+            return !countriesWithStates.has(c);
+          })); // Group countries by continent
           continentGroups = {};
           countries.forEach(function (country) {
             var continent = countryToContinent[country] || "Other";
@@ -7462,20 +7620,35 @@ function _loadCSVGraph() {
           // Sort continents
           sortedContinents = Object.keys(continentGroups).sort(); // Current sort mode: 'alphabetical' or 'nodes'
           currentSort = 'alphabetical'; // Track which continents are expanded (start with all collapsed)
-          expandedContinents = new Set();
+          expandedContinents = new Set(); // Track which countries are expanded (for US states)
+          expandedCountries = new Set();
           _renderSidebar();
 
           // Add select all / deselect all buttons
           document.getElementById("select-all").addEventListener("click", function () {
             countries.forEach(function (country) {
-              visibleCountries.add(country);
+              if (countriesWithStates.has(country) && stateCounts[country]) {
+                // Select all states for countries with states
+                Object.keys(stateCounts[country]).forEach(function (state) {
+                  visibleStates[country].add(state);
+                });
+              } else {
+                visibleCountries.add(country);
+              }
             });
             updateNodeVisibility();
             _renderSidebar();
           });
           document.getElementById("deselect-all").addEventListener("click", function () {
             countries.forEach(function (country) {
-              visibleCountries["delete"](country);
+              if (countriesWithStates.has(country) && stateCounts[country]) {
+                // Deselect all states for countries with states
+                Object.keys(stateCounts[country]).forEach(function (state) {
+                  visibleStates[country]["delete"](state);
+                });
+              } else {
+                visibleCountries["delete"](country);
+              }
             });
             updateNodeVisibility();
             _renderSidebar();
