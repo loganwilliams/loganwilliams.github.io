@@ -294,6 +294,64 @@
         color: rgba(255, 255, 255, 0.8);
         font-weight: 400;
       }
+      #checklist-search {
+        margin-top: 1em;
+        padding-top: 1em;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      #checklist-search h3 {
+        margin: 0 0 0.5em 0;
+        font-size: 1.1em;
+        color: #fff;
+      }
+      .search-box {
+        display: flex;
+        gap: 0.5em;
+        margin-bottom: 0.5em;
+      }
+      #checklist-input {
+        flex: 1;
+        padding: 0.5em;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 1.0em;
+      }
+      #checklist-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+      #checklist-input:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.15);
+      }
+      #search-button, #clear-button {
+        padding: 0.5em 1em;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+        cursor: pointer;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 1.0em;
+      }
+      #search-button:hover:not(:disabled), #clear-button:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      #search-button:disabled, #clear-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      #search-button.success {
+        background: rgba(76, 175, 80, 0.3);
+        border-color: #4caf50;
+      }
+      #search-button.error, #clear-button.error {
+        background: rgba(244, 67, 54, 0.3);
+        border-color: #f44336;
+      }
       #countries-list {
         margin-bottom: 1em;
       }
@@ -316,6 +374,9 @@
           display: block;
         }
       }
+      .search-box button {
+        margin-right: 0em !important;
+      }
     </style>
     <div id="sigma-container"></div>
     <div id="loading-overlay">
@@ -327,6 +388,20 @@
       <p>A map of 300,000 global birders interconnected by 43 million shared eBird checklists.</p>
       <p class="mobile-show">Unfortunately, the visualization does not work on mobile devices. Try visiting on a desktop computer.</p>
       <div class="mobile-hide">
+        <div id="checklist-search">
+          <h3>Find birder by eBird checklist ID</h3>
+          <div class="search-box">
+            <input 
+              type="text" 
+              id="checklist-input" 
+              placeholder="e.g., S90032150"
+              autocomplete="off"
+              size="5"
+            >
+            <button id="search-button">Search</button>
+            <button id="clear-button" disabled>Clear</button>
+          </div>
+        </div>
         <div id="sidebar-controls">
             <button id="select-all">Show All Countries</button>
             <button id="deselect-all">Hide All</button>

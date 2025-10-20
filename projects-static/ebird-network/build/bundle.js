@@ -6702,16 +6702,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sigma__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sigma */ "./node_modules/sigma/dist/sigma.esm.js");
 /* harmony import */ var graphology__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! graphology */ "./node_modules/graphology/dist/graphology.umd.min.js");
 /* harmony import */ var graphology__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(graphology__WEBPACK_IMPORTED_MODULE_1__);
-function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
-function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
 function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /**
  * This example shows how to load CSV files and build a Sigma graph from them.
  * It loads nodes and edges from separate CSV files and displays them with
@@ -6722,7 +6728,107 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
 
 
 
-// Parse CSV data into array of objects
+// Binary lookup class for checklist ID -> observer ID mapping
+var BinaryLookup = /*#__PURE__*/function () {
+  function BinaryLookup(binaryUrl, metadataUrl) {
+    _classCallCheck(this, BinaryLookup);
+    this.binaryUrl = binaryUrl;
+    this.metadataUrl = metadataUrl;
+    this.metadata = null;
+    this.requestCount = 0;
+    this.bytesDownloaded = 0;
+  }
+  return _createClass(BinaryLookup, [{
+    key: "init",
+    value: function () {
+      var _init = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+        var response;
+        return _regenerator().w(function (_context) {
+          while (1) switch (_context.n) {
+            case 0:
+              _context.n = 1;
+              return fetch(this.metadataUrl);
+            case 1:
+              response = _context.v;
+              _context.n = 2;
+              return response.json();
+            case 2:
+              this.metadata = _context.v;
+            case 3:
+              return _context.a(2);
+          }
+        }, _callee, this);
+      }));
+      function init() {
+        return _init.apply(this, arguments);
+      }
+      return init;
+    }()
+  }, {
+    key: "lookup",
+    value: function () {
+      var _lookup = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(searchKey) {
+        var _this$metadata, record_size, key_size, value_size, total_records, left, right, mid, offset, response, buffer, recordBytes, keyBytes, key, valueBytes, value;
+        return _regenerator().w(function (_context2) {
+          while (1) switch (_context2.n) {
+            case 0:
+              this.requestCount = 0;
+              this.bytesDownloaded = 0;
+              _this$metadata = this.metadata, record_size = _this$metadata.record_size, key_size = _this$metadata.key_size, value_size = _this$metadata.value_size, total_records = _this$metadata.total_records;
+              left = 0;
+              right = total_records - 1;
+            case 1:
+              if (!(left <= right)) {
+                _context2.n = 6;
+                break;
+              }
+              mid = Math.floor((left + right) / 2);
+              offset = mid * record_size;
+              this.requestCount++;
+              _context2.n = 2;
+              return fetch(this.binaryUrl, {
+                headers: {
+                  'Range': "bytes=".concat(offset, "-").concat(offset + record_size - 1)
+                }
+              });
+            case 2:
+              response = _context2.v;
+              _context2.n = 3;
+              return response.arrayBuffer();
+            case 3:
+              buffer = _context2.v;
+              this.bytesDownloaded += buffer.byteLength;
+              recordBytes = new Uint8Array(buffer);
+              keyBytes = recordBytes.slice(0, key_size);
+              key = new TextDecoder().decode(keyBytes).replace(/\x00+$/, '');
+              if (!(key === searchKey)) {
+                _context2.n = 4;
+                break;
+              }
+              valueBytes = recordBytes.slice(key_size, key_size + value_size);
+              value = new TextDecoder().decode(valueBytes).replace(/\x00+$/, '');
+              return _context2.a(2, value);
+            case 4:
+              if (key < searchKey) {
+                left = mid + 1;
+              } else {
+                right = mid - 1;
+              }
+            case 5:
+              _context2.n = 1;
+              break;
+            case 6:
+              return _context2.a(2, null);
+          }
+        }, _callee2, this);
+      }));
+      function lookup(_x) {
+        return _lookup.apply(this, arguments);
+      }
+      return lookup;
+    }()
+  }]);
+}(); // Parse CSV data into array of objects
 function parseCSV(csvText) {
   var lines = csvText.trim().split('\n');
   var headers = parseCSVLine(lines[0]);
@@ -6777,12 +6883,12 @@ function loadCSVGraph() {
   return _loadCSVGraph.apply(this, arguments);
 } // Show loading spinner immediately
 function _loadCSVGraph() {
-  _loadCSVGraph = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-    var _renderSidebar, showLoading, hideLoading, darkenColor, updateNodeVisibility, resizeEdgeCanvas, drawNodeEdges, colorsRes, colors, nodesRes, nodesCSV, edgesRes, edgesCSV, nodesData, edgesData, graph, countryToContinent, countriesWithStates, countryCounts, stateCounts, visibleStates, countries, visibleCountries, continentGroups, sortedContinents, currentSort, expandedContinents, expandedCountries, container, zoomInBtn, zoomOutBtn, zoomResetBtn, renderer, camera, edgeCanvas, sigmaCanvases, currentHoveredNode, _t;
-    return _regenerator().w(function (_context) {
-      while (1) switch (_context.p = _context.n) {
+  _loadCSVGraph = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+    var _renderSidebar, showLoading, hideLoading, darkenColor, updateNodeVisibility, resizeEdgeCanvas, drawNodeEdges, resizeHighlightCanvas, _drawHighlight, clearHighlight, performChecklistSearch, colorsRes, colors, nodesRes, nodesCSV, edgesRes, edgesCSV, nodesData, edgesData, graph, countryToContinent, countriesWithStates, countryCounts, stateCounts, visibleStates, countries, visibleCountries, continentGroups, sortedContinents, currentSort, expandedContinents, expandedCountries, container, zoomInBtn, zoomOutBtn, zoomResetBtn, renderer, camera, edgeCanvas, sigmaCanvases, currentHoveredNode, highlightCanvas, highlightedNode, animationStartTime, animationFrameId, lookup, lookupInitialized, checklistInput, searchButton, clearButton, _t2;
+    return _regenerator().w(function (_context4) {
+      while (1) switch (_context4.p = _context4.n) {
         case 0:
-          _context.p = 0;
+          _context4.p = 0;
           // Function to render the sidebar
           _renderSidebar = function renderSidebar() {
             var countriesList = document.getElementById("countries-list");
@@ -7281,51 +7387,234 @@ function _loadCSVGraph() {
             // Draw hovered node last so it's on top
             drawNode(node);
           }; // Set label threshold to be really big to hide labels by default
+          // Function to resize the highlight canvas
+          resizeHighlightCanvas = function resizeHighlightCanvas() {
+            var _renderer$getDimensio4 = renderer.getDimensions(),
+              width = _renderer$getDimensio4.width,
+              height = _renderer$getDimensio4.height;
+            var pixelRatio = window.devicePixelRatio || 1;
+            highlightCanvas.width = width * pixelRatio;
+            highlightCanvas.height = height * pixelRatio;
+            highlightCanvas.style.width = "".concat(width, "px");
+            highlightCanvas.style.height = "".concat(height, "px");
+            var ctx = highlightCanvas.getContext('2d');
+            ctx.scale(pixelRatio, pixelRatio);
+          };
+          // Function to draw animated highlight ring on a node
+          _drawHighlight = function drawHighlight(nodeId, timestamp) {
+            var ctx = highlightCanvas.getContext('2d');
+            var _renderer$getDimensio5 = renderer.getDimensions(),
+              width = _renderer$getDimensio5.width,
+              height = _renderer$getDimensio5.height;
+            ctx.clearRect(0, 0, width, height);
+            if (!nodeId || !graph.hasNode(nodeId)) return;
+            if (animationStartTime === null) {
+              animationStartTime = timestamp;
+            }
+            var elapsed = timestamp - animationStartTime;
+            var duration = 2000; // 2 seconds for full pulse cycle
+            var progress = elapsed % duration / duration;
+
+            // Create a pulsing effect using sine wave
+            // Oscillates between 0 and 1
+            var pulse = (Math.sin(progress * Math.PI * 2) + 1) / 2;
+            var nodeAttrs = graph.getNodeAttributes(nodeId);
+            var nodeViewport = renderer.graphToViewport({
+              x: nodeAttrs.x,
+              y: nodeAttrs.y
+            });
+            var cameraState = renderer.getCamera().getState();
+            var nodeDisplay = renderer.getNodeDisplayData(nodeId);
+            var baseSize = (nodeDisplay === null || nodeDisplay === void 0 ? void 0 : nodeDisplay.size) || nodeAttrs.size;
+            var renderedSize = baseSize / Math.sqrt(cameraState.ratio);
+
+            // Ring radius oscillates between 2x and 5x the node size
+            var minRadius = renderedSize * 2;
+            var maxRadius = renderedSize * 5;
+            var currentRadius = minRadius + (maxRadius - minRadius) * pulse;
+
+            // Draw the pulsing ring
+            ctx.beginPath();
+            ctx.arc(nodeViewport.x, nodeViewport.y, currentRadius, 0, Math.PI * 2);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 3;
+            ctx.globalAlpha = 0.8 - pulse * 0.3; // Fade slightly as it expands
+            ctx.stroke();
+
+            // Draw a second ring slightly offset in phase
+            var pulse2 = (Math.sin(progress * Math.PI * 2 + Math.PI) + 1) / 2;
+            var currentRadius2 = minRadius + (maxRadius - minRadius) * pulse2;
+            ctx.beginPath();
+            ctx.arc(nodeViewport.x, nodeViewport.y, currentRadius2, 0, Math.PI * 2);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.5 - pulse2 * 0.2;
+            ctx.stroke();
+
+            // Continue animation
+            if (highlightedNode === nodeId) {
+              animationFrameId = requestAnimationFrame(function (ts) {
+                return _drawHighlight(nodeId, ts);
+              });
+            }
+          }; // Redraw highlight when camera moves (but don't restart animation)
+          clearHighlight = function clearHighlight() {
+            // Cancel animation
+            if (animationFrameId) {
+              cancelAnimationFrame(animationFrameId);
+              animationFrameId = null;
+            }
+            highlightedNode = null;
+
+            // Clear canvas
+            var ctx = highlightCanvas.getContext('2d');
+            var _renderer$getDimensio6 = renderer.getDimensions(),
+              width = _renderer$getDimensio6.width,
+              height = _renderer$getDimensio6.height;
+            ctx.clearRect(0, 0, width, height);
+
+            // Reset UI
+            searchButton.className = '';
+            searchButton.textContent = 'Search';
+            searchButton.disabled = false;
+            clearButton.className = '';
+            clearButton.textContent = 'Clear';
+            clearButton.disabled = true;
+            checklistInput.value = '';
+          };
+          performChecklistSearch = /*#__PURE__*/function () {
+            var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+              var checklistId, observerId, _t;
+              return _regenerator().w(function (_context3) {
+                while (1) switch (_context3.p = _context3.n) {
+                  case 0:
+                    checklistId = checklistInput.value.trim();
+                    if (checklistId) {
+                      _context3.n = 1;
+                      break;
+                    }
+                    return _context3.a(2);
+                  case 1:
+                    searchButton.disabled = true;
+                    searchButton.className = '';
+                    searchButton.textContent = 'Searching...';
+                    _context3.p = 2;
+                    if (lookupInitialized) {
+                      _context3.n = 4;
+                      break;
+                    }
+                    _context3.n = 3;
+                    return lookup.init();
+                  case 3:
+                    lookupInitialized = true;
+                  case 4:
+                    _context3.n = 5;
+                    return lookup.lookup(checklistId);
+                  case 5:
+                    observerId = _context3.v;
+                    if (observerId) {
+                      // Check if node exists in graph
+                      if (graph.hasNode(observerId)) {
+                        // Cancel any existing animation
+                        if (animationFrameId) {
+                          cancelAnimationFrame(animationFrameId);
+                          animationFrameId = null;
+                        }
+
+                        // Start new highlight animation
+                        highlightedNode = observerId;
+                        animationStartTime = null;
+                        animationFrameId = requestAnimationFrame(function (ts) {
+                          return _drawHighlight(observerId, ts);
+                        });
+
+                        // Update UI
+                        searchButton.className = 'success';
+                        searchButton.textContent = 'Found!';
+                        clearButton.className = '';
+                        clearButton.textContent = 'Clear';
+                        clearButton.disabled = false;
+                      } else {
+                        searchButton.className = '';
+                        searchButton.textContent = 'Search';
+                        searchButton.disabled = false;
+                        clearButton.className = 'error';
+                        clearButton.textContent = 'Not in graph';
+                        clearButton.disabled = false;
+                      }
+                    } else {
+                      searchButton.className = '';
+                      searchButton.textContent = 'Search';
+                      searchButton.disabled = false;
+                      clearButton.className = 'error';
+                      clearButton.textContent = 'Not found';
+                      clearButton.disabled = false;
+                    }
+                    _context3.n = 7;
+                    break;
+                  case 6:
+                    _context3.p = 6;
+                    _t = _context3.v;
+                    searchButton.className = '';
+                    searchButton.textContent = 'Search';
+                    searchButton.disabled = false;
+                    clearButton.className = 'error';
+                    clearButton.textContent = 'Error';
+                    clearButton.disabled = false;
+                  case 7:
+                    return _context3.a(2);
+                }
+              }, _callee3, null, [[2, 6]]);
+            }));
+            return function performChecklistSearch() {
+              return _ref2.apply(this, arguments);
+            };
+          }();
           console.log("Loading colors...");
-          _context.n = 1;
+          _context4.n = 1;
           return fetch("./colors3.json");
         case 1:
-          colorsRes = _context.v;
+          colorsRes = _context4.v;
           if (colorsRes.ok) {
-            _context.n = 2;
+            _context4.n = 2;
             break;
           }
           throw new Error("HTTP error loading colors! status: ".concat(colorsRes.status));
         case 2:
-          _context.n = 3;
+          _context4.n = 3;
           return colorsRes.json();
         case 3:
-          colors = _context.v;
+          colors = _context4.v;
           console.log("Loading nodes CSV...");
-          _context.n = 4;
+          _context4.n = 4;
           return fetch("https://data-lake-house.fra1.cdn.digitaloceanspaces.com/ebird-network/new_nodes2.csv");
         case 4:
-          nodesRes = _context.v;
+          nodesRes = _context4.v;
           if (nodesRes.ok) {
-            _context.n = 5;
+            _context4.n = 5;
             break;
           }
           throw new Error("HTTP error loading nodes! status: ".concat(nodesRes.status));
         case 5:
-          _context.n = 6;
+          _context4.n = 6;
           return nodesRes.text();
         case 6:
-          nodesCSV = _context.v;
+          nodesCSV = _context4.v;
           console.log("Loading edges CSV...");
-          _context.n = 7;
+          _context4.n = 7;
           return fetch("https://data-lake-house.fra1.cdn.digitaloceanspaces.com/ebird-network/ebird_forceatlas_linlog_edges.csv");
         case 7:
-          edgesRes = _context.v;
+          edgesRes = _context4.v;
           if (edgesRes.ok) {
-            _context.n = 8;
+            _context4.n = 8;
             break;
           }
           throw new Error("HTTP error loading edges! status: ".concat(edgesRes.status));
         case 8:
-          _context.n = 9;
+          _context4.n = 9;
           return edgesRes.text();
         case 9:
-          edgesCSV = _context.v;
+          edgesCSV = _context4.v;
           // Parse CSV data
           nodesData = parseCSV(nodesCSV);
           edgesData = parseCSV(edgesCSV);
@@ -7333,7 +7622,7 @@ function _loadCSVGraph() {
 
           // Update loading text and give browser time to paint
           setLoadingText("Creating graph (this may take a while)");
-          _context.n = 10;
+          _context4.n = 10;
           return new Promise(function (resolve) {
             return setTimeout(resolve, 100);
           });
@@ -7711,7 +8000,7 @@ function _loadCSVGraph() {
           zoomResetBtn = document.getElementById("zoom-reset"); // const labelsThresholdRange = document.getElementById("labels-threshold");
           // Update loading text and give browser time to paint
           setLoadingText("Reticulating splines");
-          _context.n = 11;
+          _context4.n = 11;
           return new Promise(function (resolve) {
             return setTimeout(resolve, 100);
           });
@@ -7823,17 +8112,66 @@ function _loadCSVGraph() {
               drawNodeEdges(currentHoveredNode);
             }
           });
-          _context.n = 13;
+
+          // Create a separate overlay canvas for highlighting nodes
+          highlightCanvas = document.createElement('canvas');
+          highlightCanvas.style.position = 'absolute';
+          highlightCanvas.style.top = '0';
+          highlightCanvas.style.left = '0';
+          highlightCanvas.style.pointerEvents = 'none';
+          highlightCanvas.style.zIndex = '2'; // Above edge canvas
+          container.appendChild(highlightCanvas);
+          resizeHighlightCanvas();
+
+          // Track the currently highlighted node
+          highlightedNode = null;
+          animationStartTime = null;
+          animationFrameId = null;
+          renderer.on("afterRender", function () {
+            // The animation loop handles drawing, we just need to ensure
+            // it's running if we have a highlighted node
+            if (highlightedNode && !animationFrameId) {
+              animationStartTime = null;
+              animationFrameId = requestAnimationFrame(function (ts) {
+                return _drawHighlight(highlightedNode, ts);
+              });
+            }
+          });
+
+          // Resize highlight canvas when window resizes
+          window.addEventListener("resize", function () {
+            setTimeout(function () {
+              resizeHighlightCanvas();
+            }, 10);
+          });
+          renderer.on("resize", function () {
+            resizeHighlightCanvas();
+          });
+
+          // Initialize binary lookup
+          lookup = new BinaryLookup('https://data-lake-house.fra1.cdn.digitaloceanspaces.com/lookup.bin', 'https://data-lake-house.fra1.cdn.digitaloceanspaces.com/lookup.json');
+          lookupInitialized = false; // Set up checklist search functionality
+          checklistInput = document.getElementById('checklist-input');
+          searchButton = document.getElementById('search-button');
+          clearButton = document.getElementById('clear-button');
+          searchButton.addEventListener('click', performChecklistSearch);
+          clearButton.addEventListener('click', clearHighlight);
+          checklistInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+              performChecklistSearch();
+            }
+          });
+          _context4.n = 13;
           break;
         case 12:
-          _context.p = 12;
-          _t = _context.v;
-          console.error("Error loading or parsing CSV files:", _t);
-          alert("Error: ".concat(_t.message));
+          _context4.p = 12;
+          _t2 = _context4.v;
+          console.error("Error loading or parsing CSV files:", _t2);
+          alert("Error: ".concat(_t2.message));
         case 13:
-          return _context.a(2);
+          return _context4.a(2);
       }
-    }, _callee, null, [[0, 12]]);
+    }, _callee4, null, [[0, 12]]);
   }));
   return _loadCSVGraph.apply(this, arguments);
 }
