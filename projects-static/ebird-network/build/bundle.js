@@ -7621,7 +7621,7 @@ function _loadCSVGraph() {
           console.log("Parsed ".concat(nodesData.length, " nodes and ").concat(edgesData.length, " edges"));
 
           // Update loading text and give browser time to paint
-          setLoadingText("Creating graph (this may take a while)");
+          setLoadingText("Creating graph<br />(this may take a minute)");
           _context4.n = 10;
           return new Promise(function (resolve) {
             return setTimeout(resolve, 100);
@@ -7999,7 +7999,7 @@ function _loadCSVGraph() {
           zoomOutBtn = document.getElementById("zoom-out");
           zoomResetBtn = document.getElementById("zoom-reset"); // const labelsThresholdRange = document.getElementById("labels-threshold");
           // Update loading text and give browser time to paint
-          setLoadingText("Reticulating splines");
+          setLoadingText("Reticulating splines<br />(this may take a minute)");
           _context4.n = 11;
           return new Promise(function (resolve) {
             return setTimeout(resolve, 100);
@@ -8179,12 +8179,12 @@ var loadingOverlay = document.getElementById("loading-overlay");
 var loadingText = document.querySelector(".loading-text");
 function setLoadingText(text) {
   if (loadingText) {
-    loadingText.textContent = text;
+    loadingText.innerHTML = text;
   }
 }
 if (loadingOverlay) {
   loadingOverlay.classList.add("visible");
-  setLoadingText("Loading data (this may take a while)");
+  setLoadingText("Loading data<br />(this may take a minute)");
 }
 
 // Start loading the CSV files
