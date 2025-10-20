@@ -301,6 +301,9 @@
         border-top: 1px solid rgba(255, 255, 255, 0.2);
         padding-top: 1em;
       }
+      .mobile-show {
+        display: none;
+      }
       @media (max-width: 768px) {
         .mobile-hide {
           display: none;
@@ -308,6 +311,9 @@
         #sidebar {
             top: unset;
             bottom: 1em;
+        }
+        .mobile-show {
+          display: block;
         }
       }
     </style>
@@ -319,6 +325,7 @@
     <div id="sidebar">
       <h1>Who Birds With You?<sup>*</sup></h1>
       <p>A map of 300,000 global birders interconnected by 43 million shared eBird checklists.</p>
+      <p class="mobile-show">Unfortunately, the visualization does not work on mobile devices. Try visiting on a desktop computer.</p>
       <div class="mobile-hide">
         <div id="sidebar-controls">
             <button id="select-all">Show All Countries</button>
