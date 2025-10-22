@@ -7201,7 +7201,7 @@ function _loadCSVGraph() {
           }; // Function to update node visibility based on selected countries and states
           updateNodeVisibility = function updateNodeVisibility() {
             showLoading();
-            setLoadingText("Updating graph");
+            setLoadingText("Reticulating splines");
 
             // Use double requestAnimationFrame + setTimeout to ensure the spinner is painted
             // before heavy processing starts
