@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Who Birds With You?</title>
+    <!-- opengraph/twitter cards -->
+    <meta property="og:title" content="Who Birds With You?" />
+    <meta property="og:description" content="A map of 300,000 global birders interconnected by 43 million shared eBird checklists." />
+    <meta property="og:image" content="https://subject.space/projects-static/ebird-network/card.jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="675" />
+    <meta property="og:url" content="https://subject.space/projects-static/ebird-network/" />
+    <meta property="og:type" content="website" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Who Birds With You?" />
+    <meta property="twitter:description" content="A map of 300,000 global birders interconnected by 43 million shared eBird checklists." />
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-6YQ8-5DDpmSluNP4euXec.js"></script>
+    <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+    </script>
+</head>
+  <body>
+    <style>
+      body {
+        /* font-family: sans-serif; */
+        font-family: 'Times New Roman', Times, serif;
+        background: black;
+      }
+      html,
+      body,
+      #sigma-container {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #controls {
+        position: absolute;
+        right: 1em;
+        top: 1em;
+        text-align: right;
+      }
+      .input {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .input:not(:hover) label {
+        display: none;
+      }
+      .input label {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: black;
+        color: white;
+        padding: 0.2em;
+        border-radius: 2px;
+        margin-top: 0.3em;
+        font-size: 1.0em;
+        white-space: nowrap;
+      }
+      .input button {
+        width: 2.5em;
+        height: 2.5em;
+        display: inline-block;
+        text-align: center;
+        background: rgba(0,0,0,0.9);
+        color: white;
+        outline: none;
+        border: 1px solid dimgrey;
+        border-radius: 2px;
+        cursor: pointer;
+      }
+      #sidebar {
+        position: fixed;
+        left: 1em;
+        top: 1em;
+        width: 300px;
+        max-height: calc(100vh - 4em);
+        background: rgba(25, 25, 25, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 1em;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+        z-index: 1000;
+      }
+      #sidebar::-webkit-scrollbar {
+        width: 8px;
+      }
+      #sidebar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+      }
+      #sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+      }
+      #sidebar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+      #sidebar h3 {
+        margin: 0 0 1em 0;
+        font-size: 1.2em;
+        color: #fff;
+      }
+      #sidebar-controls {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        padding-top: 1em;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      #sidebar button {
+        padding: 0.4em 0.8em;
+        margin-right: 0.5em;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+        cursor: pointer;
+        /* font-size: 0.85em; */
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 1.0em;
+      }
+      #sidebar button:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .country-item {
+        display: flex;
+        align-items: center;
+        padding: 0.1em 0em 0.1em 1em;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+      .country-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .country-checkbox {
+        margin-right: 0.5em;
+        cursor: pointer;
+      }
+      .country-color {
+        width: 14px;
+        height: 14px;
+        border-radius: 2px;
+        margin-right: 0.5em;
+        flex-shrink: 0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .country-name {
+        flex-grow: 1;
+        font-size: 0.9em;
+        color: #fff;
+      }
+      .country-count {
+        font-size: 0.85em;
+        color: rgba(255, 255, 255, 0.7);
+        margin-left: auto;
+        padding-left: 0.5em;
+      }
+      #sort-controls {
+        margin-bottom: 1em;
+        /* padding-bottom: 0.5em; */
+        /* border-bottom: 1px solid rgba(255, 255, 255, 0.2); */
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+      }
+      #sort-controls label {
+        font-size: 0.85em;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      /* #sort-controls button {
+        padding: 0.3em 0.6em;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+        cursor: pointer;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 1.0em;
+      }
+      #sort-controls button:hover {
+        background: rgba(255, 255, 255, 0.2);
+      } */
+      #sort-controls button.active {
+        background: #2563eb;
+        color: white;
+        border-color: #2563eb;
+      }
+      .continent-header {
+        /* background: rgba(255, 255, 255, 0.15); */
+        color: white;
+        padding: 0.5em;
+        margin-bottom: 0.25em;
+        padding-top: 0.25em;
+        padding-left: 0.5em;
+        padding-right: 0em;
+        padding-bottom: 0.25em;
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        font-weight: bold;
+        font-size: 1em;
+        cursor: pointer;
+        user-select: none;
+        /* border-bottom: 1px solid white; */
+      }
+      .continent-header:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+      .continent-header:first-child {
+        margin-top: 0;
+      }
+      .continent-checkbox {
+        cursor: pointer;
+        margin: 0;
+      }
+      .expand-icon {
+        font-size: 0.8em;
+        width: 1em;
+        display: inline-block;
+        color: white;
+      }
+      .continent-name {
+        flex-grow: 1;
+      }
+      .continent-count {
+        font-size: 0.8em;
+        font-weight: normal;
+        opacity: 0.9;
+      }
+      .countries-container {
+        margin-bottom: 0.5em;
+      }
+      #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      #loading-overlay.visible {
+        display: flex;
+      }
+      .spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top: 4px solid #fff;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-bottom: 1em;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .loading-text {
+        color: #fff;
+        font-size: 1.1em;
+        text-align: center;
+        font-weight: 500;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      #sidebar h1 {
+        margin: 0;
+        font-size: 1.8em;
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.5em;
+      }
+      #sidebar p {
+        margin: 0.3em 0 0 0;
+        font-size: 1em;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 400;
+      }
+      #checklist-search {
+        margin-top: 1em;
+        padding-top: 1em;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      #checklist-search h3 {
+        margin: 0 0 0.5em 0;
+        font-size: 1.1em;
+        color: #fff;
+      }
+      .search-box {
+        display: flex;
+        gap: 0.5em;
+        margin-bottom: 0.5em;
+      }
+      #checklist-input {
+        flex: 1;
+        padding: 0.5em;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 1.0em;
+      }
+      #checklist-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+      #checklist-input:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.15);
+      }
+      #search-button, #clear-button {
+        padding: 0.5em 1em;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+        cursor: pointer;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 1.0em;
+      }
+      #search-button:hover:not(:disabled), #clear-button:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      #search-button:disabled, #clear-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      #search-button.success {
+        background: rgba(76, 175, 80, 0.3);
+        border-color: #4caf50;
+      }
+      #search-button.error, #clear-button.error {
+        background: rgba(244, 67, 54, 0.3);
+        border-color: #f44336;
+      }
+      #countries-list {
+        margin-bottom: 1em;
+      }
+      #footer {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-top: 1em;
+      }
+      .mobile-show {
+        display: none;
+      }
+      @media (max-width: 768px) {
+        .mobile-hide {
+          display: none;
+        }
+        #sidebar {
+            top: unset;
+            bottom: 1em;
+        }
+        .mobile-show {
+          display: block;
+        }
+      }
+      .search-box button {
+        margin-right: 0em !important;
+      }
+      a {
+        color: white;
+      }
+    </style>
+    <div id="sigma-container"></div>
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <div class="loading-text">Loading...</div>
+    </div>
+    <div id="sidebar">
+      <h1>Who Birds With You?<sup>*</sup></h1>
+      <p>A map of 300,000 global birders interconnected by 43 million shared eBird checklists. People that bird together have dots closer to each other. Data spans from 1800 through July 2025. By <a href="https://subject.space" target="_blank">Logan Williams</a>.</p>
+      <p class="mobile-show">Unfortunately, the visualization does not work on mobile devices. Try visiting on a desktop computer.</p>
+      <div class="mobile-hide">
+        <div id="checklist-search">
+          <h3>Find birder by eBird checklist ID</h3>
+          <div class="search-box">
+            <input 
+              type="text" 
+              id="checklist-input" 
+              placeholder="e.g., S90032150"
+              autocomplete="off"
+              size="5"
+            >
+            <button id="search-button">Search</button>
+            <button id="clear-button" disabled>Clear</button>
+          </div>
+        </div>
+        <div id="sidebar-controls">
+            <button id="select-all">Show All Countries</button>
+            <button id="deselect-all">Hide All</button>
+        </div>
+        <div id="sort-controls">
+            <label>Sort by:</label>
+            <button id="sort-alpha" class="active">A-Z</button>
+            <button id="sort-nodes">Most eBirders</button>
+        </div>
+        <div id="countries-list"></div>
+            <p id="footer">*to the tune of a Barred Owl</p>
+        </div>
+      </div>
+    </div>
+    <div id="controls">
+      <div class="input"><label for="zoom-in">Zoom in</label><button id="zoom-in">+</button></div>
+      <div class="input"><label for="zoom-out">Zoom out</label><button id="zoom-out">-</button></div>
+      <div class="input"><label for="zoom-reset">Reset zoom</label><button id="zoom-reset">⊙</button></div>
+    </div>
+    <script src="build/bundle.js"></script>
+  </body>
+</html>
