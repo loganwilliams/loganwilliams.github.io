@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What the United States Owns</title>
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="What the United States Owns">
+    <meta property="og:description" content="Interactive map of Federal Real Property Profile (FRPP) buildings across the United States">
+    <meta property="og:image" content="./image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What the United States Owns">
+    <meta name="twitter:description" content="Interactive map of Federal Real Property Profile (FRPP) buildings across the United States">
+    <meta name="twitter:image" content="./image.jpg">
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/pmtiles@3.2.0/dist/pmtiles.js"></script>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-6YQ8-5DDpmSluNP4euXec.js"></script>
+    <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+        .maplibregl-popup-content {
+            background: rgba(0, 0, 0, 0.9) !important;
+            color: white !important;
+            padding: 8px 12px !important;
+            border-radius: 4px !important;
+            font-size: 12px !important;
+            font-family: Arial, sans-serif !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+            max-width: 300px !important;
+        }
+        .maplibregl-popup-content strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 13px;
+            color: white !important;
+        }
+        .maplibregl-popup-content div {
+            margin: 2px 0;
+            color: white !important;
+        }
+        .maplibregl-popup-tip {
+            border-top-color: rgba(0, 0, 0, 0.9) !important;
+        }
+        .legend {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: Arial, sans-serif;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .legend h3 {
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .legend-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 4px 0;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+        .legend-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .legend-item.selected {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+        .legend-item.dimmed {
+            opacity: 0.4;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+        .legend-label {
+            line-height: 1.3;
+        }
+        @media (max-width: 768px) {
+            .legend {
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                gap: 8px;
+                max-height: none;
+                overflow-y: visible;
+                padding: 8px;
+                font-size: 10px;
+            }
+            .legend-item {
+                display: inline-flex;
+                align-items: center;
+                margin: 0;
+                white-space: nowrap;
+            }
+            .legend-color {
+                width: 12px;
+                height: 12px;
+                margin-right: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="legend" id="legend">
+        <h3>Reporting Agencies</h3>
+    </div>
+    <script>
+        const protocol = new pmtiles.Protocol();
+        maplibregl.addProtocol("pmtiles", protocol.tile);
+
+        // Agencies to group into "OTHER"
+        const otherAgencies = [
+            'INDEPENDENT GOVERNMENT OFFICES',
+            'COMMERCE',
+            'ENVIRONMENTAL PROTECTION AGENCY',
+            'UNITED STATES HOLOCAUST MEMORIAL MUSEUM',
+            'U.S. INTERNATIONAL DEVELOPMENT FINANCE CORPORATION',
+            'NATIONAL CREDIT UNION ADMINISTRATION',
+            'FEDERAL RETIREMENT THRIFT INVESTMENT BOARD',
+            'DC COURT SERVICES & OFFENDER SUPERVISION AGENCY',
+            'PEACE CORPS',
+            'PRETRIAL SERVICES FOR DC',
+            'REGIONAL COMMISSIONS',
+            'EXECUTIVE OFFICE OF THE PRESIDENT',
+            'MERIT SYSTEMS PROTECTION BOARD'
+        ];
+
+        // Single dictionary mapping agencies to colors
+        // Ordered by square footage (descending), with most distinct colors first
+        // ARMY, AIR FORCE, and NAVY are all blue variants
+        const agencyColors = {
+            // Top 3: Military branches (all blue variants)
+            'ARMY': '#1976D2',                    // Medium blue
+            'AIR FORCE': '#2196F3',               // Lighter blue
+            'NAVY': '#1565C0',                    // Darker blue
+            
+            // Next largest agencies (maximally distinct colors)
+            'GENERAL SERVICES ADMINISTRATION': '#FF6B6B',  // Red
+            'VETERANS AFFAIRS': '#FF00FF',                 // Fuchsia
+            'ENERGY': '#FFEAA7',                            // Yellow
+            'INTERIOR': '#FF9800',                          // Orange (BLM)
+            'JUSTICE': '#7B1FA2',                           // Dark purple
+            'AGRICULTURE': '#81C784',                       // Light green
+            'NATIONAL AERONAUTICS AND SPACE ADMINISTRATION': '#FF5722',  // Deep orange-red
+            'HEALTH AND HUMAN SERVICES': '#00BCD4',         // Cyan
+            'TENNESSEE VALLEY AUTHORITY': '#F7DC6F',       // Light yellow
+            'LABOR': '#4CAF50',                             // Green
+            'STATE': '#E91E63',                             // Pink
+            'HOMELAND SECURITY': '#9C27B0',                 // Purple
+            'SMITHSONIAN': '#FFC107',                        // Amber
+            'DEFENSE/WHS': '#26A69A',                       // Teal
+            'TRANSPORTATION': '#673AB7',                     // Indigo purple
+            'CORPS OF ENGINEERS': '#00E676',                 // Bright green
+            'OTHER': '#9E9E9E'                              // Grey for grouped agencies
+        };
+
+        // Build match expression for map styling
+        function buildColorMatchExpression(agencyColors, otherAgencies) {
+            // First check if agency is in "other" list
+            const caseExpr = ['case'];
+            
+            // Add checks for each "other" agency
+            for (const agency of otherAgencies) {
+                caseExpr.push(['==', ['get', 'Reporting Agency'], agency], agencyColors['OTHER']);
+            }
+            
+            // Then match against individual agencies
+            const matchArgs = ['match', ['get', 'Reporting Agency']];
+            for (const [agency, color] of Object.entries(agencyColors)) {
+                if (agency !== 'OTHER') {
+                    matchArgs.push(agency, color);
+                }
+            }
+            matchArgs.push('#CCCCCC'); // default color
+            
+            // Combine: if in other list, return OTHER color, otherwise use match
+            caseExpr.push(matchArgs);
+            return caseExpr;
+        }
+
+        // Abbreviations for legend display
+        const agencyAbbreviations = {
+            'NATIONAL AERONAUTICS AND SPACE ADMINISTRATION': 'NASA',
+            'HEALTH AND HUMAN SERVICES': 'HHS',
+            'TENNESSEE VALLEY AUTHORITY': 'TVA',
+            'GENERAL SERVICES ADMINISTRATION': 'GSA'
+        };
+
+        // Track currently selected agency
+        let selectedAgency = null;
+
+        // Generate legend HTML
+        function generateLegend(agencyColors, otherAgencies) {
+            const legendContainer = document.getElementById('legend');
+            const items = Object.entries(agencyColors)
+                // .sort((a, b) => a[0].localeCompare(b[0]))
+                .map(([agency, color]) => {
+                    const displayName = agencyAbbreviations[agency] || agency;
+                    return `
+                        <div class="legend-item" data-agency="${agency}">
+                            <div class="legend-color" style="background-color: ${color};"></div>
+                            <div class="legend-label">${displayName}</div>
+                        </div>
+                    `;
+                }).join('');
+            legendContainer.innerHTML = items;
+        }
+
+        // Generate legend
+        generateLegend(agencyColors, otherAgencies);
+
+        const map = new maplibregl.Map({
+            container: 'map',
+            style: {
+                version: 8,
+                sources: {
+                    'cartodb': {
+                        type: 'raster',
+                        tiles: [
+                            'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                            'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                            'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                            'https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+                        ],
+                        tileSize: 256,
+                        attribution: '© CARTO'
+                    },
+                    'frpp': {
+                        type: 'vector',
+                        url: 'pmtiles://./frpp3.pmtiles',
+                        attribution: 'FRPP Data'
+                    }
+                },
+                layers: [
+                    {
+                        id: 'cartodb-layer',
+                        type: 'raster',
+                        source: 'cartodb'
+                    },
+                    {
+                        id: 'frpp-points',
+                        type: 'circle',
+                        source: 'frpp',
+                        'source-layer': 'frpp_merged3',
+                        paint: {
+                            'circle-color': buildColorMatchExpression(agencyColors, otherAgencies),
+                            'circle-radius': [
+                                'interpolate',
+                                ['exponential', 2],
+                                ['zoom'],
+                                0, ['*', 0.125, [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['sqrt', ['coalesce', ['get', 'Square Feet (Buildings)'], 0]],
+                                    0, 3,
+                                    1000, 20
+                                ]],
+                                2, ['*', 0.25, [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['sqrt', ['coalesce', ['get', 'Square Feet (Buildings)'], 0]],
+                                    0, 3,
+                                    1000, 20
+                                ]],
+                                4, [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['sqrt', ['coalesce', ['get', 'Square Feet (Buildings)'], 0]],
+                                    0, 3,
+                                    1000, 20
+                                ]
+                            ],
+                            'circle-stroke-width': 0.5,
+                            'circle-stroke-color': 'rgba(255, 255, 255, 0.5)',
+                            'circle-opacity': 0.8
+                        }
+                    }
+                ],
+                glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf'
+            },
+            center: [-98.5, 39.8],
+            zoom: 4
+        });
+
+        // Create popup element
+        const popup = new maplibregl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            className: 'map-popup'
+        });
+
+        // Show popup on hover
+        map.on('mousemove', 'frpp-points', (e) => {
+            const feature = e.features[0];
+            if (feature) {
+                const props = feature.properties;
+                const sqft = props['Square Feet (Buildings)'] || 0;
+                const formattedSqft = sqft.toLocaleString();
+                
+                let html = '<strong>' + (props['Reporting Agency'] || 'Unknown') + '</strong>';
+                html += '<div>' + props['Reporting Bureau'] + '</div>';
+               
+                popup.setLngLat(e.lngLat)
+                    .setHTML(html)
+                    .addTo(map);
+            }
+        });
+
+        // Hide popup when mouse leaves point
+        map.on('mouseleave', 'frpp-points', () => {
+            popup.remove();
+        });
+
+        // Change cursor to pointer on hover
+        map.on('mouseenter', 'frpp-points', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        map.on('mouseleave', 'frpp-points', () => {
+            map.getCanvas().style.cursor = '';
+        });
+
+        // Legend click handler for filtering
+        function updateLegendStyles() {
+            const items = document.querySelectorAll('.legend-item');
+            items.forEach(item => {
+                const agency = item.dataset.agency;
+                item.classList.remove('selected', 'dimmed');
+                if (selectedAgency) {
+                    if (agency === selectedAgency) {
+                        item.classList.add('selected');
+                    } else {
+                        item.classList.add('dimmed');
+                    }
+                }
+            });
+        }
+
+        function filterByAgency(agency) {
+            if (selectedAgency === agency) {
+                // Clicking same agency clears filter
+                selectedAgency = null;
+                map.setFilter('frpp-points', null);
+            } else {
+                selectedAgency = agency;
+                
+                // Build filter for selected agency
+                if (agency === 'OTHER') {
+                    // Filter to show all "other" agencies
+                    const otherFilter = ['any'];
+                    for (const a of otherAgencies) {
+                        otherFilter.push(['==', ['get', 'Reporting Agency'], a]);
+                    }
+                    map.setFilter('frpp-points', otherFilter);
+                } else {
+                    map.setFilter('frpp-points', ['==', ['get', 'Reporting Agency'], agency]);
+                }
+            }
+            updateLegendStyles();
+        }
+
+        // Add click listeners to legend items
+        document.getElementById('legend').addEventListener('click', (e) => {
+            const legendItem = e.target.closest('.legend-item');
+            if (legendItem) {
+                const agency = legendItem.dataset.agency;
+                filterByAgency(agency);
+            }
+        });
+    </script>
+</body>
+</html>
+
