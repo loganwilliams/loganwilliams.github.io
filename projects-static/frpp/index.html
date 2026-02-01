@@ -69,6 +69,7 @@
             overflow-y: auto;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             z-index: 1000;
+            margin-right: 10px;
         }
         .legend h3 {
             margin: 0 0 8px 0;
@@ -103,6 +104,27 @@
         }
         .legend-label {
             line-height: 1.3;
+        }
+        .legend-item.has-children .legend-label::after {
+            content: ' ▸';
+            opacity: 0.6;
+        }
+        .legend-item.has-children.expanded .legend-label::after {
+            content: ' ▾';
+        }
+        .legend-bureaus {
+            margin-left: 24px;
+            display: none;
+        }
+        .legend-bureaus.expanded {
+            display: block;
+        }
+        .legend-bureau-item {
+            font-size: 10px;
+        }
+        .legend-bureau-item .legend-color {
+            width: 12px;
+            height: 12px;
         }
         @media (max-width: 768px) {
             .legend {
@@ -152,7 +174,9 @@
             'PRETRIAL SERVICES FOR DC',
             'REGIONAL COMMISSIONS',
             'EXECUTIVE OFFICE OF THE PRESIDENT',
-            'MERIT SYSTEMS PROTECTION BOARD'
+            'MERIT SYSTEMS PROTECTION BOARD',
+            'TENNESSEE VALLEY AUTHORITY',
+            'ENVIRONMENTAL PROTECTION AGENCY'
         ];
 
         // Single dictionary mapping agencies to colors
@@ -160,27 +184,32 @@
         // ARMY, AIR FORCE, and NAVY are all blue variants
         const agencyColors = {
             // Top 3: Military branches (all blue variants)
-            'ARMY': '#1976D2',                    // Medium blue
             'AIR FORCE': '#2196F3',               // Lighter blue
+            'ARMY': '#1976D2',                    // Medium blue
             'NAVY': '#1565C0',                    // Darker blue
             
+            'AGRICULTURE': '#81C784',                       // Light green
+            'INTERIOR': '#FF9800',                          // Orange (BLM)
+            'HOMELAND SECURITY': '#9C27B0',                 // Purple
+
             // Next largest agencies (maximally distinct colors)
             'GENERAL SERVICES ADMINISTRATION': '#FF6B6B',  // Red
             'VETERANS AFFAIRS': '#FF00FF',                 // Fuchsia
             'ENERGY': '#FFEAA7',                            // Yellow
-            'INTERIOR': '#FF9800',                          // Orange (BLM)
-            'JUSTICE': '#7B1FA2',                           // Dark purple
-            'AGRICULTURE': '#81C784',                       // Light green
-            'NATIONAL AERONAUTICS AND SPACE ADMINISTRATION': '#FF5722',  // Deep orange-red
-            'HEALTH AND HUMAN SERVICES': '#00BCD4',         // Cyan
-            'TENNESSEE VALLEY AUTHORITY': '#F7DC6F',       // Light yellow
-            'LABOR': '#4CAF50',                             // Green
-            'ENVIRONMENTAL PROTECTION AGENCY': '#E91E63',                             // Pink
-            'HOMELAND SECURITY': '#9C27B0',                 // Purple
-            'SMITHSONIAN': '#FFC107',                        // Amber
+
             'COMMERCE': '#26A69A',                       // Teal
             'TRANSPORTATION': '#673AB7',                     // Indigo purple
             'CORPS OF ENGINEERS': '#00E676',                 // Bright green
+
+            'NATIONAL AERONAUTICS AND SPACE ADMINISTRATION': '#FF5722',  // Deep orange-red
+            'JUSTICE': '#7B1FA2',                           // Dark purple
+
+            'HEALTH AND HUMAN SERVICES': '#00BCD4',         // Cyan
+            // 'TENNESSEE VALLEY AUTHORITY': '#F7DC6F',       // Light yellow
+            'LABOR': '#4CAF50',                             // Green
+            // 'ENVIRONMENTAL PROTECTION AGENCY': '#E91E63',                             // Pink
+            'SMITHSONIAN': '#FFC107',                        // Amber
+
             'OTHER': '#9E9E9E'                              // Grey for grouped agencies
         };
 
@@ -211,33 +240,137 @@
         // Abbreviations for legend display
         const agencyAbbreviations = {
             'NATIONAL AERONAUTICS AND SPACE ADMINISTRATION': 'NASA',
-            'HEALTH AND HUMAN SERVICES': 'HHS',
+            // 'HEALTH AND HUMAN SERVICES': 'HHS',
             'TENNESSEE VALLEY AUTHORITY': 'TVA',
-            'GENERAL SERVICES ADMINISTRATION': 'GSA'
+            // 'GENERAL SERVICES ADMINISTRATION': 'GSA',
         };
 
-        // Track currently selected agency
-        let selectedAgency = null;
+        // Bureau configurations for agencies with drill-down
+        const agencyBureauConfig = {
+            'INTERIOR': {
+                bureaus: [
+                    'NATIONAL PARK SERVICE',
+                    'FISH AND WILDLIFE SERVICE',
+                    'BUREAU OF RECLAMATION',
+                    'BUREAU OF LAND MANAGEMENT',
+                    'BUREAU OF INDIAN AFFAIRS'
+                ],
+                colors: {
+                    'NATIONAL PARK SERVICE': '#1F77B4',      // Blue
+                    'FISH AND WILDLIFE SERVICE': '#FF7F0E',  // Orange
+                    'BUREAU OF RECLAMATION': '#2CA02C',      // Green
+                    'BUREAU OF LAND MANAGEMENT': '#D62728',  // Red
+                    'BUREAU OF INDIAN AFFAIRS': '#9467BD',   // Purple
+                    'OTHER': '#8C564B'                       // Brown
+                },
+                abbreviations: {
+                    'NATIONAL PARK SERVICE': 'NPS',
+                    'FISH AND WILDLIFE SERVICE': 'FWS',
+                    'BUREAU OF RECLAMATION': 'BOR',
+                    'BUREAU OF LAND MANAGEMENT': 'BLM',
+                    'BUREAU OF INDIAN AFFAIRS': 'BIA'
+                }
+            },
+            'AGRICULTURE': {
+                bureaus: [
+                    'FOREST SERVICE',
+                    'AGRICULTURAL RESEARCH SERVICE',
+                    'FARM SERVICE AGENCY',
+                    'NATURAL RESOURCES CONSERVATION SERVICE'
+                ],
+                colors: {
+                    'FOREST SERVICE': '#2CA02C',                      // Blue
+                    'AGRICULTURAL RESEARCH SERVICE': '#FF7F0E',       // Orange
+                    'FARM SERVICE AGENCY': '#1F77B4',                   // Green
+                    'NATURAL RESOURCES CONSERVATION SERVICE': '#D62728', // Red
+                    'OTHER': '#9467BD'                                // Purple
+                },
+                abbreviations: {
+                    'FOREST SERVICE': 'USFS',
+                    'AGRICULTURAL RESEARCH SERVICE': 'ARS',
+                    'FARM SERVICE AGENCY': 'FSA',
+                    'NATURAL RESOURCES CONSERVATION SERVICE': 'NRCS'
+                }
+            },
+            'HOMELAND SECURITY': {
+                bureaus: [
+                    'U.S. COAST GUARD',
+                    'CUSTOMS AND BORDER PROTECTION',
+                    'FED LAW ENFORCEMENT TRAINING CTR (FLETC)'
+                ],
+                colors: {
+                    'U.S. COAST GUARD': '#1F77B4',                      // Blue
+                    'CUSTOMS AND BORDER PROTECTION': '#FF7F0E',         // Orange
+                    'FED LAW ENFORCEMENT TRAINING CTR (FLETC)': '#2CA02C', // Green
+                    'OTHER': '#D62728'                                  // Red
+                },
+                abbreviations: {
+                    'U.S. COAST GUARD': 'USCG',
+                    'CUSTOMS AND BORDER PROTECTION': 'CBP',
+                    'FED LAW ENFORCEMENT TRAINING CTR (FLETC)': 'FLETC'
+                }
+            }
+        };
 
-        // Generate legend HTML
-        function generateLegend(agencyColors, otherAgencies) {
+        // Build color match expression for an agency's bureaus
+        function buildBureauColorMatchExpression(agency) {
+            const config = agencyBureauConfig[agency];
+            const matchArgs = ['match', ['get', 'Reporting Bureau']];
+            for (const bureau of config.bureaus) {
+                matchArgs.push(bureau, config.colors[bureau]);
+            }
+            matchArgs.push(config.colors['OTHER']); // default for other bureaus
+            return matchArgs;
+        }
+
+        // Track currently selected agency and expanded agency
+        let selectedAgency = null;
+        let expandedAgency = null;
+
+        // Generate bureau sub-items HTML for an agency
+        function generateBureauItems(agency) {
+            const config = agencyBureauConfig[agency];
+            return Object.entries(config.colors)
+                .map(([bureau, color]) => {
+                    return `
+                        <div class="legend-item legend-bureau-item" data-agency="${agency}" data-bureau="${bureau}">
+                            <div class="legend-color" style="background-color: ${color};"></div>
+                            <div class="legend-label">${bureau}</div>
+                        </div>
+                    `;
+                }).join('');
+        }
+
+        // Generate agency legend HTML with disclosure for bureaus
+        function generateAgencyLegend() {
             const legendContainer = document.getElementById('legend');
             const items = Object.entries(agencyColors)
-                // .sort((a, b) => a[0].localeCompare(b[0]))
                 .map(([agency, color]) => {
                     const displayName = agencyAbbreviations[agency] || agency;
-                    return `
-                        <div class="legend-item" data-agency="${agency}">
+                    const hasBureaus = agencyBureauConfig[agency];
+                    const isExpanded = expandedAgency === agency;
+                    
+                    let html = `
+                        <div class="legend-item${hasBureaus ? ' has-children' : ''}${isExpanded ? ' expanded' : ''}" data-agency="${agency}">
                             <div class="legend-color" style="background-color: ${color};"></div>
                             <div class="legend-label">${displayName}</div>
                         </div>
                     `;
+                    
+                    // Add bureau sub-items if this agency has them
+                    if (hasBureaus) {
+                        html += `<div class="legend-bureaus${isExpanded ? ' expanded' : ''}" data-parent="${agency}">`;
+                        html += generateBureauItems(agency);
+                        html += `</div>`;
+                    }
+                    
+                    return html;
                 }).join('');
             legendContainer.innerHTML = items;
         }
 
-        // Generate legend
-        generateLegend(agencyColors, otherAgencies);
+        // Generate initial legend
+        generateAgencyLegend();
 
         const map = new maplibregl.Map({
             container: 'map',
@@ -355,22 +488,44 @@
             const items = document.querySelectorAll('.legend-item');
             items.forEach(item => {
                 const agency = item.dataset.agency;
+                const isBureauItem = item.classList.contains('legend-bureau-item');
                 item.classList.remove('selected', 'dimmed');
+                
                 if (selectedAgency) {
-                    if (agency === selectedAgency) {
-                        item.classList.add('selected');
+                    if (isBureauItem) {
+                        // Bureau items are shown when their parent is selected
+                        if (agency === selectedAgency) {
+                            // Don't dim bureau items of the selected agency
+                        } else {
+                            item.classList.add('dimmed');
+                        }
                     } else {
-                        item.classList.add('dimmed');
+                        // Agency items
+                        if (agency === selectedAgency) {
+                            item.classList.add('selected');
+                        } else {
+                            item.classList.add('dimmed');
+                        }
                     }
                 }
             });
         }
 
+        // Store original color expression
+        const originalColorExpression = buildColorMatchExpression(agencyColors, otherAgencies);
+
+        function resetView() {
+            selectedAgency = null;
+            expandedAgency = null;
+            map.setFilter('frpp-points', null);
+            map.setPaintProperty('frpp-points', 'circle-color', originalColorExpression);
+            generateAgencyLegend();
+        }
+
         function filterByAgency(agency) {
-            if (selectedAgency === agency) {
-                // Clicking same agency clears filter
-                selectedAgency = null;
-                map.setFilter('frpp-points', null);
+            if (selectedAgency === agency && !agencyBureauConfig[agency]) {
+                // Clicking same agency clears filter (only for non-bureau agencies)
+                resetView();
             } else {
                 selectedAgency = agency;
                 
@@ -382,11 +537,38 @@
                         otherFilter.push(['==', ['get', 'Reporting Agency'], a]);
                     }
                     map.setFilter('frpp-points', otherFilter);
+                    map.setPaintProperty('frpp-points', 'circle-color', originalColorExpression);
+                    // Close any expanded submenu
+                    if (expandedAgency) {
+                        expandedAgency = null;
+                        generateAgencyLegend();
+                    }
+                } else if (agencyBureauConfig[agency]) {
+                    // Agency has bureau drill-down - toggle expansion
+                    if (expandedAgency === agency) {
+                        // Collapsing - reset to default view
+                        selectedAgency = null;
+                        expandedAgency = null;
+                        map.setFilter('frpp-points', null);
+                        map.setPaintProperty('frpp-points', 'circle-color', originalColorExpression);
+                    } else {
+                        // Expanding - filter and color by bureau
+                        expandedAgency = agency;
+                        map.setFilter('frpp-points', ['==', ['get', 'Reporting Agency'], agency]);
+                        map.setPaintProperty('frpp-points', 'circle-color', buildBureauColorMatchExpression(agency));
+                    }
+                    generateAgencyLegend();
                 } else {
                     map.setFilter('frpp-points', ['==', ['get', 'Reporting Agency'], agency]);
+                    map.setPaintProperty('frpp-points', 'circle-color', originalColorExpression);
+                    // Close any expanded submenu
+                    if (expandedAgency) {
+                        expandedAgency = null;
+                        generateAgencyLegend();
+                    }
                 }
+                updateLegendStyles();
             }
-            updateLegendStyles();
         }
 
         // Add click listeners to legend items
@@ -394,7 +576,9 @@
             const legendItem = e.target.closest('.legend-item');
             if (legendItem) {
                 const agency = legendItem.dataset.agency;
-                filterByAgency(agency);
+                if (agency) {
+                    filterByAgency(agency);
+                }
             }
         });
     </script>
