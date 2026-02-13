@@ -658,7 +658,21 @@
                                     ['sqrt', ['coalesce', ['get', 'sqft'], 0]],
                                     0, 3,
                                     1000, 20
-                                ]
+                                ],
+                                14, [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['sqrt', ['coalesce', ['get', 'sqft'], 0]],
+                                    0, 3,
+                                    1000, 20
+                                ],
+                                 21, ['*', 128, [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['sqrt', ['coalesce', ['get', 'sqft'], 0]],
+                                    0, 3,
+                                    1000, 20
+                                ]],
                             ],
                             'circle-stroke-width': 0.5,
                             'circle-stroke-color': 'rgba(255, 255, 255, 0.5)',
@@ -669,7 +683,8 @@
                 glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf'
             },
             center: [-98.5, 39.8],
-            zoom: 4
+            zoom: 4,
+            maxZoom: 17
         });
 
         // Create popup element
