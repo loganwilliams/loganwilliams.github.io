@@ -27,6 +27,7 @@
             margin: 0;
             padding: 0;
             background: #000;
+            font-family: monospace;
         }
         #map {
             width: 100vw;
@@ -38,14 +39,15 @@
             padding: 8px 12px !important;
             border-radius: 4px !important;
             font-size: 12px !important;
-            font-family: Arial, sans-serif !important;
+            font-family: Arial Narrow, sans-serif !important;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
             max-width: 300px !important;
+            text-transform: uppercase;
         }
         .maplibregl-popup-content strong {
             display: block;
             margin-bottom: 4px;
-            font-size: 13px;
+            font-size: 14px;
             color: white !important;
         }
         .maplibregl-popup-content div {
@@ -63,8 +65,8 @@
             color: white;
             padding: 12px;
             border-radius: 4px;
-            font-size: 11px;
-            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-family: Arial Narrow, sans-serif;
             max-height: 80vh;
             overflow-y: auto;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -84,12 +86,14 @@
             padding: 2px 4px;
             border-radius: 3px;
             transition: background-color 0.2s;
+            align-items: center;
         }
         .legend-item:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
         .legend-item.selected {
             background-color: rgba(255, 255, 255, 0.25);
+            font-weight: bold;
         }
         .legend-item.dimmed {
             opacity: 0.4;
@@ -103,7 +107,8 @@
             flex-shrink: 0;
         }
         .legend-label {
-            line-height: 1.3;
+            line-height: 1.4;
+            /* margin-bottom: -1px; */
         }
         .legend-item.has-children .legend-label::after {
             content: ' ▸';
@@ -120,7 +125,7 @@
             display: block;
         }
         .legend-bureau-item {
-            font-size: 10px;
+            font-size: 12px;
         }
         .legend-bureau-item .legend-color {
             width: 12px;
@@ -135,7 +140,7 @@
                 max-height: none;
                 overflow-y: visible;
                 padding: 8px;
-                font-size: 10px;
+                font-size: 12px;
             }
             .legend-item {
                 display: inline-flex;
@@ -190,10 +195,10 @@
             
             'AGRICULTURE': '#81C784',                       // Light green
             'INTERIOR': '#FF9800',                          // Orange (BLM)
-            'HOMELAND SECURITY': '#9C27B0',                 // Purple
+            'HOMELAND SECURITY': '#ff0000',                 // Purple
 
             // Next largest agencies (maximally distinct colors)
-            'GENERAL SERVICES ADMINISTRATION': '#FF6B6B',  // Red
+            'GENERAL SERVICES ADMINISTRATION': '#ffb3c4',  // Red
             'VETERANS AFFAIRS': '#FF00FF',                 // Fuchsia
             'ENERGY': '#FFEAA7',                            // Yellow
 
