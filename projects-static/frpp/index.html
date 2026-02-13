@@ -44,8 +44,7 @@
             max-width: 300px !important;
             text-transform: uppercase;
         }
-        .maplibregl-popup-content strong {
-            display: block;
+        .maplibregl-popup-content div.header {
             margin-bottom: 4px;
             font-size: 14px;
             color: white !important;
@@ -53,6 +52,11 @@
         .maplibregl-popup-content div {
             margin: 2px 0;
             color: white !important;
+        }
+        .maplibregl-popup-content hr {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            margin: 8px 0;
         }
         .maplibregl-popup-tip {
             border-top-color: rgba(0, 0, 0, 0.9) !important;
@@ -131,7 +135,134 @@
             width: 12px;
             height: 12px;
         }
+        .legal-interest-filters {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .legal-interest-filters select {
+            font-size: 14px;
+            font-family: Arial Narrow, sans-serif;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            padding: 4px 8px;
+            width: 100%;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .year-histogram {
+            margin-top: 12px;
+            padding-top: 8px;
+        }
+        .year-histogram-label {
+            font-size: 14px;
+            margin-bottom: -14px;
+            text-transform: uppercase;
+        }
+        .year-histogram-container {
+            position: relative;
+            height: 40px;
+            display: flex;
+            align-items: flex-end;
+            gap: 1px;
+            cursor: pointer;
+        }
+        .year-histogram-bar {
+            flex: 1;
+            min-width: 2px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 1px 1px 0 0;
+            transition: background 0.15s;
+        }
+        .year-histogram-bar.selected {
+            background: rgba(255,255,255,0.6);
+        }
+        .year-histogram-track {
+            position: relative;
+            height: 20px;
+            margin-top: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .year-histogram-selection {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            pointer-events: none;
+        }
+        .year-histogram-handle {
+            position: absolute;
+            top: 0;
+            width: 10px;
+            height: 100%;
+            background: rgba(255,255,255,0.8);
+            border-radius: 2px;
+            cursor: ew-resize;
+            margin-left: -5px;
+        }
+        .year-histogram-handle:hover {
+            background: white;
+        }
+        .year-histogram-axis {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 2px;
+        }
+        .year-histogram-footer {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+        }
+        .year-show-all-btn {
+            font-size: 11px;
+            font-family: Arial Narrow, sans-serif;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 3px;
+            padding: 2px 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .year-show-all-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fullscreen-btn:hover {
+            background: rgba(0, 0, 0, 0.85);
+        }
         @media (max-width: 768px) {
+            .fullscreen-btn {
+                display: none !important;
+            }
             .legend {
                 display: flex;
                 flex-wrap: wrap;
@@ -141,6 +272,20 @@
                 overflow-y: visible;
                 padding: 8px;
                 font-size: 12px;
+            }
+            .legal-interest-filters {
+                flex: 1 1 100%;
+                min-width: 140px;
+            }
+            .legal-interest-filters select {
+                font-size: 12px;
+            }
+            .year-histogram-label {
+                font-size: 12px;
+            }
+            .year-histogram-axis,
+            .year-histogram-footer {
+                font-size: 10px;
             }
             .legend-item {
                 display: inline-flex;
@@ -158,8 +303,33 @@
 </head>
 <body>
     <div id="map"></div>
+    <button type="button" class="fullscreen-btn" id="fullscreen-btn" title="Toggle fullscreen" aria-label="Toggle fullscreen">⛶</button>
     <div class="legend" id="legend">
-        <h3>Reporting Agencies</h3>
+        <div id="legend-agencies"></div>
+        <div class="legal-interest-filters">
+            <select id="legal-interest-select">
+                <option value="both">Owned and Leased</option>
+                <option value="owned">Owned</option>
+                <option value="leased">Leased</option>
+            </select>
+            <div class="year-histogram" id="year-histogram">
+                <div class="year-histogram-label">Year of construction</div>
+                <div class="year-histogram-container" id="year-histogram-bars" title="Click to select range"></div>
+                <div class="year-histogram-track" id="year-histogram-track" title="Drag handles to select range">
+                    <div class="year-histogram-selection" id="year-histogram-selection"></div>
+                    <div class="year-histogram-handle" id="year-handle-min"></div>
+                    <div class="year-histogram-handle" id="year-handle-max"></div>
+                </div>
+                <div class="year-histogram-axis">
+                    <span id="year-min-label">1700</span>
+                    <span id="year-max-label">2030</span>
+                </div>
+                <div class="year-histogram-footer" id="year-histogram-footer">
+                    <span id="year-undefined-count"></span>
+                    <button type="button" id="year-show-all-btn" class="year-show-all-btn">Show all</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         const protocol = new pmtiles.Protocol();
@@ -169,7 +339,6 @@
         const otherAgencies = [
             'INDEPENDENT GOVERNMENT OFFICES',
             'DEFENSE/WHS',
-            'STATE',
             'UNITED STATES HOLOCAUST MEMORIAL MUSEUM',
             'U.S. INTERNATIONAL DEVELOPMENT FINANCE CORPORATION',
             'NATIONAL CREDIT UNION ADMINISTRATION',
@@ -180,7 +349,6 @@
             'REGIONAL COMMISSIONS',
             'EXECUTIVE OFFICE OF THE PRESIDENT',
             'MERIT SYSTEMS PROTECTION BOARD',
-            'TENNESSEE VALLEY AUTHORITY',
             'ENVIRONMENTAL PROTECTION AGENCY'
         ];
 
@@ -189,11 +357,9 @@
         // ARMY, AIR FORCE, and NAVY are all blue variants
         const agencyColors = {
             // Top 3: Military branches (all blue variants)
-            'AIR FORCE': '#2196F3',               // Lighter blue
-            'ARMY': '#1976D2',                    // Medium blue
-            'NAVY': '#1565C0',                    // Darker blue
+            'DEFENSE': '#1565C0',                    // Darker blue
             
-            'AGRICULTURE': '#81C784',                       // Light green
+            'AGRICULTURE': '#55cf5a',                       // Light green
             'INTERIOR': '#FF9800',                          // Orange (BLM)
             'HOMELAND SECURITY': '#ff0000',                 // Purple
 
@@ -204,13 +370,14 @@
 
             'COMMERCE': '#26A69A',                       // Teal
             'TRANSPORTATION': '#673AB7',                     // Indigo purple
-            'CORPS OF ENGINEERS': '#00E676',                 // Bright green
+
+            'TENNESSEE VALLEY AUTHORITY': '#fcdf03',         // Light yellow
+            'STATE': '#9efff4',                              // Light blue
 
             'NATIONAL AERONAUTICS AND SPACE ADMINISTRATION': '#FF5722',  // Deep orange-red
             'JUSTICE': '#7B1FA2',                           // Dark purple
 
             'HEALTH AND HUMAN SERVICES': '#00BCD4',         // Cyan
-            // 'TENNESSEE VALLEY AUTHORITY': '#F7DC6F',       // Light yellow
             'LABOR': '#4CAF50',                             // Green
             // 'ENVIRONMENTAL PROTECTION AGENCY': '#E91E63',                             // Pink
             'SMITHSONIAN': '#FFC107',                        // Amber
@@ -225,11 +392,11 @@
             
             // Add checks for each "other" agency
             for (const agency of otherAgencies) {
-                caseExpr.push(['==', ['get', 'Reporting Agency'], agency], agencyColors['OTHER']);
+                caseExpr.push(['==', ['get', 'agency'], agency], agencyColors['OTHER']);
             }
             
             // Then match against individual agencies
-            const matchArgs = ['match', ['get', 'Reporting Agency']];
+            const matchArgs = ['match', ['get', 'agency']];
             for (const [agency, color] of Object.entries(agencyColors)) {
                 if (agency !== 'OTHER') {
                     matchArgs.push(agency, color);
@@ -246,7 +413,7 @@
         const agencyAbbreviations = {
             'NATIONAL AERONAUTICS AND SPACE ADMINISTRATION': 'NASA',
             // 'HEALTH AND HUMAN SERVICES': 'HHS',
-            'TENNESSEE VALLEY AUTHORITY': 'TVA',
+            // 'TENNESSEE VALLEY AUTHORITY': 'TVA',
             // 'GENERAL SERVICES ADMINISTRATION': 'GSA',
         };
 
@@ -314,17 +481,72 @@
                     'CUSTOMS AND BORDER PROTECTION': 'CBP',
                     'FED LAW ENFORCEMENT TRAINING CTR (FLETC)': 'FLETC'
                 }
+            },
+            'DEFENSE': {
+                bureaus: [
+                    'AIR FORCE',
+                    'ARMY',
+                    'NAVY',
+                    'CORPS OF ENGINEERS'
+                ],
+                colors: {
+                    'AIR FORCE': '#D62728',           // Red
+                    'ARMY': '#2CA02C',                // Green
+                    'NAVY': '#1F77B4',                // Blue
+                    'CORPS OF ENGINEERS': '#FF7F0E', // Orange
+                    'OTHER': '#9467BD'                // Purple
+                },
+                abbreviations: {
+                    'AIR FORCE': 'USAF',
+                    'ARMY': 'USA',
+                    'NAVY': 'USN',
+                    'CORPS OF ENGINEERS': 'USACE'
+                }
+            },
+            'OTHER': {
+                field: 'agency',
+                // Ordered by square footage (descending)
+                bureaus: [
+                    'INDEPENDENT GOVERNMENT OFFICES',
+                    'ENVIRONMENTAL PROTECTION AGENCY',
+                    'UNITED STATES HOLOCAUST MEMORIAL MUSEUM',
+                    'U.S. INTERNATIONAL DEVELOPMENT FINANCE CORPORATION',
+                    'NATIONAL CREDIT UNION ADMINISTRATION',
+                    'FEDERAL RETIREMENT THRIFT INVESTMENT BOARD',
+                    'DC COURT SERVICES & OFFENDER SUPERVISION AGENCY',
+                    'PEACE CORPS',
+                    'PRETRIAL SERVICES FOR DC',
+                    'REGIONAL COMMISSIONS',
+                    'EXECUTIVE OFFICE OF THE PRESIDENT',
+                    'MERIT SYSTEMS PROTECTION BOARD'
+                ],
+                colors: {
+                    'INDEPENDENT GOVERNMENT OFFICES': '#D62728',
+                    'ENVIRONMENTAL PROTECTION AGENCY': '#9467BD',
+                    'UNITED STATES HOLOCAUST MEMORIAL MUSEUM': '#8C564B',
+                    'U.S. INTERNATIONAL DEVELOPMENT FINANCE CORPORATION': '#E377C2',
+                    'NATIONAL CREDIT UNION ADMINISTRATION': '#17BECF',
+                    'FEDERAL RETIREMENT THRIFT INVESTMENT BOARD': '#BCBD22',
+                    'DC COURT SERVICES & OFFENDER SUPERVISION AGENCY': '#FFBB78',
+                    'PEACE CORPS': '#98DF8A',
+                    'PRETRIAL SERVICES FOR DC': '#AEC7E8',
+                    'REGIONAL COMMISSIONS': '#C5B0D5',
+                    'EXECUTIVE OFFICE OF THE PRESIDENT': '#C49C94',
+                    'MERIT SYSTEMS PROTECTION BOARD': '#F7B6D2',
+                    'OTHER': '#9E9E9E'
+                }
             }
         };
 
-        // Build color match expression for an agency's bureaus
+        // Build color match expression for an agency's bureaus (or OTHER's sub-agencies)
         function buildBureauColorMatchExpression(agency) {
             const config = agencyBureauConfig[agency];
-            const matchArgs = ['match', ['get', 'Reporting Bureau']];
+            const field = config.field || 'bureau';
+            const matchArgs = ['match', ['get', field]];
             for (const bureau of config.bureaus) {
                 matchArgs.push(bureau, config.colors[bureau]);
             }
-            matchArgs.push(config.colors['OTHER']); // default for other bureaus
+            matchArgs.push(config.colors['OTHER'] || '#9E9E9E'); // default
             return matchArgs;
         }
 
@@ -348,7 +570,7 @@
 
         // Generate agency legend HTML with disclosure for bureaus
         function generateAgencyLegend() {
-            const legendContainer = document.getElementById('legend');
+            const legendContainer = document.getElementById('legend-agencies');
             const items = Object.entries(agencyColors)
                 .map(([agency, color]) => {
                     const displayName = agencyAbbreviations[agency] || agency;
@@ -395,7 +617,7 @@
                     },
                     'frpp': {
                         type: 'vector',
-                        url: 'pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/frpp3.pmtiles',
+                        url: 'pmtiles://https://data-lake-house.fra1.cdn.digitaloceanspaces.com/frpp8.pmtiles',
                         attribution: 'FRPP Data'
                     }
                 },
@@ -409,7 +631,7 @@
                         id: 'frpp-points',
                         type: 'circle',
                         source: 'frpp',
-                        'source-layer': 'frpp_merged3',
+                        'source-layer': 'frpp_merged8',
                         paint: {
                             'circle-color': buildColorMatchExpression(agencyColors, otherAgencies),
                             'circle-radius': [
@@ -419,21 +641,21 @@
                                 0, ['*', 0.125, [
                                     'interpolate',
                                     ['linear'],
-                                    ['sqrt', ['coalesce', ['get', 'Square Feet (Buildings)'], 0]],
+                                    ['sqrt', ['coalesce', ['get', 'sqft'], 0]],
                                     0, 3,
                                     1000, 20
                                 ]],
                                 2, ['*', 0.25, [
                                     'interpolate',
                                     ['linear'],
-                                    ['sqrt', ['coalesce', ['get', 'Square Feet (Buildings)'], 0]],
+                                    ['sqrt', ['coalesce', ['get', 'sqft'], 0]],
                                     0, 3,
                                     1000, 20
                                 ]],
                                 4, [
                                     'interpolate',
                                     ['linear'],
-                                    ['sqrt', ['coalesce', ['get', 'Square Feet (Buildings)'], 0]],
+                                    ['sqrt', ['coalesce', ['get', 'sqft'], 0]],
                                     0, 3,
                                     1000, 20
                                 ]
@@ -458,16 +680,34 @@
         });
 
         // Show popup on hover
+        function buildFeaturePopupHtml(props) {
+            let html = '<div class="header"><strong>' + (props['agency'] || 'Unknown') + '</strong>';
+            if (props['name']) {
+                html += ': ' + props['bureau'] + '</div>'
+                html += '<div class="header"><strong>' + props['name'] + '</strong></div>';
+            } else {
+                html += '</div>';
+                html += '<div>' + props['bureau'] + '</div>';
+            }
+            const rpType = props['type'] || '';
+            const rpUse = props['use'] || '';
+            if (rpType || rpUse) {
+                html += '<div style="font-style: italic;">' + [rpType, rpUse].filter(Boolean).join(' / ') + '</div>';
+            }
+            const year = parseInt(props['year'], 10);
+            if (year && year > 0 && year !== 9999) {
+                html += '<div>(BUILT ' + year + ')</div>';
+            }
+            return html;
+        }
+
         map.on('mousemove', 'frpp-points', (e) => {
-            const feature = e.features[0];
-            if (feature) {
-                const props = feature.properties;
-                const sqft = props['Square Feet (Buildings)'] || 0;
-                const formattedSqft = sqft.toLocaleString();
-                
-                let html = '<strong>' + (props['Reporting Agency'] || 'Unknown') + '</strong>';
-                html += '<div>' + props['Reporting Bureau'] + '</div>';
-               
+            if (e.features.length > 0) {
+                const maxFeatures = 5;
+                const features = e.features.slice(0, maxFeatures);
+                const parts = features.map(f => buildFeaturePopupHtml(f.properties));
+                const remainder = e.features.length - maxFeatures;
+                const html = parts.join('<hr>') + (remainder > 0 ? '<hr><div style="font-style: italic; opacity: 0.8;">… and ' + remainder + ' more</div>' : '');
                 popup.setLngLat(e.lngLat)
                     .setHTML(html)
                     .addTo(map);
@@ -519,59 +759,257 @@
         // Store original color expression
         const originalColorExpression = buildColorMatchExpression(agencyColors, otherAgencies);
 
+        // Legal interest filter: G, 0, or other = owned; L = leased
+        function buildLegalInterestFilter() {
+            const mode = document.getElementById('legal-interest-select')?.value || 'both';
+            if (mode === 'both') return null;
+            if (mode === 'owned') {
+                return ['!=', ['coalesce', ['get', 'interest'], ''], 'L'];
+            }
+            if (mode === 'leased') {
+                return ['==', ['get', 'interest'], 'L'];
+            }
+            return null;
+        }
+
+        const YEAR_HIST_MIN = 1700;
+        const YEAR_HIST_MAX = 2030;
+        const YEAR_NUM_BINS = 60;
+        let yearHistogramData = [];
+        let yearUndefinedCount = 0;
+        let selectedYearMin = YEAR_HIST_MIN;
+        let selectedYearMax = YEAR_HIST_MAX;
+        let yearBrushDragging = null;
+        let yearBrushRAF = null;
+
+        function buildYearFilter() {
+            if (selectedYearMin === YEAR_HIST_MIN && selectedYearMax === YEAR_HIST_MAX) return null;
+            if (selectedYearMin == YEAR_HIST_MIN) selectedYearMin = 1400;
+            const year = ['coalesce', ['to-number', ['get', 'year']], 0];
+            const hasYear = ['all', ['!=', year, 0], ['!=', year, 9999]];
+            return ['all', hasYear, ['>=', year, selectedYearMin], ['<=', year, selectedYearMax]];
+        }
+
+        function getYearFromValue(val) {
+            val = Math.max(0, Math.min(1, val));
+            return Math.round(YEAR_HIST_MIN + val * (YEAR_HIST_MAX - YEAR_HIST_MIN));
+        }
+
+        function getValueFromYear(y) {
+            return (y - YEAR_HIST_MIN) / (YEAR_HIST_MAX - YEAR_HIST_MIN);
+        }
+
+        function updateYearBrushUI() {
+            const track = document.getElementById('year-histogram-track');
+            const selection = document.getElementById('year-histogram-selection');
+            const handleMin = document.getElementById('year-handle-min');
+            const handleMax = document.getElementById('year-handle-max');
+            const minVal = getValueFromYear(selectedYearMin);
+            const maxVal = getValueFromYear(selectedYearMax);
+            const left = (minVal * 100) + '%';
+            const width = ((maxVal - minVal) * 100) + '%';
+            selection.style.left = left;
+            selection.style.width = width;
+            handleMin.style.left = left;
+            handleMax.style.left = (maxVal * 100) + '%';
+            document.getElementById('year-min-label').textContent = selectedYearMin;
+            document.getElementById('year-max-label').textContent = selectedYearMax;
+            yearHistogramData.forEach((count, i) => {
+                const barYear = YEAR_HIST_MIN + (i + 0.5) * (YEAR_HIST_MAX - YEAR_HIST_MIN) / YEAR_NUM_BINS;
+                const bar = document.getElementById('year-bar-' + i);
+                if (bar) bar.classList.toggle('selected', barYear >= selectedYearMin && barYear <= selectedYearMax);
+            });
+            const footer = document.getElementById('year-histogram-footer');
+            const countEl = document.getElementById('year-undefined-count');
+            const yearFilterActive = selectedYearMin !== YEAR_HIST_MIN || selectedYearMax !== YEAR_HIST_MAX;
+            if (yearFilterActive && yearUndefinedCount > 0) {
+                footer.style.display = 'flex';
+                countEl.textContent = yearUndefinedCount.toLocaleString() + ' entries missing build year';
+            } else {
+                footer.style.display = 'none';
+            }
+        }
+
+        function filterFeaturesByAgency(features) {
+            if (!selectedAgency) return features;
+            if (selectedAgency === 'OTHER') {
+                const otherSet = new Set(otherAgencies);
+                return features.filter(f => otherSet.has(f.properties['agency']));
+            }
+            return features.filter(f => f.properties['agency'] === selectedAgency);
+        }
+
+        function filterFeaturesByLegalInterest(features) {
+            const mode = document.getElementById('legal-interest-select')?.value || 'both';
+            if (mode === 'both') return features;
+            return features.filter(f => {
+                const code = f.properties['interest'] || '';
+                if (mode === 'owned') return code !== 'L';
+                if (mode === 'leased') return code === 'L';
+                return true;
+            });
+        }
+
+        function updateYearHistogramVisibility() {
+            const el = document.getElementById('year-histogram');
+            const legalMode = document.getElementById('legal-interest-select')?.value || 'both';
+            const hide = selectedAgency === 'DEFENSE' || selectedAgency === 'TENNESSEE VALLEY AUTHORITY' || legalMode === 'leased';
+            if (el) el.style.display = hide ? 'none' : 'block';
+        }
+
+        function rebuildYearHistogram() {
+            updateYearHistogramVisibility();
+            const legalMode = document.getElementById('legal-interest-select')?.value || 'both';
+            if (selectedAgency === 'DEFENSE' || selectedAgency === 'TENNESSEE VALLEY AUTHORITY' || legalMode === 'leased') return;
+            yearHistogramData = Array(YEAR_NUM_BINS).fill(0);
+            yearUndefinedCount = 0;
+            const binWidth = (YEAR_HIST_MAX - YEAR_HIST_MIN) / YEAR_NUM_BINS;
+            try {
+                let features = map.querySourceFeatures('frpp', { sourceLayer: 'frpp_merged8' });
+                features = filterFeaturesByAgency(features);
+                features = filterFeaturesByLegalInterest(features);
+                features.forEach(f => {
+                    const y = parseInt(f.properties['year'], 10);
+                    if (isNaN(y) || y === 0 || y === 9999) {
+                        yearUndefinedCount++;
+                    } else if (y >= YEAR_HIST_MIN && y <= YEAR_HIST_MAX) {
+                        const bin = Math.min(YEAR_NUM_BINS - 1, Math.floor((y - YEAR_HIST_MIN) / binWidth));
+                        yearHistogramData[bin]++;
+                    }
+                });
+            } catch (e) {}
+            renderYearHistogram();
+        }
+
+        function renderYearHistogram() {
+            const container = document.getElementById('year-histogram-bars');
+            const maxCount = Math.max(1, ...yearHistogramData);
+            container.innerHTML = yearHistogramData.map((count, i) => {
+                const pct = (count / maxCount) * 100;
+                return `<div class="year-histogram-bar" id="year-bar-${i}" style="height: ${pct}%"></div>`;
+            }).join('') || Array(YEAR_NUM_BINS).fill(0).map((_, i) =>
+                `<div class="year-histogram-bar" id="year-bar-${i}" style="height: 5%"></div>`
+            ).join('');
+            updateYearBrushUI();
+        }
+
+        function initYearHistogram() {
+            const track = document.getElementById('year-histogram-track');
+            rebuildYearHistogram();
+
+            const handleRangeClick = (e) => {
+                if (e.target.classList.contains('year-histogram-handle')) return;
+                const rect = e.currentTarget.getBoundingClientRect();
+                const val = (e.clientX - rect.left) / rect.width;
+                const year = getYearFromValue(val);
+                const mid = (selectedYearMin + selectedYearMax) / 2;
+                if (year < mid) {
+                    selectedYearMin = Math.min(year, selectedYearMax - 1);
+                } else {
+                    selectedYearMax = Math.max(year, selectedYearMin + 1);
+                }
+                updateYearBrushUI();
+                applyFilters();
+            };
+
+            const handleDrag = (e) => {
+                const rect = track.getBoundingClientRect();
+                const val = (e.clientX - rect.left) / rect.width;
+                const year = getYearFromValue(val);
+                if (yearBrushDragging === 'min') {
+                    selectedYearMin = Math.min(year, selectedYearMax - 1);
+                    selectedYearMin = Math.max(YEAR_HIST_MIN, selectedYearMin);
+                } else if (yearBrushDragging === 'max') {
+                    selectedYearMax = Math.max(year, selectedYearMin + 1);
+                    selectedYearMax = Math.min(YEAR_HIST_MAX, selectedYearMax);
+                }
+                if (!yearBrushRAF) {
+                    yearBrushRAF = requestAnimationFrame(() => {
+                        yearBrushRAF = null;
+                        updateYearBrushUI();
+                    });
+                }
+            };
+
+            const handleDragEnd = () => {
+                const wasDragging = yearBrushDragging;
+                yearBrushDragging = null;
+                if (wasDragging) applyFilters();
+            };
+
+            const handleMin = document.getElementById('year-handle-min');
+            const handleMax = document.getElementById('year-handle-max');
+            const barsContainer = document.getElementById('year-histogram-bars');
+            track.addEventListener('click', handleRangeClick);
+            barsContainer.addEventListener('click', handleRangeClick);
+            handleMin.addEventListener('mousedown', (e) => { e.preventDefault(); yearBrushDragging = 'min'; });
+            handleMax.addEventListener('mousedown', (e) => { e.preventDefault(); yearBrushDragging = 'max'; });
+            document.addEventListener('mouseup', handleDragEnd);
+            document.addEventListener('mousemove', (e) => { if (yearBrushDragging) handleDrag(e); });
+
+            document.getElementById('year-show-all-btn').addEventListener('click', () => {
+                selectedYearMin = YEAR_HIST_MIN;
+                selectedYearMax = YEAR_HIST_MAX;
+                updateYearBrushUI();
+                applyFilters();
+            });
+        }
+
+        function getAgencyFilter() {
+            if (!selectedAgency) return null;
+            if (selectedAgency === 'OTHER') {
+                const otherFilter = ['any'];
+                for (const a of otherAgencies) {
+                    otherFilter.push(['==', ['get', 'agency'], a]);
+                }
+                return otherFilter;
+            }
+            return ['==', ['get', 'agency'], selectedAgency];
+        }
+
+        function applyFilters() {
+            const legalFilter = buildLegalInterestFilter();
+            const yearFilter = buildYearFilter();
+            const agencyFilter = getAgencyFilter();
+            const filters = [legalFilter, yearFilter, agencyFilter].filter(Boolean);
+            const filter = filters.length === 0 ? null : filters.length === 1 ? filters[0] : ['all', ...filters];
+            map.setFilter('frpp-points', filter);
+        }
+
         function resetView() {
             selectedAgency = null;
             expandedAgency = null;
-            map.setFilter('frpp-points', null);
+            applyFilters();
             map.setPaintProperty('frpp-points', 'circle-color', originalColorExpression);
             generateAgencyLegend();
+            rebuildYearHistogram();
         }
 
         function filterByAgency(agency) {
             if (selectedAgency === agency && !agencyBureauConfig[agency]) {
-                // Clicking same agency clears filter (only for non-bureau agencies)
                 resetView();
             } else {
                 selectedAgency = agency;
                 
-                // Build filter for selected agency
-                if (agency === 'OTHER') {
-                    // Filter to show all "other" agencies
-                    const otherFilter = ['any'];
-                    for (const a of otherAgencies) {
-                        otherFilter.push(['==', ['get', 'Reporting Agency'], a]);
-                    }
-                    map.setFilter('frpp-points', otherFilter);
-                    map.setPaintProperty('frpp-points', 'circle-color', originalColorExpression);
-                    // Close any expanded submenu
-                    if (expandedAgency) {
-                        expandedAgency = null;
-                        generateAgencyLegend();
-                    }
-                } else if (agencyBureauConfig[agency]) {
-                    // Agency has bureau drill-down - toggle expansion
+                if (agencyBureauConfig[agency]) {
                     if (expandedAgency === agency) {
-                        // Collapsing - reset to default view
                         selectedAgency = null;
                         expandedAgency = null;
-                        map.setFilter('frpp-points', null);
                         map.setPaintProperty('frpp-points', 'circle-color', originalColorExpression);
                     } else {
-                        // Expanding - filter and color by bureau
                         expandedAgency = agency;
-                        map.setFilter('frpp-points', ['==', ['get', 'Reporting Agency'], agency]);
                         map.setPaintProperty('frpp-points', 'circle-color', buildBureauColorMatchExpression(agency));
                     }
                     generateAgencyLegend();
                 } else {
-                    map.setFilter('frpp-points', ['==', ['get', 'Reporting Agency'], agency]);
                     map.setPaintProperty('frpp-points', 'circle-color', originalColorExpression);
-                    // Close any expanded submenu
                     if (expandedAgency) {
                         expandedAgency = null;
                         generateAgencyLegend();
                     }
                 }
+                rebuildYearHistogram();
+                applyFilters();
                 updateLegendStyles();
             }
         }
@@ -586,6 +1024,30 @@
                 }
             }
         });
+
+        // Legal interest handler
+        document.getElementById('legal-interest-select').addEventListener('change', () => {
+            rebuildYearHistogram();
+            applyFilters();
+        });
+
+        // Fullscreen toggle
+        document.getElementById('fullscreen-btn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+        document.addEventListener('fullscreenchange', () => {
+            const btn = document.getElementById('fullscreen-btn');
+            btn.textContent = document.fullscreenElement ? '✕' : '⛶';
+            btn.title = document.fullscreenElement ? 'Exit fullscreen' : 'Toggle fullscreen';
+            map.resize();
+        });
+
+        // Year histogram - init when map has loaded tiles
+        map.on('load', () => map.once('idle', initYearHistogram));
     </script>
 </body>
 </html>
