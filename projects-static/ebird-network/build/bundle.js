@@ -7562,6 +7562,7 @@ function _loadCSVGraph() {
                       clearButton.className = 'error';
                       clearButton.textContent = 'Not found';
                       clearButton.disabled = false;
+                      alert('Checklist not found. Ensure the checklist is from before July 2025.');
                     }
                     _context3.n = 7;
                     break;
