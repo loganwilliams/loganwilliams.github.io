@@ -6718,13 +6718,6 @@ function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = 
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/**
- * This example shows how to load CSV files and build a Sigma graph from them.
- * It loads nodes and edges from separate CSV files and displays them with
- * basic map features: Zoom in and out buttons, reset zoom button, and a slider
- * to increase or decrease the quantity of labels displayed on screen.
- */
-
 
 
 
@@ -7466,11 +7459,24 @@ function _loadCSVGraph() {
             }
             highlightedNode = null;
 
-            // Clear canvas
+            // Clear hover state (connections) if it was set by checklist search
+            if (currentHoveredNode) {
+              currentHoveredNode = null;
+              sigmaCanvases.forEach(function (canvas) {
+                canvas.style.opacity = '1.0';
+              });
+              var _ctx = edgeCanvas.getContext('2d');
+              var _renderer$getDimensio6 = renderer.getDimensions(),
+                _width = _renderer$getDimensio6.width,
+                _height = _renderer$getDimensio6.height;
+              _ctx.clearRect(0, 0, _width, _height);
+            }
+
+            // Clear highlight canvas
             var ctx = highlightCanvas.getContext('2d');
-            var _renderer$getDimensio6 = renderer.getDimensions(),
-              width = _renderer$getDimensio6.width,
-              height = _renderer$getDimensio6.height;
+            var _renderer$getDimensio7 = renderer.getDimensions(),
+              width = _renderer$getDimensio7.width,
+              height = _renderer$getDimensio7.height;
             ctx.clearRect(0, 0, width, height);
 
             // Reset UI
@@ -7527,6 +7533,13 @@ function _loadCSVGraph() {
                         animationFrameId = requestAnimationFrame(function (ts) {
                           return _drawHighlight(observerId, ts);
                         });
+
+                        // Treat as hovered so connections are shown
+                        currentHoveredNode = observerId;
+                        sigmaCanvases.forEach(function (canvas) {
+                          canvas.style.opacity = '0.5';
+                        });
+                        drawNodeEdges(observerId);
 
                         // Update UI
                         searchButton.className = 'success';
@@ -8056,6 +8069,9 @@ function _loadCSVGraph() {
           currentHoveredNode = null; // Add hover functionality to show edges only when a node is hovered
           renderer.on("enterNode", function (_ref) {
             var node = _ref.node;
+            // Don't override when checklist search has a highlighted node (stays until Clear)
+            if (highlightedNode) return;
+
             // Only allow hover on visible nodes
             var nodeAttrs = graph.getNodeAttributes(node);
             if (nodeAttrs.isVisible === false) {
@@ -8072,6 +8088,8 @@ function _loadCSVGraph() {
             drawNodeEdges(node);
           });
           renderer.on("leaveNode", function () {
+            // Don't clear when checklist search has a highlighted node (stays until Clear)
+            if (highlightedNode) return;
             currentHoveredNode = null;
 
             // Restore Sigma canvases to full opacity
