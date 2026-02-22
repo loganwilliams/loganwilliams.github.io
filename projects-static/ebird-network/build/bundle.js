@@ -7313,20 +7313,59 @@ function _loadCSVGraph() {
             // Get camera state for proper sizing
             var cameraState = renderer.getCamera().getState();
 
-            // First pass: draw all edges
+            // Build connected nodes set first
+            nodeEdges.forEach(function (edgeId) {
+              var extremities = graph.extremities(edgeId);
+              connectedNodes.add(extremities[0]);
+              connectedNodes.add(extremities[1]);
+            });
+
+            // Second iteration (underneath): draw edges between connected nodes in barely opaque gray
+            // Skip when hovering a neighbor in highlighted mode (those would be 3rd-order from the highlighted node)
+            if (!highlightedNode || node === highlightedNode) {
+              var drawnSecondEdges = new Set();
+              connectedNodes.forEach(function (neighborId) {
+                if (neighborId === node) return;
+                graph.edges(neighborId).forEach(function (edgeId) {
+                  var extremities = graph.extremities(edgeId);
+                  var source = extremities[0];
+                  var target = extremities[1];
+                  if (source === node || target === node) return;
+                  if (!connectedNodes.has(source) || !connectedNodes.has(target)) return;
+                  var edgeKey = [source, target].sort().join('--');
+                  if (drawnSecondEdges.has(edgeKey)) return;
+                  drawnSecondEdges.add(edgeKey);
+                  var edgeData = graph.getEdgeAttributes(edgeId);
+                  var sourceAttrs = graph.getNodeAttributes(source);
+                  var targetAttrs = graph.getNodeAttributes(target);
+                  var sourceViewport = renderer.graphToViewport({
+                    x: sourceAttrs.x,
+                    y: sourceAttrs.y
+                  });
+                  var targetViewport = renderer.graphToViewport({
+                    x: targetAttrs.x,
+                    y: targetAttrs.y
+                  });
+                  ctx.beginPath();
+                  ctx.moveTo(sourceViewport.x, sourceViewport.y);
+                  ctx.lineTo(targetViewport.x, targetViewport.y);
+                  ctx.strokeStyle = '#999';
+                  ctx.lineWidth = Math.pow(edgeData.size, 0.4) || 1;
+                  ctx.globalAlpha = 0.1;
+                  ctx.stroke();
+                });
+              });
+              ctx.globalAlpha = 1.0;
+            }
+
+            // First pass (on top): draw direct connections to hovered node
             nodeEdges.forEach(function (edgeId) {
               var extremities = graph.extremities(edgeId);
               var source = extremities[0];
               var target = extremities[1];
               var edgeData = graph.getEdgeAttributes(edgeId);
-
-              // Track connected nodes
-              connectedNodes.add(source);
-              connectedNodes.add(target);
               var otherNode = source === node ? target : source;
               var otherNodeAttrs = graph.getNodeAttributes(otherNode);
-
-              // Get viewport positions from graph coordinates
               var sourceAttrs = graph.getNodeAttributes(source);
               var targetAttrs = graph.getNodeAttributes(target);
               var sourceViewport = renderer.graphToViewport({
@@ -7337,8 +7376,6 @@ function _loadCSVGraph() {
                 x: targetAttrs.x,
                 y: targetAttrs.y
               });
-
-              // Draw the edge
               ctx.beginPath();
               ctx.moveTo(sourceViewport.x, sourceViewport.y);
               ctx.lineTo(targetViewport.x, targetViewport.y);
@@ -7348,7 +7385,7 @@ function _loadCSVGraph() {
               ctx.stroke();
             });
 
-            // second pass: draw all connected nodes on top of labels
+            // Third pass: draw all connected nodes on top of labels
             // Draw other nodes first, then the hovered node last to ensure it's on top
             var drawNode = function drawNode(nodeId) {
               var nodeAttrs = graph.getNodeAttributes(nodeId);
