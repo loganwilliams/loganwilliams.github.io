@@ -6702,6 +6702,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sigma__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sigma */ "./node_modules/sigma/dist/sigma.esm.js");
 /* harmony import */ var graphology__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! graphology */ "./node_modules/graphology/dist/graphology.umd.min.js");
 /* harmony import */ var graphology__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(graphology__WEBPACK_IMPORTED_MODULE_1__);
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -6718,13 +6723,6 @@ function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = 
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/**
- * This example shows how to load CSV files and build a Sigma graph from them.
- * It loads nodes and edges from separate CSV files and displays them with
- * basic map features: Zoom in and out buttons, reset zoom button, and a slider
- * to increase or decrease the quantity of labels displayed on screen.
- */
-
 
 
 
@@ -6884,7 +6882,7 @@ function loadCSVGraph() {
 } // Show loading spinner immediately
 function _loadCSVGraph() {
   _loadCSVGraph = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
-    var _renderSidebar, showLoading, hideLoading, darkenColor, updateNodeVisibility, resizeEdgeCanvas, drawNodeEdges, resizeHighlightCanvas, _drawHighlight, clearHighlight, performChecklistSearch, colorsRes, colors, nodesRes, nodesCSV, edgesRes, edgesCSV, nodesData, edgesData, graph, countryToContinent, countriesWithStates, countryCounts, stateCounts, visibleStates, countries, visibleCountries, continentGroups, sortedContinents, currentSort, expandedContinents, expandedCountries, container, zoomInBtn, zoomOutBtn, zoomResetBtn, renderer, camera, edgeCanvas, sigmaCanvases, currentHoveredNode, highlightCanvas, highlightedNode, animationStartTime, animationFrameId, lookup, lookupInitialized, checklistInput, searchButton, clearButton, _t2;
+    var _renderSidebar, showLoading, hideLoading, darkenColor, updateNodeVisibility, resizeEdgeCanvas, getDrawnNodesInfo, drawNodeEdges, handleOverlayMouseMove, handleOverlayMouseLeave, resizeHighlightCanvas, _drawHighlight, clearHighlight, performChecklistSearch, colorsRes, colors, nodesRes, nodesCSV, edgesRes, edgesCSV, nodesData, edgesData, graph, countryToContinent, countriesWithStates, countryCounts, stateCounts, visibleStates, countries, visibleCountries, continentGroups, sortedContinents, currentSort, expandedContinents, expandedCountries, container, zoomInBtn, zoomOutBtn, zoomResetBtn, renderer, camera, edgeCanvas, sigmaCanvases, currentHoveredNode, highlightCanvas, highlightedNode, animationStartTime, animationFrameId, lookup, lookupInitialized, checklistInput, searchButton, clearButton, _t2;
     return _regenerator().w(function (_context4) {
       while (1) switch (_context4.p = _context4.n) {
         case 0:
@@ -7259,7 +7257,49 @@ function _loadCSVGraph() {
             var ctx = edgeCanvas.getContext('2d');
             ctx.scale(pixelRatio, pixelRatio);
           };
-          // Function to draw edges and nodes for a specific node
+          // Get viewport positions and sizes of drawn nodes for hit-testing (topmost first)
+          getDrawnNodesInfo = function getDrawnNodesInfo(centerNode) {
+            if (!centerNode || !graph.hasNode(centerNode)) return [];
+            var cameraState = renderer.getCamera().getState();
+            var nodeEdges = graph.edges(centerNode);
+            var connectedNodes = new Set([centerNode]);
+            nodeEdges.forEach(function (edgeId) {
+              var _graph$extremities = graph.extremities(edgeId),
+                _graph$extremities2 = _slicedToArray(_graph$extremities, 2),
+                source = _graph$extremities2[0],
+                target = _graph$extremities2[1];
+              connectedNodes.add(source);
+              connectedNodes.add(target);
+            });
+            var result = [];
+            connectedNodes.forEach(function (nodeId) {
+              var nodeAttrs = graph.getNodeAttributes(nodeId);
+              var nodeViewport = renderer.graphToViewport({
+                x: nodeAttrs.x,
+                y: nodeAttrs.y
+              });
+              var nodeDisplay = renderer.getNodeDisplayData(nodeId);
+              var baseSize = (nodeDisplay === null || nodeDisplay === void 0 ? void 0 : nodeDisplay.size) || nodeAttrs.size;
+              var size = baseSize / Math.sqrt(cameraState.ratio);
+              if (nodeId === centerNode && nodeAttrs.label) {
+                var fontSize = 14;
+                var padding = 4;
+                var rectHeight = fontSize + padding * 2;
+                size = Math.max(rectHeight / 2, size);
+              }
+              result.push({
+                nodeId: nodeId,
+                x: nodeViewport.x,
+                y: nodeViewport.y,
+                size: size
+              });
+            });
+            // Center node drawn last (on top), so check first for hit-testing
+            result.sort(function (a, b) {
+              return a.nodeId === centerNode ? -1 : b.nodeId === centerNode ? 1 : 0;
+            });
+            return result;
+          }; // Function to draw edges and nodes for a specific node
           drawNodeEdges = function drawNodeEdges(node) {
             var ctx = edgeCanvas.getContext('2d');
             var _renderer$getDimensio2 = renderer.getDimensions(),
@@ -7273,20 +7313,59 @@ function _loadCSVGraph() {
             // Get camera state for proper sizing
             var cameraState = renderer.getCamera().getState();
 
-            // First pass: draw all edges
+            // Build connected nodes set first
+            nodeEdges.forEach(function (edgeId) {
+              var extremities = graph.extremities(edgeId);
+              connectedNodes.add(extremities[0]);
+              connectedNodes.add(extremities[1]);
+            });
+
+            // Second iteration (underneath): draw edges between connected nodes in barely opaque gray
+            // Skip when hovering a neighbor in highlighted mode (those would be 3rd-order from the highlighted node)
+            if (!highlightedNode || node === highlightedNode) {
+              var drawnSecondEdges = new Set();
+              connectedNodes.forEach(function (neighborId) {
+                if (neighborId === node) return;
+                graph.edges(neighborId).forEach(function (edgeId) {
+                  var extremities = graph.extremities(edgeId);
+                  var source = extremities[0];
+                  var target = extremities[1];
+                  if (source === node || target === node) return;
+                  if (!connectedNodes.has(source) || !connectedNodes.has(target)) return;
+                  var edgeKey = [source, target].sort().join('--');
+                  if (drawnSecondEdges.has(edgeKey)) return;
+                  drawnSecondEdges.add(edgeKey);
+                  var edgeData = graph.getEdgeAttributes(edgeId);
+                  var sourceAttrs = graph.getNodeAttributes(source);
+                  var targetAttrs = graph.getNodeAttributes(target);
+                  var sourceViewport = renderer.graphToViewport({
+                    x: sourceAttrs.x,
+                    y: sourceAttrs.y
+                  });
+                  var targetViewport = renderer.graphToViewport({
+                    x: targetAttrs.x,
+                    y: targetAttrs.y
+                  });
+                  ctx.beginPath();
+                  ctx.moveTo(sourceViewport.x, sourceViewport.y);
+                  ctx.lineTo(targetViewport.x, targetViewport.y);
+                  ctx.strokeStyle = '#999';
+                  ctx.lineWidth = Math.pow(edgeData.size, 0.4) || 1;
+                  ctx.globalAlpha = 0.1;
+                  ctx.stroke();
+                });
+              });
+              ctx.globalAlpha = 1.0;
+            }
+
+            // First pass (on top): draw direct connections to hovered node
             nodeEdges.forEach(function (edgeId) {
               var extremities = graph.extremities(edgeId);
               var source = extremities[0];
               var target = extremities[1];
               var edgeData = graph.getEdgeAttributes(edgeId);
-
-              // Track connected nodes
-              connectedNodes.add(source);
-              connectedNodes.add(target);
               var otherNode = source === node ? target : source;
               var otherNodeAttrs = graph.getNodeAttributes(otherNode);
-
-              // Get viewport positions from graph coordinates
               var sourceAttrs = graph.getNodeAttributes(source);
               var targetAttrs = graph.getNodeAttributes(target);
               var sourceViewport = renderer.graphToViewport({
@@ -7297,8 +7376,6 @@ function _loadCSVGraph() {
                 x: targetAttrs.x,
                 y: targetAttrs.y
               });
-
-              // Draw the edge
               ctx.beginPath();
               ctx.moveTo(sourceViewport.x, sourceViewport.y);
               ctx.lineTo(targetViewport.x, targetViewport.y);
@@ -7308,7 +7385,7 @@ function _loadCSVGraph() {
               ctx.stroke();
             });
 
-            // second pass: draw all connected nodes on top of labels
+            // Third pass: draw all connected nodes on top of labels
             // Draw other nodes first, then the hovered node last to ensure it's on top
             var drawNode = function drawNode(nodeId) {
               var nodeAttrs = graph.getNodeAttributes(nodeId);
@@ -7387,6 +7464,46 @@ function _loadCSVGraph() {
             // Draw hovered node last so it's on top
             drawNode(node);
           }; // Set label threshold to be really big to hide labels by default
+          // Custom hover: only for drawn nodes when checklist search has highlighted
+          // Use container so pan/zoom still work (edge canvas stays pointer-events: none)
+          handleOverlayMouseMove = function handleOverlayMouseMove(e) {
+            if (!highlightedNode) return;
+            var rect = container.getBoundingClientRect();
+            var dims = renderer.getDimensions();
+            var mx = (e.clientX - rect.left) / rect.width * dims.width;
+            var my = (e.clientY - rect.top) / rect.height * dims.height;
+            var nodes = getDrawnNodesInfo(currentHoveredNode || highlightedNode);
+            var hitNode = null;
+            var _iterator = _createForOfIteratorHelper(nodes),
+              _step;
+            try {
+              for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                var _step$value = _step.value,
+                  nodeId = _step$value.nodeId,
+                  x = _step$value.x,
+                  y = _step$value.y,
+                  size = _step$value.size;
+                if (Math.hypot(mx - x, my - y) <= size) {
+                  hitNode = nodeId;
+                  break;
+                }
+              }
+            } catch (err) {
+              _iterator.e(err);
+            } finally {
+              _iterator.f();
+            }
+            var newHovered = hitNode || highlightedNode;
+            if (newHovered !== currentHoveredNode) {
+              currentHoveredNode = newHovered;
+              drawNodeEdges(newHovered);
+            }
+          };
+          handleOverlayMouseLeave = function handleOverlayMouseLeave() {
+            if (!highlightedNode) return;
+            currentHoveredNode = highlightedNode;
+            drawNodeEdges(highlightedNode);
+          };
           // Function to resize the highlight canvas
           resizeHighlightCanvas = function resizeHighlightCanvas() {
             var _renderer$getDimensio4 = renderer.getDimensions(),
@@ -7466,11 +7583,24 @@ function _loadCSVGraph() {
             }
             highlightedNode = null;
 
-            // Clear canvas
+            // Clear hover state (connections) if it was set by checklist search
+            if (currentHoveredNode) {
+              currentHoveredNode = null;
+              sigmaCanvases.forEach(function (canvas) {
+                canvas.style.opacity = '1.0';
+              });
+              var _ctx = edgeCanvas.getContext('2d');
+              var _renderer$getDimensio6 = renderer.getDimensions(),
+                _width = _renderer$getDimensio6.width,
+                _height = _renderer$getDimensio6.height;
+              _ctx.clearRect(0, 0, _width, _height);
+            }
+
+            // Clear highlight canvas
             var ctx = highlightCanvas.getContext('2d');
-            var _renderer$getDimensio6 = renderer.getDimensions(),
-              width = _renderer$getDimensio6.width,
-              height = _renderer$getDimensio6.height;
+            var _renderer$getDimensio7 = renderer.getDimensions(),
+              width = _renderer$getDimensio7.width,
+              height = _renderer$getDimensio7.height;
             ctx.clearRect(0, 0, width, height);
 
             // Reset UI
@@ -7528,6 +7658,13 @@ function _loadCSVGraph() {
                           return _drawHighlight(observerId, ts);
                         });
 
+                        // Draw connections on overlay; container mousemove does hit-test (pan/zoom still work)
+                        currentHoveredNode = observerId;
+                        sigmaCanvases.forEach(function (canvas) {
+                          canvas.style.opacity = '0.5';
+                        });
+                        drawNodeEdges(observerId);
+
                         // Update UI
                         searchButton.className = 'success';
                         searchButton.textContent = 'Found!';
@@ -7549,6 +7686,7 @@ function _loadCSVGraph() {
                       clearButton.className = 'error';
                       clearButton.textContent = 'Not found';
                       clearButton.disabled = false;
+                      alert('Checklist not found. Ensure the checklist is from before July 2025.');
                     }
                     _context3.n = 7;
                     break;
@@ -8054,38 +8192,35 @@ function _loadCSVGraph() {
 
           // Track the currently hovered node
           currentHoveredNode = null; // Add hover functionality to show edges only when a node is hovered
+          // When highlightedNode is set, edgeCanvas captures events and we do custom hit-testing
+          // on only the drawn nodes. Sigma's enterNode/leaveNode are ignored in that case.
           renderer.on("enterNode", function (_ref) {
             var node = _ref.node;
-            // Only allow hover on visible nodes
-            var nodeAttrs = graph.getNodeAttributes(node);
-            if (nodeAttrs.isVisible === false) {
-              return;
-            }
-            currentHoveredNode = node;
+            if (highlightedNode) return; // Overlay handles hover when highlighted
 
-            // Dim the Sigma canvases by 50%
+            var nodeAttrs = graph.getNodeAttributes(node);
+            if (nodeAttrs.isVisible === false) return;
+            currentHoveredNode = node;
             sigmaCanvases.forEach(function (canvas) {
               canvas.style.opacity = '0.5';
             });
-
-            // Draw edges and nodes on top
             drawNodeEdges(node);
           });
           renderer.on("leaveNode", function () {
-            currentHoveredNode = null;
+            if (highlightedNode) return; // Overlay handles hover when highlighted
 
-            // Restore Sigma canvases to full opacity
+            currentHoveredNode = null;
             sigmaCanvases.forEach(function (canvas) {
               canvas.style.opacity = '1.0';
             });
-
-            // Clear the edge canvas
             var ctx = edgeCanvas.getContext('2d');
             var _renderer$getDimensio3 = renderer.getDimensions(),
               width = _renderer$getDimensio3.width,
               height = _renderer$getDimensio3.height;
             ctx.clearRect(0, 0, width, height);
           });
+          container.addEventListener("mousemove", handleOverlayMouseMove);
+          container.addEventListener("mouseleave", handleOverlayMouseLeave);
 
           // Redraw edges when camera moves (zoom/pan) if a node is hovered
           renderer.on("afterRender", function () {
