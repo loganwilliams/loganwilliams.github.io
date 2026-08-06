@@ -19,7 +19,7 @@ html, body {
       margin: 0;
       width: min(1000px, calc(100vw - 48px));
       text-align: center;
-      font-size: clamp(28px, 1.2vw, 38px);
+      font-size: clamp(18px, 2.4vw + 10px, 38px);
       font-weight: 500;
       line-height: 1.35;
       z-index: 20;
@@ -41,7 +41,7 @@ html, body {
       margin: 0;
       width: min(1000px, calc(100vw - 48px));
       text-align: center;
-      font-size: clamp(28px, 1.2vw, 38px);
+      font-size: clamp(18px, 2.4vw + 10px, 38px);
       font-weight: 500;
       line-height: 1.35;
       z-index: 20;
@@ -68,9 +68,9 @@ html, body {
     }
     .credit {
       display: block;
-      font-size: 0.8em;
+      font-size: 0.7em;
       text-align: right;
-      margin-top: 0.5em;
+      margin-top: 0.65em;
       transition: opacity 2.2s ease;
     }
     .credit.is-hidden {
@@ -151,7 +151,7 @@ html, body {
       width: min(800px, calc(100vw - 48px));
       text-align: center;
       font-family: Baskerville, Georgia, serif;
-      font-size: clamp(24px, 1.2vw, 32px);
+      font-size: clamp(16px, 2.2vw + 8px, 32px);
       font-weight: 500;
       line-height: 1.35;
       z-index: 22;
@@ -200,7 +200,7 @@ html, body {
       opacity: 1;
     }
     .handover-loading-message {
-      font-size: clamp(28px, 1.2vw, 38px);
+      font-size: clamp(18px, 2.4vw + 10px, 38px);
       font-weight: 500;
       line-height: 1.35;
       margin-bottom: 0.75em;
