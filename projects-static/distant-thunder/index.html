@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Like that of distant thunder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="180 days of bird recordings from an Amsterdam window, compressed and superimposed into three minutes — as though every bird sang at once." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Like that of distant thunder" />
+  <meta property="og:description" content="Six months of bird song in three minutes. Abundance as best I can." />
+  <meta property="og:image" content="og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Like that of distant thunder" />
+  <meta name="twitter:description" content="Six months of bird song in three minutes. Abundance as best I can." />
+  <meta name="twitter:image" content="og-image.png" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="headingBackdrop"></div>
+  <div id="handoverLoading" class="handover-loading" aria-live="polite">
+    <div class="handover-loading-message">Loading audio…</div>
+    <div class="handover-loading-bar"><div id="handoverLoadingBarFill" class="handover-loading-bar-fill"></div></div>
+    <div id="handoverLoadingPct" class="handover-loading-pct">0%</div>
+  </div>
+  <p id="preIntro" class="pre-intro">Click to enable audio, then click to begin.</p>
+  <h1><span class="quote">The wild geese, &amp; every species of waterfowl darkened the surface of every bay, &amp; frith, &amp; upon the land, in flocks of millions, they wandered in quest of insects, &amp; cropping the wild oats which grew there in richest abundance. When disturbed, they arose to fly; the sound of their wings was like&nbsp;that&nbsp;of&nbsp;distant&nbsp;thunder.</span>
+  <span class="credit">– George Yount, Suisun Bay, California, 1833</span>
+  </h1>
+  <div id="controls">
+    <div><span class="debug-label">Time</span><span id="debugLoopTime" class="debug-value">0:00.000</span></div>
+    <div><span class="debug-label">Main seek</span><span id="debugMainSeek" class="debug-value">—</span></div>
+    <div><span class="debug-label">Preview seek</span><span id="debugPreviewSeek" class="debug-value">—</span></div>
+  </div>
+  <div id="time">3 am</div>
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <filter id="goo">
+        <!-- <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" /> -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="7" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" xChannelSelector="R" yChannelSelector="G" result="warped" />
+        <!-- <feColorMatrix in="warped" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" /> -->
+        <!-- <feComposite in="SourceGraphic" in2="goo" operator="atop"/> -->
+      </filter>
+    </defs>
+  </svg>
+  <div id="list"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="main.min.js"></script>
+</body>
+</html>

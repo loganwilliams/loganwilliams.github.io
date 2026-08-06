@@ -1,0 +1,227 @@
+html, body {
+      cursor: pointer;
+    }
+    body {
+      margin: 0;
+      line-height: 1.4;
+      overflow: hidden;
+      background: #fff;
+      font-family: Baskerville, Georgia, serif;
+    }
+    body.is-playing {
+      cursor: default;
+    }
+    h1 {
+      position: fixed;
+      top: 33%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      margin: 0;
+      width: min(1000px, calc(100vw - 48px));
+      text-align: center;
+      font-size: clamp(28px, 1.2vw, 38px);
+      font-weight: 500;
+      line-height: 1.35;
+      z-index: 20;
+      pointer-events: auto;
+      cursor: pointer;
+      color: white;
+      padding: 0.5em;
+      opacity: 0;
+      transition: top 6s ease, transform 6s ease, width 10s ease, max-width 10s ease, font-size 6s ease, padding 10s ease;
+    }
+    h1.is-quote-visible {
+      opacity: 1;
+    }
+    .pre-intro {
+      position: fixed;
+      top: 33%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      margin: 0;
+      width: min(1000px, calc(100vw - 48px));
+      text-align: center;
+      font-size: clamp(28px, 1.2vw, 38px);
+      font-weight: 500;
+      line-height: 1.35;
+      z-index: 20;
+      pointer-events: none;
+      cursor: pointer;
+      color: white;
+      padding: 0.5em;
+      opacity: 1;
+      transition: opacity 2.4s ease;
+    }
+    .pre-intro.is-hidden {
+      opacity: 0;
+    }
+    #headingBackdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 19;
+      pointer-events: none;
+      opacity: 1;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+    h1.is-locked {
+      pointer-events: none;
+    }
+    .credit {
+      display: block;
+      font-size: 0.8em;
+      text-align: right;
+      margin-top: 0.5em;
+      transition: opacity 2.2s ease;
+    }
+    .credit.is-hidden {
+      opacity: 0;
+    }
+    .credit-char {
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+    .credit-char.is-hidden {
+      opacity: 0;
+    }
+    .quote { display: inline-block; }
+    .target-phrase {
+      display: inline;
+    }
+    .quote-char {
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+    .quote-char.is-hidden {
+      opacity: 0;
+    }
+    #controls {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(720px, calc(100vw - 24px));
+      z-index: 21;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px 16px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(3px);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      color: #222;
+      pointer-events: none;
+      user-select: none;
+      display: none;
+    }
+    #controls .debug-label {
+      color: #666;
+      margin-right: 0.35em;
+    }
+    #controls .debug-value {
+      font-variant-numeric: tabular-nums;
+    }
+    #time {
+      position: fixed;
+      bottom: 1em;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: clamp(24px, 4.2vw, 52px);
+      letter-spacing: 0.04em;
+      z-index: 20;
+      pointer-events: none;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      backdrop-filter: blur(3px);
+      padding: 0.5em 1em;
+      opacity: 0;
+      transition: opacity 10s ease;
+    }
+    #time.is-visible {
+      opacity: 1;
+    }
+    .timed-message {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      width: min(800px, calc(100vw - 48px));
+      text-align: center;
+      font-family: Baskerville, Georgia, serif;
+      font-size: clamp(24px, 1.2vw, 32px);
+      font-weight: 500;
+      line-height: 1.35;
+      z-index: 22;
+      pointer-events: none;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      backdrop-filter: blur(3px);
+      padding: 0.5em;
+      opacity: 0;
+      transition: opacity 1.6s ease;
+    }
+    .timed-message.is-visible {
+      opacity: 1;
+    }
+    #list {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    #birdCanvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      transition: filter 0.9s ease;
+    }
+    .empty { color: #666; padding: 4px 0; }
+    .handover-loading {
+      position: fixed;
+      top: 33%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      z-index: 30;
+      width: min(1000px, calc(100vw - 48px));
+      text-align: center;
+      pointer-events: none;
+      color: white;
+      font-family: Baskerville, Georgia, serif;
+      padding: 0.5em;
+      opacity: 0;
+      transition: opacity 2.4s ease;
+    }
+    .handover-loading.is-visible {
+      opacity: 1;
+    }
+    .handover-loading-message {
+      font-size: clamp(28px, 1.2vw, 38px);
+      font-weight: 500;
+      line-height: 1.35;
+      margin-bottom: 0.75em;
+    }
+    .handover-loading-bar {
+      width: min(360px, 100%);
+      height: 3px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.25);
+      overflow: hidden;
+    }
+    .handover-loading-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: white;
+      transition: width 0.15s linear;
+    }
+    .handover-loading-pct {
+      margin-top: 0.65em;
+      font-size: 0.85em;
+      letter-spacing: 0.04em;
+      font-variant-numeric: tabular-nums;
+      opacity: 0.85;
+    }
