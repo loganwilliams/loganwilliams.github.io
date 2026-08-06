@@ -4,6 +4,15 @@
   <meta charset="utf-8" />
   <title>Like that of distant thunder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <script>
+    // Apply before first paint so iOS Safari lays out the chrome bleed runway immediately.
+    (function () {
+      var ua = navigator.userAgent || '';
+      var isIOS = /iPad|iPhone|iPod/.test(ua)
+        || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (isIOS) document.documentElement.classList.add('safari-chrome-bleed');
+    })();
+  </script>
   <meta name="description" content="180 days of bird recordings from an Amsterdam window, compressed and superimposed into three minutes — as though every bird sang at once." />
 
   <!-- Open Graph -->
@@ -22,9 +31,23 @@
   <meta name="twitter:image" content="og-image.png" />
 
   <link rel="stylesheet" href="styles.css" />
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-6YQ8-5DDpmSluNP4euXec.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
+
 </head>
 <body>
-  <div id="headingBackdrop"></div>
+  <!--
+    iOS Safari 26: #safariRunway creates non-zero scrollY; #list bleeds above
+    #appShell (overflow: visible) so bird pixels sit under the status bar.
+  -->
+  <div id="safariRunway" aria-hidden="true"></div>
+  <div id="appShell">
+    <div id="list"></div>
+  </div>
   <div id="handoverLoading" class="handover-loading" aria-live="polite">
     <div class="handover-loading-message">Loading audio…</div>
     <div class="handover-loading-bar"><div id="handoverLoadingBarFill" class="handover-loading-bar-fill"></div></div>
@@ -51,8 +74,19 @@
       </filter>
     </defs>
   </svg>
-  <div id="list"></div>
 
+  <script>
+    // Pin + lock the scroll runway before deferred bundles run.
+    if (document.documentElement.classList.contains('safari-chrome-bleed')) {
+      var safariScrollOffset = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue('--safari-scroll-offset')
+      ) || 0;
+      if (safariScrollOffset > 0) {
+        scrollTo(0, safariScrollOffset);
+        document.documentElement.classList.add('is-safari-scroll-locked');
+      }
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script src="main.min.js"></script>
 </body>

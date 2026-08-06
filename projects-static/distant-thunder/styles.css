@@ -1,4 +1,31 @@
-html, body {
+:root {
+      /* Fallback sky color; JS updates --page-bg as the day progresses. */
+      --page-bg: #113c85;
+      /* iOS Safari 26 Liquid Glass: bleed bird stage under status / toolbar. */
+      --safari-top-bleed: 0px;
+      --safari-bottom-bleed: 0px;
+      --safari-scroll-offset: 0px;
+    }
+    html.safari-chrome-bleed {
+      --safari-top-bleed: 80px;
+      --safari-bottom-bleed: 160px;
+      --safari-scroll-offset: 80px;
+    }
+    html {
+      background-color: var(--page-bg);
+      overscroll-behavior: none;
+      -webkit-text-size-adjust: 100%;
+    }
+    html.safari-chrome-bleed {
+      /* Scrollable until JS pins + locks; non-zero scrollY is required for
+         Safari to composite real pixels under the top status area. */
+      overflow-y: auto;
+      height: 100%;
+    }
+    html.safari-chrome-bleed.is-safari-scroll-locked {
+      overflow: hidden;
+    }
+    html, body {
       cursor: pointer;
       touch-action: none;
       overscroll-behavior: none;
@@ -9,26 +36,65 @@ html, body {
     body {
       margin: 0;
       line-height: 1.4;
-      overflow: hidden;
-      background: #fff;
+      background-color: var(--page-bg);
       font-family: Baskerville, Georgia, serif;
-      position: fixed;
-      inset: 0;
-      width: 100%;
+      min-height: 100%;
+      min-height: 100dvh;
+    }
+    html.safari-chrome-bleed body {
+      min-height: calc(100dvh + var(--safari-scroll-offset) + var(--safari-bottom-bleed));
+      height: auto;
+      overflow: visible;
+    }
+    html:not(.safari-chrome-bleed),
+    html:not(.safari-chrome-bleed) body {
       height: 100%;
+      overflow: hidden;
     }
     body.is-playing {
       cursor: default;
     }
+
+    /* Desktop: fixed fullscreen shell. iOS: in-flow shell after the runway. */
+    #safariRunway {
+      display: none;
+      width: 100%;
+      height: 0;
+      pointer-events: none;
+    }
+    html.safari-chrome-bleed #safariRunway {
+      display: block;
+      height: var(--safari-scroll-offset);
+    }
+    #appShell {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    html.safari-chrome-bleed #appShell {
+      position: relative;
+      inset: auto;
+      height: 100dvh;
+      /* Must NOT clip — #list bleeds above/below into Safari chrome. */
+      overflow: visible;
+    }
+
     h1 {
       position: fixed;
       top: 33%;
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
       margin: 0;
-      width: min(1000px, calc(100vw - 48px));
+      /* Side gutters include safe-area so landscape notch / Dynamic Island clear. */
+      width: min(
+        1000px,
+        calc(100vw - 48px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))
+      );
       text-align: center;
-      font-size: clamp(18px, 2.4vw + 10px, 38px);
+      font-size: clamp(16px, 1.7vw + 8px, 28px);
       font-weight: 500;
       line-height: 1.35;
       z-index: 20;
@@ -50,9 +116,12 @@ html, body {
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
       margin: 0;
-      width: min(1000px, calc(100vw - 48px));
+      width: min(
+        1000px,
+        calc(100vw - 48px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))
+      );
       text-align: center;
-      font-size: clamp(18px, 2.4vw + 10px, 38px);
+      font-size: clamp(16px, 1.7vw + 8px, 28px);
       font-weight: 500;
       line-height: 1.35;
       z-index: 20;
@@ -66,13 +135,25 @@ html, body {
     .pre-intro.is-hidden {
       opacity: 0;
     }
-    #headingBackdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 19;
-      pointer-events: none;
-      opacity: 1;
-      background-color: rgba(0, 0, 0, 0.4);
+    /* Phone landscape only (not desktop wide windows): notch gutters + smaller type. */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      h1,
+      .pre-intro,
+      .timed-message {
+        width: min(
+          640px,
+          calc(100vw - 72px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))
+        );
+        font-size: clamp(14px, 1.4vw + 8px, 22px);
+        box-sizing: border-box;
+      }
+      #time {
+        font-size: clamp(16px, 2.8vw, 28px);
+        padding: 0.35em 0.75em;
+        /* Keep the clock clear of the landscape notch / home indicator sides. */
+        max-width: calc(100vw - 48px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
+        box-sizing: border-box;
+      }
     }
     h1.is-locked {
       pointer-events: none;
@@ -118,14 +199,22 @@ html, body {
       align-items: center;
       padding: 10px 12px;
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(3px);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 12px;
       color: #222;
       pointer-events: none;
       user-select: none;
+      isolation: isolate;
       display: none;
+    }
+    #controls::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(3px);
+      z-index: -1;
     }
     #controls .debug-label {
       color: #666;
@@ -136,19 +225,26 @@ html, body {
     }
     #time {
       position: fixed;
-      bottom: 1em;
+      bottom: max(1em, calc(env(safe-area-inset-bottom, 0px) + 0.5em));
       left: 50%;
       transform: translateX(-50%);
-      font-size: clamp(24px, 4.2vw, 52px);
+      font-size: clamp(18px, 2.4vw, 34px);
       letter-spacing: 0.04em;
       z-index: 20;
       pointer-events: none;
-      background-color: rgba(0, 0, 0, 0.6);
       color: white;
-      backdrop-filter: blur(3px);
       padding: 0.5em 1em;
       opacity: 0;
       transition: opacity 10s ease;
+      isolation: isolate;
+    }
+    #time::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: -1;
     }
     #time.is-visible {
       opacity: 1;
@@ -159,37 +255,70 @@ html, body {
       left: 50%;
       transform: translate(-50%, -50%);
       margin: 0;
-      width: min(800px, calc(100vw - 48px));
+      width: min(
+        800px,
+        calc(100vw - 48px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))
+      );
       text-align: center;
       font-family: Baskerville, Georgia, serif;
-      font-size: clamp(16px, 2.2vw + 8px, 32px);
+      font-size: clamp(16px, 1.7vw + 8px, 28px);
       font-weight: 500;
       line-height: 1.35;
       z-index: 22;
       pointer-events: none;
-      background-color: rgba(0, 0, 0, 0.5);
       color: white;
-      backdrop-filter: blur(3px);
       padding: 0.5em;
       opacity: 0;
       transition: opacity 1.6s ease;
+      isolation: isolate;
+      box-sizing: border-box;
+    }
+    .timed-message::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(3px);
+      z-index: -1;
     }
     .timed-message.is-visible {
       opacity: 1;
     }
+
+    /*
+      Desktop: fill #appShell.
+      iOS: absolutely positioned inside the in-flow shell, shifted up by the top
+      bleed so bird pixels paint under the status bar (and below into the toolbar).
+    */
     #list {
-      position: fixed;
+      position: absolute;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
       pointer-events: none;
+      z-index: 0;
+    }
+    html.safari-chrome-bleed #list {
+      top: calc(-1 * var(--safari-top-bleed));
+      right: 0;
+      bottom: auto;
+      left: 0;
+      width: 100%;
+      height: calc(100% + var(--safari-top-bleed) + var(--safari-bottom-bleed));
     }
     #birdCanvas {
       position: absolute;
       inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
       pointer-events: none;
       transition: filter 0.9s ease;
+    }
+    html.safari-chrome-bleed #birdCanvas {
+      /* Animating CSS filter is costly on iOS; snap brightness instead. */
+      transition: none;
     }
     .empty { color: #666; padding: 4px 0; }
     .handover-loading {
@@ -198,7 +327,10 @@ html, body {
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
       z-index: 30;
-      width: min(1000px, calc(100vw - 48px));
+      width: min(
+        1000px,
+        calc(100vw - 48px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))
+      );
       text-align: center;
       pointer-events: none;
       color: white;
@@ -211,10 +343,21 @@ html, body {
       opacity: 1;
     }
     .handover-loading-message {
-      font-size: clamp(18px, 2.4vw + 10px, 38px);
+      font-size: clamp(16px, 1.7vw + 8px, 28px);
       font-weight: 500;
       line-height: 1.35;
       margin-bottom: 0.75em;
+    }
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      .handover-loading {
+        width: min(
+          720px,
+          calc(100vw - 64px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))
+        );
+      }
+      .handover-loading-message {
+        font-size: clamp(14px, 1.4vw + 8px, 22px);
+      }
     }
     .handover-loading-bar {
       width: min(360px, 100%);
