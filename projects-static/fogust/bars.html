@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Fogust Bars</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+  :root {
+    --bg: #1f3a4d;
+    --panel: #243f52;
+    --text: #f2f5f7;
+    --muted: #9db0bc;
+    --line: rgba(255, 255, 255, 0.12);
+    --accent: #c7d8dd;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    padding: 0.85rem 1.1rem 0.7rem;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    letter-spacing: -0.02em;
+  }
+
+  header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .time-toggle {
+    margin-left: auto;
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  .time-toggle button {
+    border: none;
+    background: #2d4d62;
+    color: var(--text);
+    border-radius: 2px;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #0d1c26;
+  }
+
+  .time-toggle button.active {
+    background: #888;
+    color: white;
+  }
+
+  .layout {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+  }
+
+  #map {
+    min-height: 320px;
+    border-right: 1px solid var(--line);
+  }
+
+  .table-wrap {
+    min-height: 0;
+    overflow: auto;
+    background: var(--panel);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    background: #2a475b;
+    text-align: left;
+    font-weight: 600;
+    padding: 0.55rem 0.65rem;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+
+  th.num, td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  tbody tr {
+    cursor: pointer;
+    border-bottom: 1px solid var(--line);
+  }
+
+  tbody tr:hover,
+  tbody tr.active {
+    background: rgba(199, 216, 221, 0.14);
+  }
+
+  td {
+    padding: 0.45rem 0.65rem;
+    vertical-align: middle;
+  }
+
+  td.name {
+    max-width: 12rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    margin-right: 0.4rem;
+    vertical-align: -1px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.35);
+  }
+
+  .leaflet-popup-content {
+    margin: 0.55rem 0.7rem;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .popup-name { font-weight: 700; margin-bottom: 0.25rem; }
+  .popup-row { color: #334; }
+
+  @media (max-width: 860px) {
+    .layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: 45vh 1fr;
+    }
+    #map { border-right: none; border-bottom: 1px solid var(--line); }
+    header { gap: 0.5rem; }
+    .time-toggle { margin-left: 0; width: 100%; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Fogust Bars</h1>
+    <p>August fog frequency at SF bars — nearest grid cell from fog.csv</p>
+    <div class="time-toggle" id="timeToggle">
+      <button data-key="fog_pct_10am">10am</button>
+      <button data-key="fog_pct_12pm">12pm</button>
+      <button data-key="fog_pct_4pm" class="active">4pm</button>
+    </div>
+  </header>
+  <div class="layout">
+    <div id="map"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th class="num">10am</th>
+            <th class="num">12pm</th>
+            <th class="num">4pm</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+<script>
+var TIME_KEY = 'fog_pct_4pm';
+var rows = [];
+var markersById = {};
+var activeId = null;
+
+var map = L.map('map', {
+  center: [37.76, -122.44],
+  zoom: 12,
+  minZoom: 10,
+  maxZoom: 16
+});
+
+L.tileLayer(
+  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+  {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }
+).addTo(map);
+
+var layer = L.layerGroup().addTo(map);
+
+function fogColor(pct) {
+  // low fog -> dark blue-gray, high fog -> white
+  return d3.interpolateRgbBasis(['#1a2e3d', '#4a6f88', '#b8c9d4', '#ffffff'])(Math.max(0, Math.min(1, pct)));
+}
+
+function pctLabel(v) {
+  return Math.round(Number(v) * 100) + '%';
+}
+
+function setActive(id, fly) {
+  activeId = id;
+  d3.selectAll('#tbody tr').classed('active', function(d) { return d.id === id; });
+  Object.keys(markersById).forEach(function(k) {
+    var m = markersById[k];
+    var on = k === id;
+    m.setStyle({
+      weight: on ? 3 : 1,
+      radius: on ? 9 : 6,
+      color: on ? '#ffe08a' : 'rgba(0,0,0,0.45)'
+    });
+    if (on) m.bringToFront();
+  });
+  if (fly && markersById[id]) {
+    map.panTo(markersById[id].getLatLng(), { animate: true });
+    markersById[id].openPopup();
+    var el = document.querySelector('#tbody tr[data-id="' + CSS.escape(id) + '"]');
+    if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+}
+
+function popupHtml(d) {
+  return (
+    '<div class="popup-name">' + d.name + '</div>' +
+    '<div class="popup-row">10am: <b>' + pctLabel(d.fog_pct_10am) + '</b></div>' +
+    '<div class="popup-row">12pm: <b>' + pctLabel(d.fog_pct_12pm) + '</b></div>' +
+    '<div class="popup-row">4pm: <b>' + pctLabel(d.fog_pct_4pm) + '</b></div>'
+  );
+}
+
+function render() {
+  rows.sort(function(a, b) {
+    return Number(b[TIME_KEY]) - Number(a[TIME_KEY]);
+  });
+
+  layer.clearLayers();
+  markersById = {};
+
+  rows.forEach(function(d) {
+    var pct = Number(d[TIME_KEY]);
+    var marker = L.circleMarker([Number(d.lat), Number(d.lon)], {
+      radius: 6,
+      weight: 1,
+      color: 'rgba(0,0,0,0.45)',
+      fillColor: fogColor(pct),
+      fillOpacity: 0.95
+    }).bindPopup(popupHtml(d));
+    marker.on('click', function() { setActive(d.id, false); });
+    marker.addTo(layer);
+    markersById[d.id] = marker;
+  });
+
+  var tr = d3.select('#tbody').selectAll('tr').data(rows, function(d) { return d.id; });
+  tr.exit().remove();
+  var enter = tr.enter().append('tr').attr('data-id', function(d) { return d.id; });
+  enter.append('td').attr('class', 'name');
+  enter.append('td').attr('class', 'type');
+  enter.append('td').attr('class', 'num am');
+  enter.append('td').attr('class', 'num noon');
+  enter.append('td').attr('class', 'num pm');
+  enter.on('click', function(d) { setActive(d.id, true); });
+
+  var all = enter.merge(tr);
+  all.order();
+  all.select('.name').html(function(d) {
+    return '<span class="swatch" style="background:' + fogColor(Number(d[TIME_KEY])) + '"></span>' +
+      (d.name || '(unnamed)');
+  });
+  all.select('.type').text(function(d) { return d.amenity || ''; });
+  all.select('.am').text(function(d) { return pctLabel(d.fog_pct_10am); });
+  all.select('.noon').text(function(d) { return pctLabel(d.fog_pct_12pm); });
+  all.select('.pm').text(function(d) { return pctLabel(d.fog_pct_4pm); });
+
+  if (activeId) setActive(activeId, false);
+}
+
+d3.selectAll('#timeToggle button').on('click', function() {
+  d3.selectAll('#timeToggle button').classed('active', false);
+  d3.select(this).classed('active', true);
+  TIME_KEY = this.getAttribute('data-key');
+  render();
+});
+
+d3.csv('bars_fog_august.csv', function(data) {
+  rows = data.filter(function(d) { return d.lon && d.lat; });
+  render();
+  var bounds = L.latLngBounds(rows.map(function(d) {
+    return [Number(d.lat), Number(d.lon)];
+  }));
+  map.fitBounds(bounds.pad(0.08));
+});
+</script>
+</body>
+</html>
