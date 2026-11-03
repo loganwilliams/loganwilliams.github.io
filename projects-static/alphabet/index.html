@@ -1,0 +1,4844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alphabet — Inger Christensen</title>
+<style>
+  :root {
+    --bg: #fff/* #f7f4ef; */
+    --ink: #1a1a1a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    position: relative;
+    margin: 0;
+    padding: 2.5rem 1.25rem 4rem;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  }
+  .wrap {
+    max-width: 76rem;
+    margin: 0 auto;
+  }
+  header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+  }
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin: 0 0 0.35rem;
+  }
+  .by {
+    margin: 0;
+    font-size: 0.95rem;
+    opacity: 0.7;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.35rem;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .leg { opacity: 0.95; }
+  .section {
+    margin: 0 0 2.75rem;
+  }
+  .section-num {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 2.5em 0 1.6em;
+    line-height: 1.2;
+    text-align: left;
+  }
+  p {
+    font-size: 1.05rem;
+    line-height: 1.4em;
+    margin: 0;
+    /* border-bottom: 1px solid rgba(0,0,0,0.2); */
+  }
+  p.nonindent {
+    text-align: left;
+    margin-top: 6em;
+    margin-bottom: 0;
+  }
+  .section-num + p.nonindent,
+  .col > p.nonindent:first-child {
+    margin-top: 0;
+  }
+  p.extract {
+    margin-top: 1em;
+    margin-bottom: 0;
+    text-align: left;
+  }
+  p.nonindent01 {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 2em;
+    text-align: left;
+  }
+  p.nonindent02 {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 4em;
+    text-align: left;
+  }
+  p.nonindent03 {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 6em;
+    text-align: left;
+  }
+    .w[data-letter="a"] { color: hsl(0.0, 72%, 42%); }
+  .w[data-letter="b"] { color: hsl(13.8, 72%, 42%); }
+  .w[data-letter="c"] { color: hsl(27.7, 72%, 42%); }
+  .w[data-letter="d"] { color: hsl(41.5, 72%, 42%); }
+  .w[data-letter="e"] { color: hsl(55.4, 72%, 42%); }
+  .w[data-letter="f"] { color: hsl(69.2, 72%, 42%); }
+  .w[data-letter="g"] { color: hsl(83.1, 72%, 42%); }
+  .w[data-letter="h"] { color: hsl(96.9, 72%, 42%); }
+  .w[data-letter="i"] { color: hsl(110.8, 72%, 42%); }
+  .w[data-letter="j"] { color: hsl(124.6, 72%, 42%); }
+  .w[data-letter="k"] { color: hsl(138.5, 72%, 42%); }
+  .w[data-letter="l"] { color: hsl(152.3, 72%, 42%); }
+  .w[data-letter="m"] { color: hsl(166.2, 72%, 42%); }
+  .w[data-letter="n"] { color: hsl(180.0, 72%, 42%); }
+  .w[data-letter="o"] { color: hsl(193.8, 72%, 42%); }
+  .w[data-letter="p"] { color: hsl(207.7, 72%, 42%); }
+  .w[data-letter="q"] { color: hsl(221.5, 72%, 42%); }
+  .w[data-letter="r"] { color: hsl(235.4, 72%, 42%); }
+  .w[data-letter="s"] { color: hsl(249.2, 72%, 42%); }
+  .w[data-letter="t"] { color: hsl(263.1, 72%, 42%); }
+  .w[data-letter="u"] { color: hsl(276.9, 72%, 42%); }
+  .w[data-letter="v"] { color: hsl(290.8, 72%, 42%); }
+  .w[data-letter="w"] { color: hsl(304.6, 72%, 42%); }
+  .w[data-letter="x"] { color: hsl(318.5, 72%, 42%); }
+  .w[data-letter="y"] { color: hsl(332.3, 72%, 42%); }
+  .w[data-letter="z"] { color: hsl(346.2, 72%, 42%); }
+  .w[data-letter="æ"] { color: hsl(350.0, 72%, 42%); }
+  .w[data-letter="ø"] { color: hsl(175.0, 72%, 42%); }
+  .w[data-letter="å"] { color: hsl(22.0, 72%, 42%); }
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.25rem 3rem;
+    align-items: start;
+  }
+  @media (max-width: 820px) {
+    .cols { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+  .col-da { min-width: 0; }
+  .col-en { min-width: 0; }
+  .col > p.nonindent:first-child {
+    margin-top: 0;
+  }
+  .hint {
+    margin: 0.85rem 0 0;
+    font-size: 0.8rem;
+    opacity: 0.55;
+  }
+  .tok.tri,
+  .tri-gap {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: #8a8680;
+  }
+  body.tri-on .section .tok,
+  body.tri-on .section .tri-gap {
+    opacity: 0.34;
+  }
+  body.tri-on .section .tok.tri-hit,
+  body.tri-on .section .tri-gap.tri-hit {
+    opacity: 1;
+    background: color-mix(in srgb, var(--hit, #c45c5c) 30%, transparent);
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0.05em 0;
+  }
+  .tri-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+    z-index: 4;
+    overflow: visible;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>alphabet</h1>
+  <p class="by">Inger Christensen · <span lang="da">alfabet</span> · tr. Susanna Nied</p>
+</header>
+<script type="text/plain" id="poem-source">
+# Edit the poem here. The page colors words and draws the columns.
+# A stanza is a header line, then one verse line per row, then a blank line.
+# Header: da or en, then nonindent, extract, nonindent01, nonindent02, or nonindent03.
+# A line that is only ~ is an empty spacer, used where one language has no matching lines.
+# # 12 starts section 12.
+
+# 1
+
+da nonindent
+abrikostræerne findes, abrikostræerne findes
+
+en nonindent
+apricot trees exist, apricot trees exist
+
+# 2
+
+da nonindent
+bregnerne findes; og brombær, brombær
+og brom findes; brinten, brinten
+
+en nonindent
+bracken exists; and blackberries, blackberries;
+bromine exists; and hydrogen, hydrogen
+
+# 3
+
+da nonindent
+cikaderne findes; cikorie, chrom
+og citrontræer findes; cikaderne findes;
+cikaderne, ceder, cypres, cerebellum
+
+en nonindent
+cicadas exist; chicory, chromium,
+citrus trees; cicadas exist;
+cicadas, cedars, cypresses, the cerebellum
+
+# 4
+
+da nonindent
+duerne findes; drømmerne, dukkerne
+dræberne findes; duerne, duerne;
+dis, dioxin og dagene; dagene
+findes; dagene døden; og digtene
+findes; digtene, dagene, døden
+
+en nonindent
+doves exist, dreamers, and dolls;
+killers exist, and doves, and doves;
+haze, dioxin, and days; days
+exist, days and death; and poems
+exist; poems, days, death
+
+# 5
+
+da nonindent
+efteråret findes; eftersmagen og eftertanken
+findes; og enrummet findes; englene,
+enkerne og elsdyret findes; enkelthederne
+findes, erindringen, erindringens lys;
+og efterlyset findes, egetræet og elmetræet
+findes, og enebærbusken, ensheden, ensomheden
+findes og edderfuglen og edderkoppen findes
+og eddiken findes, og eftertiden, eftertiden
+
+en nonindent
+early fall exists; aftertaste, afterthought;
+seclusion and angels exist;
+widows and elk exist; every
+detail exists; memory, memory’s light;
+afterglow exists; oaks, elms,
+junipers, sameness, loneliness exist;
+eider ducks, spiders, and vinegar
+exist, and the future, the future
+
+# 6
+
+da nonindent
+fiskehejren findes, med sin gråblå hvælvede
+ryg findes den, med sin fjertop sort
+og sine halefjer lyse findes den; i kolonier
+findes den; i den såkaldte Gamle Verden;
+findes også fiskene; og fiskeørnen, fjeldrypen
+falken; festgræsset og fårenes farver;
+fissionsprodukterne findes og figentræet findes;
+fejlene findes, de grove, de systematiske,
+de tilfældige; fjernstyringen findes og fuglene;
+og frugttræerne findes og frugterne i frugthaven hvor
+abrikostræerne findes, abrikostræerne findes,
+i lande hvor varmen vil frembringe netop den
+farve i kødet abrikosfrugten har
+
+en nonindent
+fisherbird herons exist, with their grey-blue arching
+backs, with their black-feathered crests and their
+bright-feathered tails they exist; in colonies
+they exist, in the so-called Old World;
+fish, too, exist, and ospreys, ptarmigans,
+falcons, sweetgrass, and the fleeces of sheep;
+fig trees and the products of fission exist;
+errors exist, instrumental, systemic,
+random; remote control exists, and birds;
+and fruit trees exist, fruit there in the orchard where
+apricot trees exist, apricot trees exist
+in countries whose warmth will call forth the exact
+colour of apricots in the flesh
+
+# 7
+
+da nonindent
+grænserne findes; gaderne, glemslen
+
+en nonindent
+given limits exist, streets, oblivion
+
+da extract
+og græs og geder og agurker og gyvel,
+begejstringen findes, grænserne findes;
+
+en extract
+and grass and gourds and goats and gorse,
+eagerness exists, given limits
+
+da extract
+grenene findes, vinden der løfter dem
+findes, og grenenes eneste tegning
+
+en extract
+branches exist, wind lifting them exists,
+and the lone drawing made by the branches
+
+da extract
+af netop det træ der kaldes egetræet findes,
+af netop det træ der kaldes asketræet, birketræet,
+cedertræet findes, og tegningen gentaget
+
+en extract
+of the tree called an oak tree exists,
+of the tree called an ash tree, a birch tree,
+a cedar tree, the drawing repeated
+
+da extract
+findes i havegangenes grus; findes
+også gråden, og gedehams og gråbynke findes,
+gidslerne, grågåsen, grågåsens unger;
+
+en extract
+in the gravel garden path; weeping
+exists as well, fireweed and mugwort,
+hostages, greylag geese, greylags and their young;
+
+da extract
+og geværerne findes, en gådefuld baghave,
+tilgroet, gold og kun smykket med ribs,
+geværerne findes; midt i den oplyste
+kemiske ghetto findes geværerne,
+med deres gammeldags, fredelige præcision findes
+
+en extract
+and guns exist, an enigmatic back yard;
+overgrown, sere, gemmed just with red currants,
+guns exist; in the midst of the lit-up
+chemical ghetto guns exist
+with their old-fashioned, peaceable precision
+
+da extract
+geværerne, og grædekonerne findes, mætte
+som grådige ugler, gerningsstedet findes;
+gerningsstedet, døsigt, normalt og abstrakt,
+badet i et hvidkalket, gudsforladt lys,
+dette giftige, hvide, forvitrende digt
+
+en extract
+guns and wailing women, full as
+greedy owls exist; the scene of the crime exists;
+the scene of the crime, drowsy, normal, abstract,
+bathed in a whitewashed, godforsaken light,
+this poisonous, white, crumbling poem
+
+# 8
+
+da nonindent
+hviskningerne findes, hviskningerne findes,
+høsten, historien findes, og Halleys
+
+en nonindent
+whisperings exist, whisperings exist
+harvest, history, and Halley’s
+
+da extract
+komet; hærskarerne findes, horderne
+herskerne, hulerne, inde i hulerne
+halvskyggen, inde i halvskyggen af og til
+
+en extract
+comet exist; hosts exist, hordes
+high commanders, hollows, and within the hollows
+half-shadows, within the half-shadows occasional
+
+da extract
+harerne, af og til bladhang for hulen hvor
+bregnerne findes; og brombær, brombær,
+af og til harerne skjult under bladhanget
+
+en extract
+hares, occasional hanging leaves shading the hollow where
+bracken exists, and blackberries, blackberries
+occasional hares hidden under the leaves
+
+da extract
+og haverne findes, havekunsten, hyldetræets
+blege, ubevægelige blomster som en sydende
+hymne; og halvmånen findes, halvsilken,
+hele den heliocentriske dis der har drømt
+disse hengivne hjerner, deres held; og huden
+
+en extract
+and gardens exist, horticulture, the elder tree’s
+pale flowers, still as a seething hymn;
+the half-moon exists, half-silk, and the whole
+heliocentric haze that has dreamed
+these devoted brains, their luck, and human skin
+
+da extract
+huden og husene findes, Hades der
+genhuser hesten og hunden og herlighedens
+skygger, håbet; og hævnfloden, hagl
+under stenhimlen findes, hortensiens
+hvide, lyst lysende blå eller grønlige
+
+en extract
+human skin and houses exist, with Hades
+rehousing the horse and the dog and the shadows
+of glory, hope; and the river of vengeance;
+hail under stoneskies exists, the hydrangeas’ white, bright-shining, blue or greenish
+
+da extract
+søvntåger, af og til blegrøde, enkelte
+flager sterile findes; og hen under
+himmelhvælvets skrå Harmagedon giften,
+gifthelikopterens susende harpe over hyrdetaske,
+hønsetarm og hør; hyrdetaske, hønsetarm
+og hør, denne sidste hermetiske skrift,
+som ellers kun skrives af børn; og hveden,
+hveden i hvedemarken findes, hvedemarkens
+svimlende vandrette viden, halveringtider,
+hungersnød og honning; og inderst i hjertet,
+ellers som altid kun inderst i hjertet
+hasselbuskens rødder, hasselbusken udsat
+på hjertets bjerge, hårdfør og nøjsom,
+en ophobet hverdag af englenes orden;
+hurtigt, hyacintisk i sit henfald livet,
+som i himlen således også på jorden
+
+en extract
+fogs of sleep, occasionally pink, a few
+sterile patches exist, and beneath
+the angled Armageddon of the arching heavens, poison,
+the poison helicopter’s humming harps above the henbane,
+shepherd’s purse, and flax, henbane, shepherd’s purse
+and flax; this last, hermetic writing,
+written otherwise only by children; and wheat,
+wheat in wheatfields exists, the head-spinning horizontal knowledge of wheatfields, half-lives,
+famine, and honey; and deepest in the heart,
+otherwise as ever only deepest in the heart,
+the roots of the hazel, the hazel that stands
+on the hillslope of the heart, tough and hardy,
+an accumulated weekday of Angelic orders;
+high-speed, hyacinthic in its decay, life,
+on earth as it is in heaven
+
+# 9
+
+da nonindent
+istiderne findes, istiderne findes,
+ishavets is og isfuglens is;
+cikaderne findes; cikorie, chrom
+
+en nonindent
+ice ages exist, ice ages exist,
+ice of polar seas, kingfishers’ ice;
+cicadas exist, chicory, chromium
+
+da extract
+og den chromgule iris, den blå; ilten
+især; findes også ishavets isflager,
+isbjørnen findes, stemplet som en pels
+med personnummer findes den, idømt sit liv;
+og isfuglens ministyrt ned I de blåfrosne
+
+en extract
+and chrome yellow irises, or blue; oxygen
+especially; ice floes of polar seas also exist,
+and polar bears, stamped like furs with their
+identification numbers, condemned to their lives;
+the kingfisher’s miniplunge into blue-frozen
+
+da extract
+martsbække findes, hvis bækkene findes;
+hvis ilten I bækkene findes, ilten
+især; findes især hvor cikadernes
+i-lyde findes, især hvor cikoriens
+himmel som blåelse opløst I vand
+
+en extract
+March streams exists, if streams exist;
+if oxygen in streams exists, especially
+oxygen, especially where cicadas’
+i-sounds exist, especially where
+the chicory sky, like bluing dissolving in
+
+da extract
+findes, den chromgule sol, ilten
+især; vist vil den findes, vist
+vil vi findes, ilten vi indånder findes,
+ildøje ildkrone findes, og indsøens
+himmelske indre; en indhegnet vig
+med lidt siv vil findes, en ibisfugl findes,
+og sindets bevægelser indblæst I skyerne
+findes, som ilthvirvler inderst I Styx
+
+en extract
+water, exists, the chrome yellow sun, especially
+oxygen, indeed it will exist, indeed
+we will exist, the oxygen we inhale will exist,
+lacewings, lantanas will exist, the lake’s
+innermost depths like a sky; a cove ringed
+with rushes, an ibis will exist,
+the motions of mind blown into the clouds
+like eddies of oxygen deep in the Styx
+
+da extract
+og inderst I visdommens landskab islyset,
+isen identisk med lyset, og inderst
+I islyset intet, livagtigt, intenst,
+som dit blik gennem regn; denne silende
+livsstiliserende finregn, hvori som en gestus
+de fjorten krystalgitre findes, de syv
+krystallinske systemer, dit blik som I mit,
+og Ikaros, Ikaros hjælpeløs findes;
+
+en extract
+and deep in the landscapes of wisdom, ice-light,
+ice and identical light, and deep
+in the ice-light nothing, lifelike, intense
+as your gaze in the rain; this incessant,
+life-stylising drizzle, in which like a gesture
+fourteen crystal forms exist, seven
+systems of crystals, your gaze as in mine,
+and Icarus, Icarus helpless;
+
+da extract
+Ikaros svøbt I de smeltede voksvinger
+findes, Ikaros bleg som et lig
+I civil findes, Ikaros underst hvor
+duerne findes; drømmerne, dukkerne
+findes; drømmernes hår med de løsrevne
+kræfttotter, dukkernes hud rimpet sammen
+med nåle, gådernes trøske; og smilene
+findes, Ikarosbørnene hvide som lam
+gennem grålyset, vist vil de findes, vist
+vil vi findes, og ilten på iltens krucifiks;
+som rim vil vi findes, som vind vil vi findes,
+som regnbuens iris I isplantens glitrende
+udvækster, tundraens strå; som små
+
+en extract
+Icarus wrapped in the melting wax
+wings exists, Icarus pale as a corpse
+in street clothes, Icarus deepest down where
+doves exist, dreamers, and dolls;
+the dreamers, their hair with detached
+tufts of cancer, the skin of the dolls tacked together
+with pins, the dryrot of riddles; and smiles,
+Icarus-children white as lambs
+in greylight, indeed they will exist, indeed
+we will exist, with oxygen on its crucifix,
+as rime we will exist, as wind,
+as the iris of the rainbow in the iceplant’s gleaming
+growths, the dry tundra grasses, as small beings
+
+da extract
+vil vi findes, så små som lidt pollen I tørv,
+som lidt virus I knogler, som vandpest måske,
+måske som lidt hvidkløver, vikke, lidt skivekamille
+forvist til det gentabte paradis; men mørket
+er hvidt, siger børnene, paradismørket er hvidt,
+men ikke på den måde hvidt som en kiste
+er hvid, hvis kister da findes, og ikke
+på den måde hvidt, som mælken er hvid,
+hvis mælken da findes; hvidt, det er hvidt,
+siger børnene, mørket er hvidt, men ikke
+på den måde hvidt som det hvide der fandtes,
+da frugttræerne fandtes, deres blomstring så hvid,
+mørket er hvidere, øjnene smelter
+
+en extract
+we will exist, small as pollen bits in peat,
+as virus bits in bones, as water-thyme perhaps,
+perhaps as white clover, as vetch, wild chamomile,
+banished to a re-lost paradise; but the darkness
+is white, say the children, the paradise-darkness is white,
+but not white the same way that coffins
+are white, if coffins exist, and not white
+the same way that milk is white, if milk exists;
+white, it is white, say the children,
+the darkness is white, but not
+white like the white that existed
+when fruit trees existed, their blossoms so white,
+this darkness is whiter; eyes melt
+
+# 10
+
+da nonindent
+juninatten findes, juninatten findes,
+himlen omsider som løftet til himmelske
+højder og samtidig sænket så ømt som når
+drømme kan ses før de drømmes; et rum som
+besvimet, som mættet med hvidhed, en timeløs
+
+en nonindent
+June nights exist, June nights exist,
+the sky at long last as if lifted to heavenly
+heights, simultaneously sinking, as tenderly as
+when dreams can be seen before they are dreamed; a space
+as if dizzied, as if filled with whiteness, an hourless
+
+da extract
+kimen af dug og insekter, og ingen i
+denne flyvende sommer, ingen begriber at
+efteråret findes, eftersmagen og eftertanken
+findes, kun disse ratløse ultralydes
+svimlende rækker findes og flagermusens
+jadeøre vendt mod den tikkende dis;
+aldrig var jordklodens hældning så dejlig
+aldrig de zinkhvide nætter så hvide,
+
+en extract
+chiming of insects and dew, and no one in
+this gossamer summer, no one comprehends that
+early fall exists, aftertaste, afterthought;
+just these reeling sets of restless ultrasounds
+exist, the bat’s ears of jade
+turned toward the ticking haze;
+never has the tilting of the planet been so pleasant,
+never the zinc-white nights so white,
+
+da extract
+så værgeløst opløste, mildt ioniserede
+hvide, og aldrig usynlighedsgrænsen så næsten
+berørt; juni, juni, dine jakobsstiger
+findes, dine sovende kræ og deres søvndrømme
+findes, et svæv af galaktiske kim mellem
+jorden så jordisk og himlen så himmelsk,
+jammerdalen stille, så stille, og gråden
+sunket ned, sunket ned, som grundvand igen
+
+en extract
+so defencelessly dissolved, gently ionized and
+white, never the limit of invisibility so nearly
+touched; June, June, your Jacob’s ladders,
+your sleeping creatures and their dreams exist,
+a drift of galactic seed between
+earth so earthly and sky so heavenly,
+the vale of tears so still, so still, and tears
+sinking, sinking like groundwater back
+
+da extract
+i jorden; Jorden; Jorden i sit omløb
+om Solen findes; Jorden på sin rute
+gennem Mælkevejen findes; Jorden på vej
+med sin last af jasminer, med jaspis og jern,
+med jerntæpper, jærtegn og jubel, men Judaskys
+kysset i flæng og jomfruelig vrede i
+gaderne, Jesus af salt; med jacarandatræets
+skygge over flodvandet, med jagtfalke, jagerfly
+og januar i hjertet, med Jacopo della Quercias
+brønd Fronte Gaia i Siena og med juli
+så tung som en bombe; med hjemlige hjerner,
+med hjertefejl og hjertegræs og jordbær,
+med jerntræets rødder i den jordtrætte jord
+
+en extract
+into earth; Earth; Earth in its trajectory
+around the sun exists, Earth on its journey
+along the Milky Way, Earth on its course with
+its cargo of jasmine, jasper, iron,
+iron curtains, omens, jubilation, Judas’s kiss
+kissed right and left, and virgin anger in
+the streets, Jesus of salt; with the shadow of the
+jacaranda over the river, with gyrfalcons, jet planes,
+and January in the heart, with Jacopo della Quercia’s
+well Fonte Gaia in Siena and with July
+heavy as a bomb, with domestic brains
+heart defects, quaking grass and strawberries
+the ironwood’s roots in the earthworn earth
+
+da extract
+Jorden Jayadeva besynger i sit mystiske
+digt fra det 12. århundrede; Jorden med
+bevidsthedens kystlinie blå og med reder hvor
+fiskehejren findes, med sin gråblå hvælvede
+ryg, eller dværghejren findes, kryptisk
+og sky, eller nathejren, silkehejren findes,
+og graden af vingeslag hos jernspurve, traner
+og duer; Jorden med Jullundur, Jabalpur og
+Jungfrau findes, med Jotunheim og Jura
+findes, med Jabron og Jambo, Jogjakarta
+findes, med jordfygning, jordrøg findes,
+med vandmasser, landmasser, jordskælv findes,
+med Judenburg, Johannesburg, Jerusalems Jerusalem
+
+en extract
+Earth sung by Jayadeva in his mystical
+poem from the 12th century, Earth with
+the coastline of consciousness blue, with nests where
+fisherbird herons exist, with their grey-blue arching
+backs, or where bitterns exist, cryptic
+and shy, or night herons, egrets,
+with the wingbeat variations of hedge sparrows, cranes
+and doves; Earth exists with Jullundur, Jabalpur and
+the Jungfrau, with Jotunheim, the Jura,
+with Jahrun, Jambo, Jogjakarta,
+with duststorms, Dutchman’s breeches
+with water and land masses jolted by tremors
+with Judenburg, Johannesburg, Jerusalem’s Jerusalem
+
+da nonindent
+atombomben findes
+
+en nonindent
+atom bombs exist
+
+da extract
+Hiroshima, Nagasaki
+
+en extract
+Hiroshima, Nagasaki
+
+da extract
+Hiroshima den 6.
+august 1945
+
+en extract
+Hiroshima, August
+6th, 1945
+
+da extract
+Nagasaki den 9.
+august 1945
+
+en extract
+Nagasaki, August
+9th, 1945
+
+da extract
+140.000 døde og
+sårede i Hiroshima
+
+en extract
+140,000 dead and
+wounded in Hiroshima
+
+da extract
+ca. 60.000 døde og
+sårede i Nagasaki
+
+en extract
+some 60,000 dead and
+wounded in Nagasaki
+
+da extract
+tal der står stille
+et sted i en fjern
+almindelig sommer
+
+en extract
+numbers standing still
+somewhere in a distant
+ordinary summer
+
+da extract
+siden da er de sårede
+døde, først mange, de
+fleste, så færre, men
+
+en extract
+since then the wounded
+have died, first many,
+most, then fewer, but
+
+da extract
+alle; til sidst
+de såredes børn,
+dødfødte, døende,
+
+en extract
+all; finally
+the children of the wounded
+stillborn, dying
+
+da extract
+mange, til stadighed
+nogle, omsider de
+sidste; jeg står i
+
+en extract
+many, forever a
+few, at last the
+last; I stand in
+
+da extract
+mit køkken og skræller
+kartofler; vandhanen
+løber og overdøver
+næsten børnene
+ude i gården;
+
+en extract
+my kitchen peeling
+potatoes; the tap
+runs, almost
+drowning out the
+children in the yard;
+
+da extract
+børnene råber og
+overdøver næsten
+fuglene ude i
+træerne; fuglene
+synger og overdøver
+
+en extract
+the children shout,
+almost drowning out
+the birds in the
+trees; the birds
+sing, almost
+
+da extract
+næsten bladenes
+hvisken i vinden;
+bladene hvisker
+og overdøver næsten
+med stilhed himlen,
+
+en extract
+drowning out the whisper
+of leaves in the wind;
+the leaves whisper,
+almost drowning
+the sky with silence,
+
+da extract
+himlen der lyser,
+og lyset der næsten
+fra dengang har lignet
+atombombens ild
+lidt
+
+en extract
+the sky with its light
+and the light that almost
+since then has recalled
+atomic fire
+a bit
+
+# 11
+
+da nonindent
+Kærligheden findes, kærligheden findes
+så glemsomt din hånd puttet ind som en unge
+i min, døden umulig at huske,
+umuligt at huske hvordan et umisteligt
+liv, så let som med en kemisk bevægelse
+hen over kamgræs og klippeduer, alt,
+mistes forsvinder, umuligt at huske at
+flokke der hist og her findes af rodløse
+
+en nonindent
+love exists, love exists
+your hand a baby bird so obliviously tucked
+into mine, and death impossible to remember,
+impossible to remember how inalienable
+life, as easily as chemicals drifting
+over the knotgrass and rock doves, all of it
+is lost, vanishing, impossible to remember that
+there and there flocks of rootless
+
+da extract
+mennesker, husdyr og hunde forsvinder;
+tomater, oliven forsvinder, de brunlige
+koner, der høster dem, visner forsvinder,
+mens jordbunden støver af kvalme, et pulver
+af blade og bær, og kapersbuskens blomsterknopper
+aldrig bliver indsamlet, syltet med salt
+og spist; men før de forsvinder, før vi
+forsvinder, en aften vi sidder til bords med
+lidt brød, et par fisk uden bylder og vand
+der med kløgt er forvandlet til vand, går en
+af de tusind historiske krigsstier pludselig
+tværs gennem stuen, du rejser dig, grænserne,
+grænserne findes, gaderne, glemslen
+
+en extract
+people, livestock, dogs exist, are vanishing;
+tomatoes, olives vanishing, the brownish
+women who harvest them, withering, vanishing,
+while the ground is dusty with sickness, a powder
+of berries and leaves, and the buds of the caper
+are never gathered, pickled with salt
+and eaten; but before they vanish, before we
+vanish, one evening we sit at the table with
+a little bread, a few fish without cankers, and water
+cleverly turned into water, one of
+history’s thousands of war paths suddenly
+crosses the living room, you get up, limits,
+given limits exist, streets, oblivion
+
+da extract
+overalt, men dit skjulested nærmer sig ikke,
+se, månen er alt for belyst ogg Karlsvognen
+kører tilbage så tom som den kom; de døde
+vil bæres, de syge vil bæres, de nedbrudte
+blege soldater der ligner Narcissos vil
+bæres, du vandrer så underlig evigt
+omkring, og kun når de dør, gør du holdt
+i en kålhave ingen har passet i flere
+århundreder, lytter dig frem til en udtørret
+kilde, et sted i Karelen måske, og mens
+du tænker på ord som kromosomer, kimærer
+og på kærlighedsfrugternes fejlslagne vækst
+piller du lidt bark af et træ og spiser det
+
+en extract
+everywhere, but your hideout comes no nearer
+see the moon is too brightly lit and Charles’s Wain
+is going back empty as it came; the dead want
+to be carried, the sick want to be carried, the broken
+pale soldiers looking like Narcissus want to
+be carried; you wander around in such a strangely
+endless way; only when they die do you stop
+in a kale patch no one has tended for several
+centuries, follow the sound of a dried-up
+spring, somewhere in Karelia maybe, and as
+you think of words like chromosomes and chimeras
+and the aborted growth of lychees, fruits of love,
+you peel off some tree bark and eat it
+
+da nonindent
+et sted bliver jeg pludselig født
+i et udtryksløst hus; når man
+skriger, giver væggene efter og
+
+en nonindent
+somewhere I am suddenly born
+in an expressionless house; when you
+cry out the walls give way and
+
+da extract
+haven, hvori man forsvinder, er
+blankslidt af snegle; man bader
+i ryk som en fugl, og når jorden
+
+en extract
+the garden, in which you vanish, is
+worn smooth by slugs; you bathe
+jerking like a bird, and when the earth
+
+da extract
+er spist og rabarberne første gang
+visner, giver sommeren efter og
+byen, hvori man forsvinder, er
+
+en extract
+is eaten and the rhubarb first
+dries up, summer gives way and
+the town, in which you vanish, is
+
+da extract
+langsom og sort; man går gennem
+gaderne, gør som de andre, der
+uden et ord, i forbifarten puffer
+
+en extract
+slow and black; you walk in
+the streets, do as others do,
+wordlessly in passing nudge
+
+da extract
+lidt murværk på plads; når ruten
+er indøvet, sejlivet nok, giver
+husene efter, og højsletten breder
+
+en extract
+bits of brick into place; when the route
+is tenacious, ingrained enough, the houses
+give way, and the high plain spreads,
+
+da extract
+sig tvær og almægtig og nærmest
+usynlig; et sted slår et vildt
+abrikostræ et øjeblik stille og
+
+en extract
+sullen, almighty, and almost
+invisible; somewhere a wild
+apricot tree stands still for a moment
+
+da extract
+blomstrer, men kun med et ganske
+tyndt slør om de udbredte grene,
+før det alligevel fortsætter
+
+en extract
+and blooms, but just with a very
+thin veil on the outspread branches
+before going on regardless
+
+da nonindent
+fragmenteret af et forår, en aften
+af den slags hvor vejene næsten
+går ud i det blå, men ingen
+bevæger sig; vejstøvet minder
+om vejstøvet der hvor de fleste
+bliver skudt og stilheden slæber
+på en sten, men der sker ingenting
+
+en nonindent
+fragment of a springtime, the kind
+of evening when the roads lead almost
+off into the blue, but no one
+moves; the dust of the roads recalls
+the dust of the roads where most
+are shot and the silence
+tugs at stones, but nothing happens
+
+da extract
+et sted falder noget som ingen
+har rørt ved ned fra en hylde,
+måske mens min bedstemor står
+som hun altid har stået i sit
+køkken og koger abrikosgrød;
+jeg ved hun er død, men duften
+er så stærk, at kroppen der sanser
+
+en extract
+somewhere something no one has
+touched tumbles from a shelf,
+perhaps as my grandmother stands
+as she always has stood in her
+kitchen and cooks up dried apricots;
+I know she is dead, but their scent
+is so strong that the body sensing it
+
+da extract
+den, selv bliver en frugt; og mens
+frugten hænges op i det nærmeste
+træ, som måske er en birk der
+bærer rakler og aldrig abrikoser,
+hører man skuddet i forvejen, før
+end lidt efter, og det lød som en
+dør uden hus der står åben endnu
+
+en extract
+it becomes fruit itself; and as
+the fruit is hung up in the nearest
+tree, which may be a birch that
+bears catkins, never apricots,
+the shot sounds beforehand, ahead
+of just after, its sound like a
+door with no house standing wide open still
+
+da nonindent
+Brintbomben findes
+en bøn om at dø
+
+en nonindent
+hydrogen bombs exist
+a plea to die
+
+da extract
+som man plejer at dø
+en dag i almindeligt
+
+en extract
+as people used to die
+one day in ordinary
+
+da extract
+vejr, hvad enten man
+ved man skal dø eller
+ingenting ved, en dag
+
+en extract
+weather, whether you
+know you are dying
+or know nothing, maybe
+
+da extract
+man måske som sædvanlig
+har glemt man skal dø,
+en lidt blæsende dag i
+
+en extract
+a day when as usual you have
+forgotten you must die,
+a breezy day in
+
+da extract
+november måske, mens
+man går i sit køkken
+og kun lige når at
+
+en extract
+November maybe, as
+you walk into the kitchen
+and barely manage to
+
+da extract
+mærke hvor dejligt
+kartoflerne lugter
+af jord, og kun lige
+
+en extract
+notice how good
+and earthy the potatoes
+smell, and barely
+
+da extract
+når at lægge låg på
+og tænke om man nu
+har kommer salt ved,
+før man lagde låg på,
+og kun lige når i et
+
+en extract
+manage to put the lid on,
+wondering whether you
+salted them before you
+put the lid on,
+and in a flash,
+
+da extract
+glimt, mens ligt damp
+slipper ud under låget,
+at huske sit liv som
+det var og hele tiden
+er, mens kartoflerne
+
+en extract
+while puffs of steam
+leak past the lid, barely
+manage to remember your life
+as it was and still
+is, while the potatoes
+
+da extract
+koger og livet, som man
+altid har sagt skal gå
+videre, faktisk går
+videre; en bøn, en
+almindelig bøn, en
+
+en extract
+boil and life, which you
+always have said must go
+on, really does go
+on, a plea, an
+ordinary plea, an
+
+da extract
+almindelig dag, om at
+livet må fortsætte
+ganske almindeligt
+uden at nogensinde
+nogen af alle
+
+en extract
+ordinary day, that
+life can continue
+completely ordinarily
+without it ever happening
+that any of all
+
+da extract
+de grusomme forsøg,
+som arbejdsgruppen
+Teller har gjort
+ved Eniwetok-atollen,
+hvor Stillehavets
+bølger har raset i
+vrede, eller nogen
+af alle de forsøg
+
+en extract
+the cruel experiments
+that the Teller group
+performed on
+Eniwetok where
+the waves of the
+Pacific raged in fury,
+or any of all
+the experiments that
+
+da extract
+som arbejdsgruppen
+Sakharov har gjort
+på Novaja Semlja,
+hvor Ishavets bølger
+har raset i vrede,
+uden at nogensinde
+disse forsøg eller
+eller de britiske,
+
+en extract
+the Sakharov group
+performed on
+Novaya Zemlya where
+the waves of the Arctic
+Ocean raged in fury
+without these
+experiments or those
+of the British French
+
+da extract
+franske, kinesiske
+virkelig virkelig-
+gøres her hvor vi
+stadigvæk bor i en
+virkelig virkelig
+verden i forhold
+til Novaja Semljas
+og Eniwetok-atollens
+
+en extract
+Chinese ever reaching
+real real-
+isation here where we
+still live in a
+real real
+world as opposed to
+the unreality of
+Novaya Zemlya
+
+da extract
+uvirkelighed; her går
+jeg ned til det stille,
+det aftenligt blanke
+Øresunds blå, kaster
+en sten ud i vandet,
+ser hvordan ringene
+breder sig, når selv
+de fjerneste kyster
+
+en extract
+and Eniwetok; here I
+walk down to the still
+blue of the Sound shining
+with evening, toss
+a stone into the water,
+see how the circles
+widen, reaching
+even the farthest shores
+
+# 12
+
+da nonindent
+livet, luften vi indånder findes
+en lethed i alt, en lighed i alt,
+en ligning, et åbent bevægeligt udsagn
+i alt, og mens træ efter træ bruser op i
+den tidlige sommer, en lidenskab, lidenskab
+i alt, som fandtes der til luftens leg med
+den faldende manna en enkelt principtegning,
+enkel som når lykken har masser af mad
+og ulykken ingen, enkel som når længslen
+har masser af veje og lidelsen ingen,
+enkel som den hellige lotus er enkel
+fordi den kan spises, en tegning så enkel
+som når latteren tegner dit ansigt i luft
+
+en nonindent
+life, the air we inhale exists
+a lightness in it all, a likeness in it all,
+an equation, an open and transferable expression
+in it all, and as tree after tree foams up in
+early summer, a passion, passion in it all,
+as if in the air’s play with elm keys falling
+like manna there existed a simply sketched design,
+simple as happiness having plenty of food
+and unhappiness none, simple as longing
+having plenty of options and suffering none,
+simple as the holy lotus is simple
+because it is edible, a design as simple as laughter
+sketching your face in the air
+
+da nonindent
+midt i november, en årstid
+hvor menneskers drømme er ens,
+en ensartet, udvisket fortid,
+der ligner en soltørret stens
+
+en nonindent
+in mid-November, a season
+when all human dreams are the same,
+a uniform, blotted out history
+like that of a sun-dried stone
+
+da extract
+der står et par tavse forældre,
+lidt børn løber rundt med en hund,
+en ankomst man prøver at skildre
+som vand løftet op til min mund
+
+en extract
+a couple of mute parents stand there,
+a dog and some children run round,
+an arrival they try to imagine
+as water that’s raised to my mouth
+
+da extract
+jeg sov i mit rum på hotellet,
+det var som en artsfremmed drøm,
+som gæsten før mig må have stillet
+til side i søvne og glemt
+
+en extract
+I lay sleeping inside my hotel room;
+it was like an alien dream
+that the guest before me must have shouldered
+aside in his sleep and forgot
+
+da extract
+der var ingen i drømmen jeg kendte,
+jeg fik kun et granskende blik
+fra et hvidt abrikostræ der vendte
+sig om, før det pludselig gik
+
+en extract
+in the dream there was no one familiar;
+I met only the blank scrutiny
+of an apricot tree in bloom, turning
+around as it left suddenly
+
+da extract
+måske blev det glemt der en sommer,
+da verden var hvid som en fest,
+og jeg forstod at en drømmer
+må drømme som træerne drømmer
+om frugter til sidst
+
+en extract
+perhaps it was left there one summer
+when the world was as white as a feast,
+before I had learned that a dreamer
+must dream like the trees, be a dreamer
+of fruit to the last
+
+da nonindent
+sneen
+er slet ikke sne
+når den sner
+midt i juni
+
+en nonindent
+snow
+is not snow at all
+when it snows
+in mid-June
+
+da extract
+sneen er
+slet ikke faldet
+fra himlen
+i juni
+
+en extract
+snow has
+not fallen from
+the sky at all
+in June
+
+da extract
+sneen er
+selv steget op
+og har blomstret
+i juni
+
+en extract
+snow itself
+has risen
+and has bloomed
+in June
+
+da extract
+som æbler
+abrikoser
+kastanier
+i juni
+
+en extract
+as apple
+apricot
+chestnut trees
+in June
+
+da extract
+fare vild
+i den rigtige sne
+som er sneen i juni
+med blomster og frø
+
+en extract
+to be lost
+in real snow
+which is June snow
+in flower and seed
+
+da extract
+når man aldrig skal dø
+
+en extract
+when you need never die
+
+da nonindent
+nu ingen panik, der er bregner
+på rejse, de opsamler tiden
+og bundter den, bregnerne har
+
+en nonindent
+don’t panic; it’s bracken on a
+trip, gathering time and
+binding it; bracken has
+
+da extract
+deres egen kalender, tårer
+og regn og lidt sollys så sort
+som når skovsnegle bærer det
+
+en extract
+its own calendar, tears and rain
+and a little sunlight as black
+as when black slugs carry it
+
+da extract
+rundt; åh lyt til de rolige
+vifter og sporenes underste
+brune sekunder der tikker
+
+en extract
+around; ah, hear the tranquil
+fronds and the undermost brown
+seconds of the spores, ticking
+
+da extract
+endnu, måske kan de huske
+hvor skjulte vi lå, hvor
+skjulte på steder hvor aldrig
+
+en extract
+still; perhaps they remember
+how hidden we lay, how
+hidden in places where
+
+da extract
+et menneske kommer vi lå,
+før vi omsider blev født
+og krøb frem; jeg ser mig
+
+en extract
+no people ever go we lay,
+before we were born at last
+and crept out; I look
+
+da extract
+uroligt tilbage og sneen,
+der falder så tynd her til
+morgen, vågner forsigtigt
+
+en extract
+back uneasily and the snow,
+falling so thinly here this
+morning, wakens carefully
+
+da extract
+og smelter, en eng ligger
+udbredt med viber, man går
+efter lyden, det knækker
+
+en extract
+and melts; a meadow lies
+spread with lapwings; I walk
+toward the sound; the ice
+
+da extract
+så frossent i isen, præcis
+som da tårer engang skulle
+knuses som perler og strøet
+
+en extract
+crackles icily, just as when
+tears were once to be crushed
+like pearls and strewn
+
+da extract
+på den syge, omsider er
+kroppen så salt at dens
+lange historie opløser
+
+en extract
+over the patient; at last
+the body is so salty that
+its long story dissolves
+
+da extract
+spejlet, lidt fnug fra en
+dyne min mor må have rystet
+forsvinder, og barndommen
+
+en extract
+the mirror; a little lint from a
+quilt my mother must have shaken
+disappears, and childhood
+
+da extract
+breder sig forude, henne
+ved vinduet foldes lidt
+sollys på plads i gardinet
+
+en extract
+spreads ahead; over
+by the window a little sunlight
+is folded into place in the curtain
+
+da extract
+aften den sekstende juni
+
+en extract
+evening June sixteenth
+
+da nonindent
+fra et tog der er standset
+i utide ser jeg hvordan de
+kaster gløderne ud fra det
+slukkede teglværk
+
+en nonindent
+from a train stopped too soon
+I see that they’re dumping
+live coals outside
+the closed brickworks
+
+da extract
+måske som de plejer går de
+ned over stien og væk mens
+det snart trækker sammen
+til regn
+
+en extract
+maybe as usual they’re walking
+down the path and away while
+it gets ready to cloud up
+and rain
+
+da extract
+kun en kant af de fjerneste
+marker ligger stadig i sol
+så måske er det slet ikke
+gløder jeg ser
+
+en extract
+only an edge of the farthest
+fields is still in sun
+so maybe it’s not coals at
+all that I see
+
+da extract
+måske er det valmuer, måske
+er det slukkede teglværk
+en skov der kun delvis er
+fældet, måske
+
+en extract
+maybe it’s poppies, maybe
+the closed brickworks is
+a forest only partially
+felled, maybe
+
+da extract
+er det får der går ned over
+stien, mens skygger fra et
+hegn de går forbi bevæger
+sig i kast
+
+en extract
+it’s sheep walking down
+the path, while the shadows from
+a fence they pass
+toss in gusts
+
+da extract
+det er som når man ser på
+et gammelt maleri, hvor der
+altid i baggrunden færdes
+en række figurer
+
+en extract
+it’s like looking
+at an old painting whose
+background is always being crossed
+by a row of figures
+
+da extract
+som man først når det hele
+forstørres kan skelne enten
+som folk der går hjem fra
+et teglværk
+
+en extract
+not until it’s all magnified
+do you realise that they
+are either people going home from
+a brickworks
+
+da extract
+trætte soldater på march
+eller får der løber væk
+fra en hyrde; i forgrunden
+sidder Madonna
+
+en extract
+tired soldiers on the march
+or sheep running away
+from a herd; in the foreground
+sits the Madonna
+
+da extract
+i et sammenfiltret krat af
+umodne brombær
+
+en extract
+in a matted thicket
+of green blackberries
+
+da nonindent
+cobaltbomben findes
+svæbt i sin kappe
+af cobalt-60-isotoper
+
+en nonindent
+cobalt bombs exist
+wrapped in their cloaks
+of cobalt-60 isotopes
+
+da extract
+hvis halveringstid
+sikrer en ekstremt
+skadelig virkning
+
+en extract
+whose half-life
+ensures the most
+harmful effects
+
+da extract
+mere er der ikke at
+sige; vi sikrer at
+skaden bliver størst
+mulig; mere er der
+ikke at sige; vi
+
+en extract
+there’s no more to
+say; we ensure that
+the harm is as great
+as it can be; there’s no
+more to say; we
+
+da extract
+sikrer os alt eller
+intet; mere er der
+ikke at sige; ved
+at sikre at alt
+kan forvandles
+
+en extract
+ensure ourselves all or
+nothing; there’s no
+more to say; by
+ensuring that all
+can be turned into
+
+da extract
+til intet, mister
+vi evnen til at
+tænke på intet,
+på ingen verden
+ting som vi
+
+en extract
+nothing, we
+lose the capacity to
+think of nothing,
+of not a thing
+in the world as we
+
+da extract
+siger, når vi bare
+er til; mere er
+der ikke at
+sige; vi
+sikrer
+
+en extract
+say, when we simply
+are being; there’s
+no more to
+say; we
+ensure
+
+da extract
+at vi usletter
+alt, tilintetgør
+alt, så der første
+det altafgørende
+intet får lov
+til at digte som
+vinden kan digte
+i luft eller vand;
+
+en extract
+that it’s all erased,
+obliterated,
+so the first
+the crucial
+nothing gets no chance
+to make the poetry
+that wind can make
+in air or water;
+
+da extract
+mere er der ikke
+at sige; vi dræber
+mere end vi tror
+mere end vi ved
+mere end vi føler;
+mere er der ikke
+at sige; vi hader;
+mere er der ikke;
+
+en extract
+there’s no more
+to say; we kill
+more than we think
+more than we know
+more than we feel;
+there’s no more
+to say; we hate;
+there is no more;
+
+da extract
+som en kongelig fugl
+i sin kiste af slam,
+i søle som en orm,
+som en musvåge
+stormen har knækket,
+som en indslæbt grå
+papegøje på en vatbåd
+fra nogens plantage
+
+en extract
+like a regal bird
+in its coffin of silt
+in mud like a worm,
+like a hawk
+the storm has broken
+like a grey parrot
+dragged onto a steamboat
+from someone’s plantation
+
+da extract
+vil jeg leve fra i dag;
+halvkvalt og nedpakket
+hvem som helst blandt
+alle de trafiktrætte
+duer, i hvis sidste
+hold af fjer fredens
+fortvivlede gråvejr
+nedstyrter menneskets
+
+en extract
+I’ll live from now on
+half-smothered, stuffed down
+no one special among
+all the traffic-worn doves
+in whose last
+clutch of feathers the hopeless
+cloud cover of peace
+makes the human eye
+
+da extract
+øje; sådan vil jeg leve;
+med min egen lille fine
+halveringstid inderst i
+hjertet; sådan vil jeg dø;
+jeg har lært jeg skal dø,
+jeg har sagt til mig selv
+jeg skal dø, sagt der og
+takket for sorgen, for
+glemslen, færdig; sagt
+til mig selv: tænk som
+en fugl der bygger rede,
+tænk som en sky, som
+dværgbirkens rødder
+
+en extract
+plummet; that’s how I’ll live;
+with my own little fine
+half-life deep in
+my heart; that’s how I’ll die,
+I have learned I will die,
+I have said to myself
+I will die, said it with
+thanks for sorrow,
+oblivion, done; said
+to myself: think like
+a bird building nests,
+think like a cloud, like
+the roots of the dwarf birch
+
+da extract
+tænk som et blad på et træ
+tænker, som skygge og lys
+som lysende bark tænker,
+som pupperne inde under
+barkhuden tænker, som lav
+på en sten og lidt trøske
+tænker, som skælrod tænker,
+som den disede skovslette
+tænker, som sumpene tænker
+når regnbuens opstigning
+spejler sig, tænk som lidt
+mudder, lidt regndråber
+tænker, tænk tænk som et spejl
+
+en extract
+think; like a leaf on a tree
+thinks; like shadow and light,
+like shining bark thinks,
+like the grubs beneath
+the barkskin think, like lichen
+on a stone and a bit of dry rot
+think, like the squawroot thinks,
+like this misty forest clearing
+thinks, like the marshes think
+where the rising of the rainbow
+is reflected, think like a bit of
+mud, a bit of raindrop
+thinks, think like a mirror
+
+da extract
+så livsvigtigt; se på
+sin trone af intet
+sandstormens hvirvel;
+se hvor banalt i det
+mindste lille sandskorn
+indesluttet et sindrigt
+fossilt liv hviler ud
+efter rejsen; se kun
+hvor roligt det bærer
+urhavets sværm af
+begyndelser; se kun
+hvor enkelt et tegn
+hvori som et væsen
+
+en extract
+so vitally — see
+on its throne of nothing
+the sandstorm’s vortex;
+see how banally enclosed
+in the least small grain of
+sand an ingenious
+fossilised life rests up
+from the trip; just see
+how calmly it bears
+the primal sea’s swarm
+of beginnings; just see
+how simple a sign
+in which like a substance
+
+da extract
+sandheden spejler
+sig; se kun hvor
+sandt, nådigt; lad
+tingene ligge; læg
+ordene til, men lad
+tingene ligge; se
+med hvilken lethed
+de selv finder læ
+bag en sten; se med
+hvilken lethed de
+lister sig ind i
+dit øre og hvisker
+til døden om at gå
+
+en extract
+the truth is reflected;
+just see how
+truly, graciously; let
+things be; add
+words, but let
+things be; see
+how easily they find
+shelter by themselves
+behind a stone; see
+how easily they steal
+into your ear
+and whisper
+to death to go away
+
+# 13
+
+da nonindent
+malmen i malinbjerget findes, mørket
+
+en nonindent
+metal, the ore in the mountain, exists,
+
+da extract
+i grubernes gange og mælken der standser
+i mødrenes bryster, en indgroet frygt hvor
+
+en extract
+darkness in mine shafts, milk not let down
+from mothers’ breasts, an ingrown dread where
+
+da extract
+hviskningerne findes, hviskningerne findes
+cellernes ældste og kærligste medviden
+
+en extract
+whisperings exist, whisperings exist
+the cells’ oldest, fondest collusion
+
+da extract
+betragt dette marked, betragt denne import
+eksport af fædre, halvdelen bødler
+halvdelen pinte soldater, betragt
+
+en extract
+consider this market, consider this import
+and export of fathers, half bullies
+half tortured soldiers, consider
+
+da extract
+deres slægtløse sidste forsvinden, metal
+mod metal, mens mængden af udyrket majs
+vokser og manglen på drikkevand vokser
+
+en extract
+their barren last vanishing, metal
+to metal, as the amount of unsown maize
+grows and the water shortage grows
+
+da extract
+tal snart om mildhed, tal snart om saltets
+mysterium, tal snart om mellemkomst, mennesker,
+mod, fortæl mig at bankernes marmor
+kan spises, fortæl mig at månen er smuk,
+at moafuglen uddød spiser af den grønne
+
+en extract
+speak now of mildness, now of the mystery
+of salt; speak now of mediation, of mankind, of
+courage; tell me that the marble of banks
+can be eaten; tell me that the moon is lovely,
+that the extinct moa eats green melon,
+
+da extract
+melon, at munterheden trives, findes,
+at mosdyret findes, makrelstimen findes,
+metoder til afkald, nedstigning findes,
+fysisk fordeling som i digte af mageløse
+jordgoder findes, medlidenhed findes
+
+en extract
+that merriment exists, is thriving,
+that moss animals and mackerel shoals exist, that
+means of giving up, of descent, exist, and
+physical portioning out, as in poems, of matchless
+earthly goods, that pity exists
+
+da nonindent
+det lagdelte lys, som bag
+lag i en fresco bjergenes
+sne og sneens figurer så
+
+en nonindent
+layered light, as if behind
+layers in a fresco the snow
+on the mountains, its shapes
+
+da extract
+bromagtigt opløste skjulte
+som altid på søvnrejser
+lidt sol bryder frem som fra
+
+en extract
+so like bromine dissolved
+hidden as always on sleeptrips
+a bit of sun breaks through as
+
+da extract
+jordsiden, æggene revner
+og straks som en hvirvel
+af bogfinker hen over hegnet
+
+en extract
+if from the earthside, eggs
+crack and quick as an eddy
+of chaffinches over the hedge
+
+da extract
+tankernes flugt fra min
+krop; deres rørlighed, næb,
+deres vinger og velkomstens
+
+en extract
+the flight of thoughts from my
+body; their aliveness, beaks,
+wings, and the closeness
+
+da extract
+træthed ved andre så snart vi
+slår ned i en birk og det
+afsløres hvorfor vi lever:
+
+en extract
+of the others’ welcome as soon
+as we alight on a birch and the
+reason for our lives is revealed:
+
+da extract
+da birken kom til Lakselv
+og grundlagde byen tog den
+græstotter med til lidt får
+
+en extract
+when the birches came to Lakselv
+and founded the town they brought
+along tufts of grass for a few sheep
+
+da extract
+så andre end bladene selv
+kunne lytte til bladenes
+raslen og se hvordan de
+
+en extract
+so others than the leaves
+could listen to the rustling
+of the leaves and see how they
+
+da extract
+omdanner sollyset næsten
+som til klart grønt vand;
+siden tog fårene af og til
+
+en extract
+transform sunlight almost
+as if to clear green water;
+since then the sheep have sometimes
+
+da extract
+birkene med sig på stranden
+en gåde for strandkantens
+rensdyr der græsser blandt
+
+en extract
+taken the birches along to the beach
+a riddle for the reindeer at the
+shoreline grazing
+
+da extract
+halvlådne sten, den sidste
+rest morgendis svøbt om de
+grålige kroppe, ellers kun
+
+en extract
+among half-furred stones, the last
+bit of morning mist wrapped around
+their greyish bodies, otherwise just
+
+da extract
+vindstille isturkis himmel
+og en edderfugls blomst
+på det frostramte vand
+
+en extract
+windless ice-turquoise sky
+and the flower of an eider duck
+on frost-stricken water
+
+da extract
+morgen den tyvende juni
+
+en extract
+morning June twentieth
+
+da nonindent
+som hvis brinten i
+stjernernes indre
+blev hvid her på
+jorden kan hjernen
+føles hvid
+
+en nonindent
+as if the hydrogen
+at the stars’ cores
+turned white here on earth
+your brain can
+feel white
+
+da extract
+som hvis nogen har
+sammenlagt tiden
+og presset den ind
+gennem døren til
+et rum
+
+en extract
+as if someone had
+pleated up time
+pushed it in
+through the door of
+a room
+
+da extract
+hvor et bord et
+par stole og den
+søvnløses ubrugte
+seng i forvejen
+smuldrer
+
+en extract
+where a table
+two chairs and the unused
+bed of the non-sleeper
+crumble
+in advance
+
+da extract
+som hvis dis fra det
+fremmede verdensrum
+rejste som engle
+sidder man der
+i sit hjørne
+
+en extract
+as if haze from
+alien space
+travelled like angels
+you sit
+in your corner
+
+da extract
+indtil man uden
+at bestemte ting
+sker pludselig
+rejser sig
+og går
+
+en extract
+until without any-
+thing definite happening
+you suddenly
+get up
+and go
+
+da extract
+som en fugl der
+usynligt vågner
+og fodrer sin
+ufødte unge
+ved midnat
+
+en extract
+like a bird that
+invisibly wakens
+and feeds its
+unborn young
+at midnight
+
+da extract
+når ingen kan
+vide om tingene
+sådan som de er
+fortsætter
+
+en extract
+when no one can
+know whether things
+as they are
+go on
+
+da nonindent
+det er temmelig nyt
+
+en nonindent
+it’s new for me
+
+da nonindent01
+at jeg hører cikaderne
+
+en nonindent01
+to be hearing cicadas
+
+da nonindent02
+her hvor det er koldt
+
+en nonindent02
+here where it’s cold
+
+da nonindent03
+og de derfor ikke findes
+
+en nonindent03
+and so there are none
+
+da extract
+måske er det den slags
+
+en extract
+perhaps it’s the kind
+
+da nonindent01
+der altid er sket
+
+en nonindent01
+of thing that’s always happened
+
+da nonindent02
+når lyset rejser nordpå
+
+en nonindent02
+when the light travels north
+
+da nonindent03
+og birken rejser med
+
+en nonindent03
+and the birches go along
+
+da extract
+som når et rum fra en
+
+en extract
+like when a room from
+
+da nonindent01
+drøm på en rejse engang
+
+en nonindent01
+a dream on a trip
+
+da nonindent02
+er netop det rum man
+
+en nonindent02
+is the same room that you
+
+da nonindent03
+kommer hjem og flytter ind
+
+en nonindent03
+come home and move into
+
+da extract
+der findes en tegning
+
+en extract
+there’s a drawing of
+
+da nonindent01
+at et indkapslet barn
+
+en nonindent01
+an encapsuled child
+
+da nonindent02
+der sidder på hug i
+
+en nonindent02
+crouched inside a crystal
+
+da nonindent03
+en ikke særlig stor krystal
+
+en nonindent03
+that’s not especially big
+
+da extract
+det er som i drømme
+
+en extract
+as if in dreams
+
+da nonindent01
+der hverken er drømt
+
+en nonindent01
+dreamed not by people
+
+da nonindent02
+af mennesker, dyr
+
+en nonindent02
+animals or birds
+
+da nonindent03
+eller fugle, måske af insekter
+
+en nonindent03
+but by insects perhaps
+
+da extract
+måske af den rejsende
+
+en extract
+perhaps by the traveller
+
+da nonindent01
+selv der så længe
+
+en nonindent01
+himself who is looking
+
+da nonindent02
+ser væk fra sig selv
+
+en nonindent02
+away from himself for a while
+
+da nonindent03
+og fordeles i birkenes dis
+
+en nonindent03
+and is spread in the birches’ haze
+
+da extract
+måske et barn der
+
+en extract
+perhaps by a child who earnestly
+
+da nonindent01
+ihærdigt studerer en skovsø
+
+en nonindent01
+examines a lake in the forest
+
+da nonindent02
+og finder at sjælen godt
+
+en nonindent02
+and finds that the soul might well
+
+da nonindent03
+kan være drømt af cikader
+
+en nonindent03
+have been dreamed by cicadas
+
+da extract
+det sker undertiden
+
+en extract
+it happens sometimes
+
+da nonindent01
+når sneen er smeltet
+
+en nonindent01
+when the snow melts
+
+da nonindent02
+at alt hvad den skjulte
+
+en nonindent02
+that all it has hidden
+
+da nonindent03
+kommer frem så sjælen kan ses
+
+en nonindent03
+comes out so the soul can be seen
+
+da extract
+ligesom når døden først
+
+en extract
+as when death doesn’t really
+
+da nonindent01
+rigtig bliver synlig
+
+en nonindent01
+become visible until
+
+da nonindent02
+når nogen betragter den gave
+
+en nonindent02
+somebody looks at the gift
+
+da nonindent03
+den døde fik med sig i graven
+
+en nonindent03
+that the dead person took to the grave
+
+da extract
+jeg tror nok den ligner
+
+en extract
+I think it must look like
+
+da nonindent01
+den æske af blakket metal
+
+en nonindent01
+the tarnished metal box
+
+da nonindent02
+jeg længe har vidst
+
+en nonindent02
+I’ve known for a long time
+
+da nonindent03
+at jeg medbringer
+
+en nonindent03
+I’m carrying with me
+
+da extract
+jeg indeholder ikke
+
+en extract
+it doesn’t contain
+
+da nonindent01
+spor andet end en mønt
+
+en nonindent01
+any more than a coin
+
+da nonindent02
+et fingerbøl af sølv
+
+en nonindent02
+a tooth, a silver thimble
+
+da nonindent03
+en tand og en lille tom flaske
+
+en nonindent03
+and a little empty bottle
+
+da extract
+men dens duft når
+
+en extract
+but its scent when
+
+da nonindent01
+man åbner den
+
+en nonindent01
+it’s opened
+
+da nonindent02
+opfylder alt
+
+en nonindent02
+fills everything
+
+da nonindent03
+som solen ved midnat
+
+en nonindent03
+like midnight sun
+
+da extract
+sådan har jeg tænkt mig
+
+en extract
+that’s how I’ve imagined
+
+da nonindent01
+forestillingsevnen
+
+en nonindent01
+being able to imagine:
+
+da nonindent02
+som et klart krystalrum
+
+en nonindent02
+a space of clear crystal
+
+da nonindent03
+der omslutter dødslejet
+
+en nonindent03
+around the deathbed
+
+da extract
+hvor den døde først rigtig
+
+en extract
+where the dead person first
+
+da nonindent01
+ligner sig selv
+
+en nonindent01
+really looks like himself
+
+da nonindent02
+ved at dø fra de andre
+
+en nonindent02
+by dying away from the others
+
+da nonindent
+følger nu søvngængerruten
+hen under højslettens
+brede balsamiske himmel
+på tværs af en isdækket sø
+på langs af en vindgroet ø
+lodret ned gennem ilden
+vandret frem gennem sneen
+indsvøbt i vindens kåbe
+indbagt i solens brød
+kuldkastet holdbar præcis
+indblæst i barfjeldets is
+op over græsstråets tinde
+ned under rodnettets sår
+ud gennem bundfrostens hinde
+ind gennem isplantens hår
+gendøbt i bjergenes kul
+omsvøbt af vandøjets hul
+rundt om en strålesols arme
+ind mellem lyskløftens ben
+frembragt i bjergkongens skrin
+oppebåret udkåret fin
+hensat i luftens vugge
+ad regnbuens veje forsvundet
+ind gennem bjerglærkens æg
+ud gennem sollysets væg
+der færdes de stille
+i Mælkevejens støv
+slår teltene op
+mellem stjernernes løv
+cikorien blomstrer
+så endeløst blå
+det virker som ingen
+er andet end små
+jeg sætter mig ned
+med min lysvågne dukke
+dens øjne af glas
+er så underligt smukke
+min mor træder ud
+med en dampende skål
+lidt kød hun har varmet
+på Nordstjernens bål
+jeg taler med dukken
+der ligner mig selv
+om der man forstår
+ved umisteligt held
+der at vi pludselig
+opstår og fødes
+det at vi straks
+er flere der mødes
+vi låner lidt ild
+det begynder at gløde
+det er som vi selv
+smeltes af fra det døde
+som hvis stjernerne straks
+ved berøring bliver bløde
+
+en nonindent
+following the sleepwalkers’ trail now
+on beneath the high plain’s
+broad balsam skies
+across an icelocked lake
+along a windgrown isle
+straight down through the fire
+straight out through the snow
+wrapped in the cloak of the wind
+baked in the bread of the sun
+thwarted long-lasting precise
+breathed into the stone-mountain’s ice
+over the grassblades’ spires
+under the root system’s sores
+out through the permafrost membrane
+in through the iceplant’s hairs
+rechristened in mountain coal
+cupped in the high tarn’s eye
+around a sunburst’s arms
+between a light-chasm’s thighs
+borne in the mountain king’s jewel chest
+exalted, select, and fine
+preserved in the cradle of air
+gone on the rainbow’s paths
+in through the shore lark’s egg
+out through the sunlight’s wall
+they silently travel
+the Milky Way’s dust
+they set up their tents
+in the leaves of the stars
+the chicory blooms
+so endlessly blue
+as if no one were
+anything except small
+I sit myself down
+with my wide-awake doll
+whose eyes made of glass
+are so strange and so fair
+my mother comes out
+with a steaming bowl
+some meat she has warmed
+at the North Star’s fire
+I talk with the doll
+whose face looks like mine
+about the good luck
+that we cannot lose
+so that we suddenly
+are born, come to be
+so that we all at once
+meet others, increase
+we borrow some fire
+that’s beginning to catch
+as if we ourselves
+had been rendered from death
+as if even stars
+at a touch could grow soft
+
+da nonindent
+deforlianterne findes
+for eksempel dioxin
+der afløver træer og
+buske og ædelægger
+mennesker og dyr
+
+en nonindent
+defoliants exist
+dioxin for instance
+denuding trees and
+shrubs and destroying
+people and animals
+
+da extract
+ved besprøjtning
+af afgrøder, skove
+opnår man løvfald
+og død midt i den
+frodigste sommer;
+
+en extract
+by spraying
+fields and forests
+we achieve fall and death
+in the middle of the most
+luxuriant summer;
+
+da extract
+denne ændring i sorgen
+denne lysfyldte morgen
+der ellers var lykkelig fin
+nu er græsset forsvundet
+og luften har spundet
+sin trådløse giftbaldakin
+over skov over strand
+over mus over mand
+
+en extract
+this shifting of sorrow
+this light-filled morning
+was otherwise happily fair
+but the grass is all gone
+and a canopy’s spun
+not of threads but of poisonous air
+over forest and shore
+over mouse over man
+
+da extract
+nu er himlen en hule
+hvor de visnede fugle
+vil rådne som nedfalden frugt
+hvor de trinløse skyer
+vil findele byer
+og hvirvle dem sirligt på flugt
+som sand gennem sand
+som vand gennem vand
+
+en extract
+now the sky is a cavern
+where withered birds
+will rot like fallen fruit
+where tractionless clouds
+will atomise cities
+and eddy them slyly in flight
+like water through water
+like sand through sand
+
+da extract
+selv de slimede snegle
+er porøse som spejle
+hvis menneskebillede gik tabt
+kun en stilk af en nælde
+vil bladløs fortælle
+hvordan vi fortvivlet har skabt
+en blomsterløs jord
+så kønsløs som klor
+
+en extract
+even slugs with their slime-trails
+are porous as mirrors
+whose human reflections are lost
+just the stalk of a nettle
+explains leaflessly
+that in our despair we have made
+a flowerless earth
+sexless as chlorine
+
+da extract
+se en morgenbleg stjerne
+glimter frem som en hjerne
+der næsten er udbrændt og brugt
+for diffus til at mindes
+en mand og en kvindes
+forening i vingeløs flugt
+i en duftende eng
+i en sommervarm seng
+
+en extract
+see a morningpale star
+gleams above like a brain
+that is almost used up and burned out
+too diffuse to recall
+a man’s and a woman’s
+union in their wingless flight
+in a sweet-scented meadow
+a summerwarm bed
+
+da extract
+se den vandklare kilde
+er størknet og lille
+på vej op af bjerget igen
+og de bundløse roser
+har skjult sig i moser
+umisteligt pollen har lagt hen
+i uendelighed
+der skrives de rent med den samme slags skrift
+som den der bliver skrevet af skyernes drift
+som den Archæopteryx skrev med i sten
+på tværs af en svimlende himmelblå ren
+uendelighed
+uendelighed
+
+en extract
+see the clear waterfall
+has congealed and grown small
+on its way up the rock face again
+and the fathomless roses
+have hidden in bogs
+indelible pollen laid by
+for eternity
+here they are copied fair in a script that is like
+the script that the clouds in their drifting can write
+or the script Archaeopteryx wrote into stone
+across a dizzying sky-blue and clean
+eternity
+eternity
+
+da extract
+se den vindstille hvede
+i den disede hede
+på vej ned i roden igen
+mens de giftige vinde
+der lamslår i blinde
+kun langsomt og tvært farer hen
+i uendelighed
+selv døden bliver aldrig den samme som før
+den jordiske død som de jordiske dør
+nu tælles de ned nu tikker de løs
+mens jordbunden rasler præcis som den frøs
+i uendelighed
+uendelighed
+
+en extract
+see the still becalmed wheat
+in the haze and the heat
+on its way down the rootstock again
+while the poisonous winds
+that paralyse blindly
+move slowly and sullenly on
+to eternity
+never will death itself be the same any more
+earthly death that all mortals must die as before
+they are now counted down they are ticking away
+while the earth crackles just as if it had frozen
+for eternity
+eternity
+
+da extract
+se den dejlige sommer
+de dueblå blommer
+forstøves og fnugger som fjer
+se den gråhvide bynke
+forvitre og synke
+til bunds i det uskabte ler
+i uendelighed
+der skrives de ind i det planløse spil
+hvor ingen kan vide om noget bliver til
+om det der er en krage og lærke og stær
+for altid fortabt vil befinde sig der
+i uendelighed
+uendelighed
+
+en extract
+see the wonderful summer
+the plums blue as doves
+blown to particles feathering down
+see the bindweed greywhite
+as it crumbles and sinks
+to the depths of the unmoulded clay
+for eternity
+there they are signed into the planless game
+where none can tell whether a thing will remain
+whether what’s raven or starling or lark
+lost for all time will find itself there
+in eternity
+eternity
+
+da extract
+mens et elmetræs blade
+fejes hen ad en gade
+om sommeren gråner af sod
+går jeg tur i alléen
+det er mørkt som når sneen
+en aften er frosset til blod
+i uendelighed
+her drejer jeg ind bag en kirkegårds mure
+hvor kun de forstenede duer går ture
+her lister de rundt til de finder et sted
+hvor stenhjertet siger dem freden slår ned
+i uendelighed
+uendelighed
+
+en extract
+while the leaves of an elm tree
+are swept down a street
+and summer is greying with soot
+I walk down the avenue
+dark as when snow
+one evening has frozen to blood
+for eternity
+here I slip in behind an old graveyard’s walls
+where only the petrified doves go for walks
+here they steal about in search of a place
+where the stone heart informs them that peace settles down
+for eternity
+eternity
+
+da nonindent
+alfabeterne findes
+
+en nonindent
+alphabets exist
+
+da extract
+alfabeternes regn
+
+da extract
+regnen der siler
+
+en extract
+the rain of alphabets
+
+da extract
+nåden lyset
+
+en extract
+incessant rain
+
+da extract
+stjernernes stenenes
+mellemrum og former
+
+en extract
+grace light
+
+da extract
+flodens løb
+og sindets bevægelser
+
+en extract
+intervals and forms
+of stones of stars
+
+da extract
+dyrenes spor
+deres gader og veje
+
+en extract
+courses of rivers and
+motions of mind
+
+da extract
+redernes bygning
+menneskets tørst
+
+en extract
+tracks of animals
+their routes and ways
+
+da extract
+dagslys i luften
+musvågens tegn
+
+en extract
+nest-building
+human solace
+
+da extract
+solens og øjets
+samvær i farven
+
+en extract
+daylight in air
+sign of the hawk
+
+da extract
+den vilde kamille
+ved husenes dørtrin
+
+en extract
+union in colour
+of sunlight and eye
+
+da extract
+snebunken vinden
+hushjørnet spurven
+
+en extract
+wild chamomile
+at houses’ doorsteps
+
+da extract
+jeg skriver som vinden
+der skriver med skyernes
+rolige skrift
+
+en extract
+snowbanks wind
+house corners sparrows
+
+da extract
+eller hurtigt over himlen
+i forsvindende strøg
+som med svaler
+
+en extract
+I write like wind
+that writes with clouds’
+tranquil script
+
+da extract
+jeg skriver som vinden
+der skriver i vandet
+stiliseret monotont
+
+en extract
+or quickly across the sky
+in vanishing strokes
+as if with swallows
+
+da extract
+eller ruller med bølgernes
+tunge alfabet
+deres skumtråde
+
+en extract
+I write like wind
+that writes in water
+with stylised monotony
+
+da extract
+skriver i luften
+som planterne skriver
+med stilke og blade
+
+en extract
+or roll with the heavy
+alphabet of waves
+their threads of foam
+
+da extract
+eller rundt som med blomster
+i cirkler og duske
+med prikker og tråde
+
+en extract
+write in air
+as plants write
+stalks and leaves
+
+da extract
+jeg skriver som strandkanten
+skriver en bræmme
+af skaldyr og tang
+
+en extract
+or loopingly as with flowers
+in plumed circles
+filaments dots
+
+da extract
+eller fint som med perlemor
+søstjernens fødder
+og muslingens slim
+
+en extract
+I write like the water’s edge
+writes a tideline
+of seaweed and shells
+
+da extract
+jeg skriver som det tidlige
+forår der skriver
+anemonernes bøgens
+violens og skovsyrens
+fælles alfabet
+
+en extract
+or delicately as mother of pearl
+feet of starfish
+secretions of mussels
+
+da extract
+jeg skriver som den barnlige
+sommer som torden
+over skovkantens kupler
+som hvidguld når lynet
+og hvedemarken modnes
+
+en extract
+I write like the early
+spring that writes
+the common alphabet
+of anemones beeches
+violets wood-sorrel
+
+da extract
+jeg skriver som et dødsmærket
+efterår skriver
+som rastløse håb
+som lysstorme tværs
+gennem tåget erindring
+
+en extract
+I write like childlike
+summer like thunder
+over domed treetops
+whitegold of ripening
+lightning and wheat
+
+da extract
+jeg skriver som vinteren
+skriver som sneen
+og isen og kulden
+i mørket og døden
+skriver
+
+en extract
+I write like autumn
+marked for death
+like restless hopes
+lightstorms slicing
+fog memory
+
+da extract
+jeg skriver som hjertet
+der banker skriver
+skelettets og neglenes
+tændernes hårets
+og kraniets tavshed
+
+en extract
+I write like winter
+write like snow
+and ice and cold
+darkness death
+write
+
+da extract
+jeg skriver som hjertet
+der banker skriver
+hændernes føddernes
+læbernes hudens
+og kønnets hvisken
+
+en extract
+I write like the beating
+heart writes
+the skeleton the nails
+the teeth the hair
+the skull their silence
+
+da extract
+jeg skriver som hjertet
+der banker skriver
+lungernes musklernes
+ansigtets hjernens
+og nervernes lyde
+
+en extract
+I write like the beating
+heart writes
+the hands the feet
+the skin the lips
+the sex their whisper
+
+da extract
+jeg skriver som hjertet
+der banker skriver
+blodets og cellernes
+synernes grådens
+og tungens råb
+
+en extract
+I write like the beating
+heart writes
+the muscles the lungs
+the face the brain
+the nerves their sound
+
+en extract
+I write like the beating
+heart writes
+the blood the cells
+the visions the tears
+the tongue their cry
+
+# 14
+
+da nonindent
+nætterne findes, natskyggen findes
+natsiden, navnløshedens kåbe findes
+
+en nonindent
+nights exist, nightshade exists
+the dark side, the cloak of namelessness exists
+
+da extract
+bevidsthedens nordgrænse findes, dér
+hvor det drømte åbner og lukker sin
+nordlige krone i nastiske drejninger
+
+en extract
+the northern limits of consciousness exist, there
+where what is dreamed opens and closes its
+northerly crown in nastic turnings
+
+da extract
+uden at dagen og natten bestemt er
+placeret, uden at nadir og zenit er
+placeret under eller over og uden at
+
+en extract
+without day and night being definitely
+placed, without nadir, zenith
+straight below or above and without
+
+da extract
+naos, det inderste rum som er cellens
+vil røbe om frøet i en indvendig himmel
+samler bevidsthedens grænser i et punkt
+et blomstrende punkt hvori som lidt solskin
+istiderne findes, istiderne findes
+
+en extract
+the naos, the innermost space of the cell
+revealing whether the seed in an inner sky
+gathers the limits of consciousness into a point
+a flowering point where like a bit of sunshine
+ice ages exist, ice ages exist
+
+da extract
+hvori som lidt ild insekternes vingeløse
+Nike findes, og der hverken er sejr
+eller nederlag til, kun ingentings trøst;
+navnenes trøst, at ingenting kaldes ved
+navn, at navneløsheden kaldes ved navn
+
+en extract
+where like a bit of fire the insects’ wingless
+Nike exists, neither victory nor
+defeat, just the solace of nothing;
+the solace of names, that nothing has
+a name, namelessness has a name
+
+da nonindent
+at navnene findes, navne som narhvalen
+nælden, navne som nelliken, natuglen
+navne som natravnen, nattergalen, nymånen
+navne som natlys, najader, og de anderledes
+navne hvor et ord når det nævnes er en duft
+som narhvalens navn for arktiske have,
+som nældernes navne for feber, som nellikens
+
+en nonindent
+that names exist, names like narwhal
+nettle, names like carnation, tawny owl
+and nightjar, names like nightingale, new moon
+evening primrose, naiads, and the other kind of
+name in which a word when named is scent
+like the narwhal’s name for Arctic seas,
+the nettles’ names for fever, like carnations’
+
+da extract
+navne for genskær af lys i fabrikshvide
+nætter, som natuglens, natravnens navne
+for fjer, som nattergalens navne for det at
+være jordsanger skjult i de fugtige krat
+som nymånens navne for Jorden og Solen
+som natlysfamiliens navne for slægtskab
+najadernes navne for det at være vandaks
+og hviske najadernes navne i vinden
+
+en extract
+names for light reflected into factory-white
+nights, like the tawny owl’s, the nightjar’s names
+for feathers, the nightingale’s names for being
+an Old World warbler hidden in moist thickets
+like the new moon’s names for Earth and Sun
+the evening primrose family’s names for kinship
+like the naiads’ names for being pondweed
+whispering the naiads’ names in wind
+
+da nonindent
+her står jeg så ved Barentshavet
+der ligger altså Barentshavet
+det ser ud som om Barentshavet
+altid er alene med Barentshavet
+men omme bag ved Barentshavet
+slår vandet ind mod Spitzbergen
+og lige bag ved Spitzbergen
+driver isen rundt i Ishavet
+og lige bag ved Ishavet
+sidder isen fast på Nordpolen
+og lige bag ved Nordpolen
+ser det ud som om Beauforts hav
+er helt alene med Beauforts hav
+men omme bag Beauforts hav
+ser det ud som om Alaska
+altid kun har set Alaska
+men bag Alaska
+ligger så omsider Stillehavet
+det ser ud som om Stillehavet
+altid er alene med Stillehavet
+men omme bag ved Stillehavet
+driver isen rundt i Ishavet
+og lige bag ved Ishavet
+sidder isen fast på Sydpolen
+og lige bag ved Sydpolen
+er der vand igen i Sydhavet
+og lige bag ved Sydhavet
+slår vandet ind mod Afrika
+og lige bag ved Afrika
+lidt vand igen i Middelhavet
+og lige bag ved Middelhavet
+ser det ud som om Tyrkiet
+er helt alene med Tyrkiet
+men omme bag Tyrkiet
+er der vand igen i Sortehavet
+og lige bag ved Sortehavet
+ser det ud som om Rumænien
+altid er alene med Rumænien
+men lige bag Rumænien
+ligger så Sovjet
+det ser ud som om Sovjet
+er helt alene med Sovjet
+men lige bag Sovjet
+ligger altså Finland
+og ser ud som om Finland
+er helt alene bare Finland
+men omme bag ved Finland
+ligger altså Finnmark
+og lige bag ved Finnmark
+der ligger altså Barentshavet
+plane og forchromet
+under lyskuplen
+her står jeg så ved Barentshavet
+helt alene ved Barentshavet
+aften den 24. juni
+
+en nonindent
+so here I stand by the Barents Sea
+out there is the Barents Sea
+and it looks like the Barents Sea
+is always alone with the Barents Sea
+but around behind the Barents Sea
+the water stops at Spitzbergen
+and just behind Spitzbergen
+ice drifts in the Arctic Ocean
+and just behind the Arctic Ocean
+there's solid ice at the North Pole
+and just behind the North Pole
+it looks like the Beaufort Sea
+is all alone with the Beaufort Sea
+but around in back of the Beaufort Sea
+it looks like Alaska
+has always seen only Alaska
+but behind Alaska
+at last is the Pacific Ocean
+it looks like the Pacific Ocean
+is always alone with the Pacific Ocean
+but around behind the Pacific Ocean
+ice drifts in the Antarctic Ocean
+and just behind the Antarctic Ocean
+there’s solid ice at the South Pole
+and just behind the South Pole
+there’s water again in the South Atlantic
+and just behind the South Atlantic
+the water stops at Africa
+and just behind Africa
+some water again in the Mediterranean
+and just behind the Mediterranean
+it looks like Turkey
+is all alone with Turkey
+but around in back of Turkey
+there’s water again in the Black Sea
+and just behind the Black Sea
+it looks like Romania
+is always alone with Romania
+but right behind Romania
+there’s the Soviet Union
+it looks like the Soviet Union
+is all alone with the Soviet Union
+but right behind the Soviet Union
+there’s Finland
+looking like Finland
+is all alone just Finland
+but around behind Finland
+there’s Finnmark
+and just behind Finnmark
+there’s the Barents Sea
+planed and chrome plated
+beneath a dome of light
+so here I stand by the Barents Sea
+all alone by the Barents Sea
+evening June 24th
+
+da nonindent
+kanalen i Gävle er blank som metal
+og uanset vejret spejler den altid
+et gråvejr et sted, så man aldrig
+får mod til at ridse sit hjerte i
+vandet og blindt som et digt der
+er skrevet for tidligt flyde bort
+fra kommunens statister på torvet
+
+en nonindent
+the Gävle canal is as shiny as metal
+and regardless of weather it always reflects
+a cloud cover somewhere, so you never
+feel up to carving your heart in
+the water and, blindly as a poem that
+is written too soon, flowing away
+from the county extras in the square
+
+da extract
+gaderne ligger som nogen engang må
+have lagt dem og venter, flisernes
+lys stiger op mod en tilgroet himmel
+og først kl. fem når fabriksporten
+åbnes ser man et barn løbe hen til
+sin far mens han ligner en fremmed
+og dele hans uro før den forsvinder
+
+en extract
+the streets lie as someone must have
+laid them out once, waiting, the light from
+pavements rises toward an overgrown sky
+and not until five o’clock when the factory gate
+opens do you see a child run over to
+her father while he looks like a stranger
+and share his uneasiness before it disappears
+
+da extract
+det er her i en nedslidt provins
+hvor gadernes træer fra time til
+time kaster længere skygge end før
+samler vand og våger at de voksne
+holder hus med deres tilmålte
+tid og kun nødig vil længes
+
+en extract
+it is here in a worn-down province
+where from hour to hour the street-trees
+cast shadows longer than before
+collect water and watch that the adults
+keep track of their allotted time
+and preferably feel no regret
+
+da extract
+det er her i en nedslidt provins
+hvor ingen citrontræer blomstrer
+hvor svalerne end ikke kommer og
+sommeren næsten er dyster af sol
+at folk ligger vågne og tænker
+mens haverne langsomt slår rod
+
+en extract
+it is here in a worn-down province
+where no citrus trees bloom
+where the swallows do not even come and
+summer is almost somber with sun
+that people lie awake and think
+while the gardens slowly take root
+
+da extract
+kun enkelte hunde er fremme endnu
+en ørn slår sig ned på en dyne af
+luft, mens et barn i sin seng får
+det trykte tapet til at ligne en
+himmel der snart må klare op
+
+en extract
+only a few dogs are still about
+an eagle lands on a coverlet of
+air, while a child in her bed gets
+the printed wallpaper to look like
+a sky that will clear up soon
+
+da extract
+det er her i en nedslidt provins
+med et vemod som ingen tør elske
+at gruset på slotsparkens stier
+bliver ved med at knirke i årevis
+efter at de sidste forelskede gik
+
+en extract
+it is here in a worn-down province
+with a wistfulness no one dares love
+that the gravel on the paths of the manor grounds
+keeps creaking for years
+after the last lovers have gone away
+
+da extract
+det er her i en nedslidt provins
+at den sidste flok huse for længst
+har gjort holdt, så folk kan se TV
+og opsamle tårer til senere brug
+
+en extract
+it is here in a worn-down province
+that the last flock of houses has long
+since stopped so people can watch TV
+and save up tears for future use
+
+da extract
+kun en redeløs spurv flakser op
+kun et pust som fra alle tings
+lovløs sorg får et træ
+til at hviske en sort ubestemmelig lyd
+
+en extract
+only a nestless sparrow flutters up into the air
+only a breath as if from everything’s
+lawless sorrow makes a tree
+whisper a black indefinite sound
+
+da extract
+før toget med et ryk går i gang
+og jeg snart kun vil huske den
+tomme perron og bænken med den
+
+en extract
+before the train starts up with a jerk
+and I soon will remember only the
+empty platform and the bench with the
+
+da extract
+våde avis, som vinden der bladrer
+så tænksomt i alt aldrig fik
+løftet, mens resten sluses ind
+
+en extract
+wet newspaper, which the wind,
+leafing so pensively through everything, never
+could lift, while the rest is washed into
+
+da extract
+i min barndom et sted i et
+tørt uudryddeligt hus hvor
+
+en extract
+my childhood somewhere in a
+dry indestructible house where
+
+da extract
+jeg står ved et vindue og ser
+på toget i den silende regn
+
+en extract
+I stand by a window and look
+at the train through the sheets of rain
+
+da extract
+aften den sekstende juni
+
+en extract
+evening June sixteenth
+
+da nonindent
+der er noget særligt
+
+en nonindent
+there’s something specific
+
+da nonindent01
+ved duernes måde
+
+en nonindent01
+about the doves’ way
+
+da nonindent02
+at leve mit liv
+
+en nonindent02
+of living my life
+
+da nonindent03
+som en selvfølge på
+
+en nonindent03
+as a natural result
+
+da extract
+i dag da det regner
+
+en extract
+of today since it’s raining
+
+da nonindent01
+og altid i regnvejr
+
+en nonindent01
+and as always in rain
+
+da nonindent02
+lander de blødt
+
+en nonindent02
+they softly alight
+
+da nonindent03
+på husets gesims
+
+en nonindent03
+on the window ledge
+
+da extract
+så tæt ved det hvide
+
+en extract
+so close to the white
+
+da nonindent01
+papir at de nemt
+
+en nonindent01
+piece of paper that they
+
+da nonindent02
+kan se om jeg digter
+
+en nonindent02
+can easily see if
+
+da nonindent03
+om duer eller regn
+
+en nonindent03
+I’m writing of doves or of rain
+
+da extract
+det kan føles forkert
+
+en extract
+it can feel wrong
+
+da nonindent01
+at det aldrig er duerne
+
+en nonindent01
+that it never is doves
+
+da nonindent02
+selv der med sindsro
+
+en nonindent02
+themselves impassively
+
+da nonindent03
+digter om duer
+
+en nonindent03
+writing of doves
+
+da extract
+om regnen måske
+
+en extract
+of the rain perhaps
+
+da nonindent01
+eller ruden de kun
+
+en nonindent01
+or the pane that they just
+
+da nonindent02
+med et rundt lille øje
+
+en nonindent02
+with a round little eye
+
+da nonindent03
+ser mig så sløret igennem
+
+en nonindent03
+see me so blurrily through
+
+da extract
+de ved ikke selv
+
+en extract
+they don’t realise
+
+da nonindent01
+at især deres flugt
+
+en nonindent01
+that especially their flight
+
+da nonindent02
+deres vinger forbindes
+
+en nonindent02
+and their wings are connected
+
+da nonindent03
+med blidhed og fred
+
+en nonindent03
+with gentleness, peace
+
+da extract
+et forhold der snart
+
+en extract
+a relationship making it
+
+da nonindent01
+gør det næsten umuligt
+
+en nonindent01
+practically impossible
+
+da nonindent02
+at omtale duer som duer
+
+en nonindent02
+to mention doves as doves
+
+da nonindent03
+i et digt for eksempel
+
+en nonindent03
+for instance in a poem
+
+da extract
+eller duer i regn som
+
+en extract
+or to mention doves in rain
+
+da nonindent01
+de pjuskede drivvåde
+
+en nonindent01
+as the drenched and dishevelled
+
+da nonindent02
+duer i regn de er
+
+en nonindent02
+doves in rain that they are
+
+da nonindent03
+i dag da det regner
+
+en nonindent03
+today since it’s raining
+
+da extract
+det var egentlig først
+
+en extract
+it was actually first
+
+da nonindent01
+i Berlevågs havn
+
+en nonindent01
+at Berlevågs harbour
+
+da nonindent02
+hvor mågerne raser
+
+en nonindent02
+where the gulls rage
+
+da nonindent03
+i kulden i juni
+
+en nonindent03
+in the cold in June
+
+da extract
+at duernes fravær
+
+en extract
+that the absence of doves
+
+da nonindent01
+deres udeblevne
+
+en nonindent01
+of their arbitrary
+
+da nonindent02
+grundløse pludren
+
+en nonindent02
+clucking and crooning
+
+da nonindent03
+slog mig med noget
+
+en nonindent03
+struck me with something
+
+da extract
+der ikke var undren
+
+en extract
+that was not wonder
+
+da nonindent01
+men ganske almindelig
+
+en nonindent01
+but quite ordinary
+
+da nonindent02
+dagligdags åbenhed
+
+en nonindent02
+everyday openness
+
+da nonindent03
+næsten med fromhed
+
+en nonindent03
+almost a reverence
+
+da extract
+som lå der i verden
+
+en extract
+as if the world held
+
+da nonindent01
+et storslået soleklart felt
+
+en nonindent01
+a magnificent crystalline sphere
+
+da nonindent02
+af centimetersmå skridt
+
+en nonindent02
+of minuscule steps
+
+da nonindent03
+på vinrøde fødder
+
+en nonindent03
+on wine-red feet
+
+da extract
+en altid forelsket
+
+en extract
+an ever-enamoured
+
+da nonindent01
+og indviklet sporing
+
+en nonindent01
+complex tracking-down
+
+da nonindent02
+af mad og begær
+
+en nonindent02
+of food and desire
+
+da nonindent03
+i dagslysets hule
+
+en nonindent03
+in the caverns of day
+
+da extract
+en mumlen af lyst
+
+en extract
+a murmuring wanting
+
+da nonindent01
+til sekund for sekund
+
+en nonindent01
+from second to second
+
+da nonindent02
+at undgå sin død
+
+en nonindent02
+to circumvent death
+
+da nonindent03
+og meddele nærvær
+
+en nonindent03
+and communicate presence
+
+da extract
+det slog mig at digte
+
+en extract
+it struck me that poems
+
+da nonindent01
+om duer om regn
+
+en nonindent01
+about doves about rain
+
+da nonindent02
+må begynde i et æg
+
+en nonindent02
+must start in an egg
+
+da nonindent03
+i en svimlende dråbe
+
+en nonindent03
+in a dizzying drop
+
+da extract
+begynde med dun
+
+en extract
+must start out with down
+
+da nonindent01
+med dråbernes samling
+
+en nonindent01
+with a gathering of drops
+
+da nonindent02
+med fjer efter fjer
+
+en nonindent02
+with feather on feather
+
+da nonindent03
+i en eftersøgt tegning
+
+en nonindent03
+a searched-out design
+
+da extract
+med grålige brunlige
+
+en extract
+with greyish and brownish
+
+da nonindent01
+hvidlige blålige
+
+en nonindent01
+and whitish and bluish
+
+da nonindent02
+uberørte farver
+
+en nonindent02
+immaculate colours
+
+da nonindent03
+og vandlag i luften
+
+en nonindent03
+with strata of water in air
+
+da extract
+med et hjerte et sted
+
+en extract
+with a heart somewhere
+
+da nonindent01
+med lunger så fine
+
+en nonindent01
+with delicate lungs
+
+da nonindent02
+som bregner af ilt
+
+en nonindent02
+like bracken of oxygen
+
+da nonindent03
+og med skyernes spind
+
+en nonindent03
+with the clouds’ web
+
+da extract
+med et fravær og straks
+
+en extract
+with absence and at
+
+da nonindent01
+med en samtidig tørst
+
+en nonindent01
+the same time with a thirst
+
+da nonindent02
+efter menneskers lykke
+
+en nonindent02
+for human happiness
+
+da nonindent03
+med samtlige mulige
+
+en nonindent03
+with all the possible
+
+da extract
+ord gjort umulige
+
+en extract
+words made impossible
+
+da nonindent01
+uden betydning
+
+en nonindent01
+meaningless so that
+
+da nonindent02
+så regnen kan regne
+
+en nonindent02
+the rain can rain down
+
+da nonindent03
+og duerne lande
+
+en nonindent03
+and the doves can alight
+
+da extract
+så blødt på det hvide
+
+en extract
+so softly upon
+
+da nonindent01
+papir at jeg nemt
+
+en nonindent01
+the white paper that I
+
+da nonindent02
+kan se om de digter
+
+en nonindent02
+can easily see if they’re
+
+da nonindent03
+om mig eller dig
+
+en nonindent03
+writing of me or of you
+
+da extract
+om regnen måske
+
+en extract
+of the rain perhaps
+
+da nonindent01
+eller freden de kun
+
+en nonindent01
+or the peace that they just
+
+da nonindent02
+med et rundt lille øje
+
+en nonindent02
+with a round little eye
+
+da nonindent03
+ser os så sløret igennem
+
+en nonindent03
+see us so blurrily through
+
+da extract
+morgen den 26. juni
+
+en extract
+morning June 26th
+
+da nonindent
+nu går drømmerne åbenlyst rundt
+med drømmene uden på huden
+
+en nonindent
+dreamers go around openly now
+with dreams out on their skin
+
+da extract
+med hinders og indvoldes
+perlemorsskær fordelt over
+
+en extract
+with the lustre of membranes
+and entrails spread over
+
+da extract
+kroppen som gammeldags
+landkort; de særlige
+
+en extract
+their bodies like old-fashioned
+maps; the specific
+
+da extract
+øjeblikskurver aftegner
+fremtidens kim som en
+
+en extract
+contours of the moment show
+the future’s embryo
+
+da extract
+smitsom fossil beplantning
+og jordskorpen knækker som
+
+en extract
+as a contagious stand of fossils
+and the earth’s surface cracks like
+
+da extract
+afskallet lærred; drømmenes
+stof og alt hvad et menneske
+
+en extract
+peeling canvas; the stuff
+of dreams and everything else a human
+
+da extract
+ellers var gjort af flagrer
+i luften, enkelte klassiske
+
+en extract
+being was made of flutters
+in the air, a few classic
+
+da extract
+strimler af gaze og flor
+om de glasklare tanker
+
+en extract
+strips of veil and gauze
+around the glassclear thoughts
+
+da extract
+mens dråber af sorg bryder
+frem på en renvasket pande;
+
+en extract
+while drops of sorrow break out
+on a forehead washed clean;
+
+da extract
+som når skibe med vindblæste
+døde forlader det synkende
+
+en extract
+as when ships with windblown
+dead leave the sinking
+
+da extract
+vand og står ind gennem byen
+i den krybende sol samles
+
+en extract
+water and put in through the town
+in the creeping sun they always
+
+da extract
+de altid en sommergrå aften
+med vold og anstændighed
+
+en extract
+gather on a summer-grey evening
+with violence and decency
+
+da extract
+lænket til skrøbeligt kød som
+sodflager lænket til sæbe;
+
+en extract
+bound to fragile flesh like
+particles of soot bound to soap;
+
+da extract
+hvem som helst sidder som gidsel
+et sted i bevidsthedens jungle
+
+en extract
+anyone at all is a hostage
+somewhere in the jungle of consciousness
+
+da extract
+og bygger på en kirke af sne
+hvem som helst tisker om
+
+en extract
+and builds on a church of snow
+anyone at all raves on about
+
+da extract
+gudernes straf om kaos der
+når til sit kogepunkt længe
+
+en extract
+the gods’ punishment about chaos
+that reaches its boiling point far
+
+da extract
+før tiden og hvem som helst
+smisker sig usete ind hos
+
+en extract
+too soon and anyone at all
+curries favour unseen
+
+da extract
+en halstarrig ordens patruljer
+hvor de afleverer livet i pant;
+
+en extract
+with the patrols of an unyielding
+order where they hand over life as collateral;
+
+da extract
+kun de fattige lever af frygt
+for at dø før de rige giver
+
+en extract
+only the poor live on in fear
+of dying before the rich give
+
+da extract
+endelig ordre til
+noget som helst;
+
+en extract
+orders at last for
+anything at all;
+
+da extract
+og mens urene løber om kap over
+kloden og hjerterne fyldes med
+
+en extract
+and as clocks run races over
+the planet and hearts are filled with
+
+da extract
+sten efter sten der aldrig vil
+falde mens maskinerne udtænker
+
+en extract
+stone after stone that never will
+fall as machines devise
+
+da extract
+andre maskiner som om det var
+muligt at skjule at fremtiden
+
+en extract
+other machines as if it were
+possible to conceal that the future
+
+da extract
+ingenting skjuler i dag mens der
+ingenting sker mens jeg sidder
+
+en extract
+conceals nothing today as
+nothing happens as I sit
+
+da extract
+et sted i min lejlighed nærmest
+apatisk i hvert fald alene med
+
+en extract
+somewhere in my apartment almost
+apathetic alone at any rate with
+
+da extract
+femten kilo hvidt papir i dag
+mens den elvte august langsomt
+
+en extract
+thirty pounds of white paper today
+as August eleventh slowly
+
+da extract
+men sikkert forsvinder mens
+fuldmånen lukker sine øjne
+
+en extract
+but surely vanishes as
+the full moon closes its eyes
+
+da extract
+for den blændende sol i dag
+går en kvinde tilbage til
+
+en extract
+against the dazzling sun today
+a woman returns to
+
+da extract
+landsbyen ser om der er
+vand i den forkullede
+
+en extract
+the village sees if there is
+water in the charred
+
+da extract
+brønd roder lidt i jorden
+med en pind men samler
+
+en extract
+well grubs a bit in the ground
+with a stick but picks up
+
+da extract
+ingenting op sætter sig og
+venter tror hun kan høre
+
+en extract
+nothing and sits down and
+waits thinks she can hear
+
+da extract
+en hund i det fjerne fra
+skoven der ryger endnu
+
+en extract
+a dog in the distance from
+the forest that’s still smoking
+
+da extract
+og som stadigvæk ryger
+da nattekulden kommer
+
+en extract
+and that keeps on smoking
+when the night chill comes
+
+da extract
+tror hun kan høre stjernernes
+flammer da stjernerne tændes
+
+en extract
+thinks she can hear the stars’
+flames when the stars come out
+
+da extract
+lige der hvor huset med
+hegnet og haven har ligget
+
+en extract
+right where the house with
+the fence and garden used to be
+
+da extract
+tror hun vil hvile
+sig lidt og dør
+
+en extract
+thinks she’ll rest
+a bit and dies
+
+da extract
+en fugl flyver væk lidt støv
+hvirvles op en vanddråbe falder
+
+en extract
+a bird flies off a bit of dust
+eddies up a drop of water falls
+
+da extract
+på et blad på en gren på et træ
+på en jord og regnen begynder
+
+en extract
+on a leaf on a branch on a tree
+on an earth and the rain starts
+
+da extract
+at græde noteres et sted i det
+fjerne som regn på computerens
+
+en extract
+to cry noted somewhere in the
+distance as rain on the computer
+
+da extract
+tegning lidt infrarød stråling
+fra skoven der stadigvæk ryger
+
+en extract
+screen a bit of infrared radiation
+from the forest that’s still smoking
+
+da extract
+er irrelevant og stråling fra
+dyr i bevægelse aftegnes ikke
+
+en extract
+is irrelevant and radiation
+from moving animals does not show up
+
+da extract
+en flok børn søger ly i en hule
+kun iagttaget stumt af en hare
+
+en extract
+a group of children seeks shelter in a cave
+mutely observed only by a hare
+
+da extract
+som om de var børn i barndommens
+eventyr hører de vinden fortælle
+
+en extract
+as if they were children in childhood’s
+fairy-tales they hear the wind tell
+
+da extract
+om de afbrændte marker
+men børn er de ikke
+
+en extract
+of the burned-off fields
+but they are no children
+
+da extract
+der er ingen der bærer dem mere
+
+en extract
+no one carries them any more
+
+</script>
+<div id="poem"></div>
+</div>
+<svg class="tri-lines" id="tri-lines" aria-hidden="true"></svg>
+<script>
+(function () {
+  const poem = document.querySelector(".wrap");
+  const svg = document.getElementById("tri-lines");
+  const NS = "http://www.w3.org/2000/svg";
+
+  const STOP = {
+    da: new Set('a ad af alle alt altså at bag bare blandt da de dem den denne der deres det dette din dine disse dit du efter eller en end er et for fra før gennem har have helt hen her hos hun hvis hvor i ikke in ind is jeg kan kun lidt lige man med mellem men mere min mit mod ned nogen noget nogle nok nu når og også om omme op os over på selv sin sine sit skal som så til ud uden under var ved vi vil'.split(' ')),
+    en: new Set('a about above across after against all along also always am among an and any anyone anything are around as at be because been before behind being below beneath between but by can could do does done down either even ever every everything except few for from had has have having he her here himself his how i if in inside into is it its itself just like many may me might mine more most must my myself neither never no nor not nothing of off on one only onto or other others our ourselves out outside over own same several she since so some somebody someone something still such than that the their them themselves then there these they this those through to too toward under until up upon us very was we were what when where whether which while who whose will with within without you your'.split(' ')),
+  };
+
+  function coreWord(word) {
+    return word
+      .replace(/[\u2018\u2019\u201A\u2032]/g, "'")
+      .replace(/^[^\p{L}\p{N}_]+|[^\p{L}\p{N}_]+$/gu, "")
+      .toLowerCase();
+  }
+
+  function firstLetter(word) {
+    const m = word.match(/[A-Za-zÆØÅæøå]/);
+    return m ? m[0].toLowerCase() : null;
+  }
+
+  function appendLine(parent, line, lang) {
+    if (line === "~") {
+      parent.append("\u00a0");
+      return;
+    }
+    for (const part of line.split(/(\s+)/)) {
+      if (!part) continue;
+      if (/^\s+$/.test(part)) {
+        parent.append(part);
+        continue;
+      }
+      const letter = firstLetter(part);
+      if (!letter || STOP[lang].has(coreWord(part))) {
+        parent.append(part);
+        continue;
+      }
+      const span = document.createElement("span");
+      span.className = "w";
+      span.dataset.letter = letter;
+      span.textContent = part;
+      parent.append(span);
+    }
+  }
+
+  function renderPoem() {
+    const src = document.getElementById("poem-source").textContent.replace(/\r\n/g, "\n");
+    const mount = document.getElementById("poem");
+    const sections = [];
+    let section = null;
+    let para = null;
+    function flushPara() {
+      if (para && section && para.lines.length) section[para.lang].push(para);
+      para = null;
+    }
+    for (const raw of src.split("\n")) {
+      const line = raw.replace(/\s+$/g, "");
+      const sec = line.match(/^#\s+(\d+)\s*$/);
+      if (sec) {
+        flushPara();
+        section = { n: sec[1], da: [], en: [] };
+        sections.push(section);
+        continue;
+      }
+      if (line.startsWith("#")) continue;
+      const head = line.match(/^(da|en)\s+(nonindent|nonindent01|nonindent02|nonindent03|extract)\s*$/);
+      if (head) {
+        flushPara();
+        para = { lang: head[1], cls: head[2], lines: [] };
+        continue;
+      }
+      if (!line) {
+        flushPara();
+        continue;
+      }
+      if (para) para.lines.push(line);
+    }
+    flushPara();
+    for (const section of sections) {
+      const secEl = document.createElement("section");
+      secEl.className = "section";
+      secEl.dataset.chapter = section.n;
+      const h = document.createElement("h2");
+      h.className = "section-num";
+      h.textContent = section.n;
+      secEl.append(h);
+      const cols = document.createElement("div");
+      cols.className = "cols";
+      for (const lang of ["da", "en"]) {
+        const col = document.createElement("div");
+        col.className = "col col-" + lang;
+        col.lang = lang;
+        for (const info of section[lang]) {
+          const p = document.createElement("p");
+          p.className = info.cls;
+          info.lines.forEach((line, i) => {
+            if (i) p.append(document.createElement("br"));
+            appendLine(p, line, lang);
+          });
+          col.append(p);
+        }
+        cols.append(col);
+      }
+      secEl.append(cols);
+      mount.append(secEl);
+    }
+  }
+
+
+  renderPoem();
+
+  function normalize(text) {
+    return text
+      .toLowerCase()
+      .replace(/[\u2018\u2019\u201A\u2032]/g, "'")
+      .replace(/^[^\p{L}\p{N}']+|[^\p{L}\p{N}']+$/gu, "")
+      .replace(/'+/g, "'");
+  }
+
+  function wrapBareWords(root) {
+    root.querySelectorAll(".section .w").forEach((el) => el.classList.add("tok"));
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    for (const node of nodes) {
+      const parent = node.parentElement;
+      if (!parent || parent.closest("header, script, style") || parent.classList.contains("tok")) continue;
+      const raw = node.textContent;
+      if (!raw || !raw.trim()) continue;
+      const frag = document.createDocumentFragment();
+      for (const part of raw.split(/(\s+)/)) {
+        if (!part) continue;
+        if (/^\s+$/.test(part)) {
+          frag.append(part);
+          continue;
+        }
+        const span = document.createElement("span");
+        span.className = "tok";
+        span.textContent = part;
+        frag.append(span);
+      }
+      node.parentNode.replaceChild(frag, node);
+    }
+  }
+
+  wrapBareWords(poem);
+
+  function ngramsFor(words) {
+    function ngramAt(i, n) {
+      let s = words[i].key;
+      for (let k = 1; k < n; k++) s += " " + words[i + k].key;
+      return s;
+    }
+    function countNgram(seq, n) {
+      let c = 0;
+      for (let i = 0; i <= words.length - n; i++) {
+        if (ngramAt(i, n) === seq) c++;
+      }
+      return c;
+    }
+    function expandRun(positions, len) {
+      let pos = positions.slice();
+      while (true) {
+        if (pos.some((p) => p + len >= words.length)) break;
+        const next = words[pos[0] + len].key;
+        if (pos.some((p) => words[p + len].key !== next)) break;
+        const newLen = len + 1;
+        if (countNgram(ngramAt(pos[0], newLen), newLen) !== pos.length) break;
+        len = newLen;
+      }
+      while (true) {
+        if (pos.some((p) => p < 1)) break;
+        const prev = words[pos[0] - 1].key;
+        if (pos.some((p) => words[p - 1].key !== prev)) break;
+        const newLen = len + 1;
+        const shifted = pos.map((p) => p - 1);
+        if (countNgram(ngramAt(shifted[0], newLen), newLen) !== pos.length) break;
+        len = newLen;
+        pos = shifted;
+      }
+      return { pos, len, key: ngramAt(pos[0], len) };
+    }
+    const triStarts = new Map();
+    for (let i = 0; i <= words.length - 3; i++) {
+      const key = ngramAt(i, 3);
+      if (!triStarts.has(key)) triStarts.set(key, []);
+      triStarts.get(key).push(i);
+    }
+    const local = new Map();
+    for (const [, starts] of triStarts) {
+      if (starts.length < 2) continue;
+      const { pos, len, key } = expandRun(starts, 3);
+      const allUncolored = Array.from({ length: len }, (_, k) => words[pos[0] + k].el)
+        .every((el) => !el.classList.contains("w"));
+      if (allUncolored) continue;
+      if (!local.has(key)) {
+        local.set(key, pos.map((p) => {
+          const inst = [];
+          for (let k = 0; k < len; k++) inst.push(words[p + k].el);
+          return inst;
+        }));
+      }
+    }
+    return local;
+  }
+
+  const groups = new Map();
+  for (const sel of [".col-da", ".col-en"]) {
+    const toks = [...poem.querySelectorAll(sel + " .tok")].filter((el) => normalize(el.textContent));
+    const words = toks.map((el) => ({ el, key: normalize(el.textContent) }));
+    for (const [key, insts] of ngramsFor(words)) {
+      const prefixed = sel + "::" + key;
+      if (!groups.has(prefixed)) groups.set(prefixed, insts);
+    }
+  }
+
+  function wrapGaps(left, right) {
+    if (!left || !right || left.parentNode !== right.parentNode) return [];
+    const gaps = [];
+    let node = left.nextSibling;
+    while (node && node !== right) {
+      const next = node.nextSibling;
+      if (node.nodeName === "BR") break;
+      if (node.nodeType === Node.TEXT_NODE && /[ \t]/.test(node.textContent) && !/\n/.test(node.textContent)) {
+        const span = document.createElement("span");
+        span.className = "tri tri-gap";
+        span.textContent = node.textContent;
+        node.parentNode.replaceChild(span, node);
+        gaps.push(span);
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains("tri-gap")) {
+        gaps.push(node);
+      }
+      node = next;
+    }
+    return gaps;
+  }
+
+  const startKey = new Map();
+  const tokenKeys = new Map();
+  function mark(el, key, pos) {
+    el.classList.add("tri");
+    if (!tokenKeys.has(el)) tokenKeys.set(el, []);
+    if (!tokenKeys.get(el).includes(key)) tokenKeys.get(el).push(key);
+    if (pos === 0) {
+      const prev = startKey.get(el);
+      if (!prev || key.split(" ").length > prev.split(" ").length) startKey.set(el, key);
+    }
+  }
+  for (const [key, insts] of groups) {
+    for (const inst of insts) {
+      const wordEls = inst.slice();
+      const gaps = [];
+      for (let i = 0; i < wordEls.length - 1; i++) {
+        gaps.push(...wrapGaps(wordEls[i], wordEls[i + 1]));
+      }
+      inst.push(...gaps);
+      inst.forEach((el, pos) => mark(el, key, pos));
+    }
+  }
+
+  function pickKey(el) {
+    const keys = tokenKeys.get(el) || [];
+    if (!keys.length) return null;
+    const rank = (k) => [k.split(" ").length, groups.get(k).length];
+    const best = (list) => list.slice().sort((a, b) => {
+      const [la, ca] = rank(a);
+      const [lb, cb] = rank(b);
+      return lb - la || cb - ca;
+    })[0];
+    if (startKey.has(el)) return startKey.get(el);
+    return best(keys);
+  }
+
+  function hitColor(inst) {
+    const first = inst[0];
+    const letter = (first.getAttribute("data-letter") || first.textContent.trim()[0] || "a").toLowerCase();
+    const i = "abcdefghijklmnopqrstuvwxyz".indexOf(letter);
+    const hue = i < 0 ? 0 : (i * 360) / 26;
+    return `hsl(${hue.toFixed(1)}, 72%, 42%)`;
+  }
+
+  let active = null;
+  let held = null;
+
+  function clear() {
+    if (held) return;
+    active = null;
+    document.body.classList.remove("tri-on");
+    poem.querySelectorAll(".tri-hit").forEach((el) => {
+      el.classList.remove("tri-hit");
+      el.style.removeProperty("--hit");
+    });
+    svg.replaceChildren();
+  }
+
+  function release() {
+    held = null;
+    document.body.classList.remove("tri-held");
+    active = null;
+    document.body.classList.remove("tri-on");
+    poem.querySelectorAll(".tri-hit").forEach((el) => {
+      el.classList.remove("tri-hit");
+      el.style.removeProperty("--hit");
+    });
+    svg.replaceChildren();
+  }
+
+  function show(key) {
+    const insts = groups.get(key);
+    if (!insts) return;
+    active = key;
+    document.body.classList.add("tri-on");
+    const color = hitColor(insts[0]);
+    document.body.style.setProperty("--hit", color);
+    poem.querySelectorAll(".tri-hit").forEach((el) => el.classList.remove("tri-hit"));
+    for (const inst of insts) {
+      for (const el of inst) {
+        el.classList.add("tri-hit");
+        el.style.setProperty("--hit", color);
+      }
+    }
+    draw(insts, color);
+  }
+
+  function draw(insts, color) {
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+    svg.setAttribute("width", String(document.documentElement.clientWidth));
+    svg.setAttribute("height", String(height));
+    svg.style.height = height + "px";
+    svg.replaceChildren();
+
+    const boxes = insts.map((inst) => {
+      const r = inst[0].getClientRects()[0] || inst[0].getBoundingClientRect();
+      return { x: r.left, cy: r.top + r.height / 2 };
+    });
+    if (boxes.length < 2) return;
+
+    const col = insts[0][0].closest(".col").getBoundingClientRect();
+    const railX = Math.max(14, col.left + scrollX - 22);
+
+    const pts = boxes.map((b) => ({
+      x: b.x + scrollX,
+      y: b.cy + scrollY,
+    }));
+
+    const g = document.createElementNS(NS, "g");
+    g.setAttribute("fill", "none");
+    g.setAttribute("stroke", color);
+    g.setAttribute("stroke-width", "1.6");
+    g.setAttribute("stroke-linecap", "round");
+    g.setAttribute("stroke-linejoin", "round");
+    g.setAttribute("opacity", "0.85");
+
+    const spine = document.createElementNS(NS, "path");
+    let d = `M ${railX} ${pts[0].y}`;
+    for (let i = 1; i < pts.length; i++) d += ` L ${railX} ${pts[i].y}`;
+    spine.setAttribute("d", d);
+    g.append(spine);
+
+    for (const p of pts) {
+      const arm = document.createElementNS(NS, "path");
+      arm.setAttribute("d", `M ${p.x} ${p.y} L ${railX} ${p.y}`);
+      g.append(arm);
+      const dot = document.createElementNS(NS, "circle");
+      dot.setAttribute("cx", String(p.x));
+      dot.setAttribute("cy", String(p.y));
+      dot.setAttribute("r", "3.2");
+      dot.setAttribute("fill", color);
+      dot.setAttribute("stroke", "none");
+      g.append(dot);
+    }
+    svg.append(g);
+  }
+
+  let leaveTimer = null;
+
+  function scheduleClear() {
+    if (held) return;
+    window.clearTimeout(leaveTimer);
+    leaveTimer = window.setTimeout(() => {
+      if (!held) clear();
+    }, 50);
+  }
+
+  function cancelClear() {
+    window.clearTimeout(leaveTimer);
+  }
+
+  poem.addEventListener("pointerover", (e) => {
+    if (held) return;
+    const tok = e.target.closest(".tok, .tri-gap");
+    if (!tok || !tokenKeys.has(tok)) {
+      scheduleClear();
+      return;
+    }
+    const key = pickKey(tok);
+    if (!key) {
+      scheduleClear();
+      return;
+    }
+    cancelClear();
+    if (active !== key) show(key);
+  });
+
+  poem.addEventListener("pointerleave", () => {
+    if (held) return;
+    scheduleClear();
+  });
+
+  poem.addEventListener("click", (e) => {
+    const tok = e.target.closest(".tok, .tri-gap");
+    const key = tok && tokenKeys.has(tok) ? pickKey(tok) : null;
+    if (!key) {
+      if (held) release();
+      return;
+    }
+    if (held === key) {
+      release();
+      return;
+    }
+    held = key;
+    document.body.classList.add("tri-held");
+    show(key);
+  });
+
+  window.addEventListener("scroll", () => { if (active) draw(groups.get(active), hitColor(groups.get(active)[0])); }, { passive: true });
+  window.addEventListener("resize", () => { if (active) draw(groups.get(active), hitColor(groups.get(active)[0])); });
+})();
+</script>
+</body>
+</html>
